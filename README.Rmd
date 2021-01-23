@@ -20,10 +20,10 @@ The reference management software [Citavi](https://www.citavi.com/de) allows for
 
 ## Installation
 
-You can install `CitaviR` from GitHub with `remotes`.
+You can install the development version of `CitaviR` from GitHub:
 
 ```{r, message=FALSE}
-remotes::install_github('SchmidtPaul/CitaviR')
+devtools::install_github('SchmidtPaul/CitaviR')
 ```
 
 

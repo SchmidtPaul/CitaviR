@@ -17,10 +17,10 @@ Excel](https://github.com/Citavi/Macros/blob/master/CIM%20Import/CIM007%20Import
 
 ## Installation
 
-You can install `CitaviR` from GitHub with `remotes`.
+You can install the development version of `CitaviR` from GitHub:
 
 ``` r
-remotes::install_github('SchmidtPaul/CitaviR')
+devtools::install_github('SchmidtPaul/CitaviR')
 ```
 
 <!-- You can install the released version of CitaviR from [CRAN](https://CRAN.R-project.org) with: -->

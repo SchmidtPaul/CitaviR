@@ -19,6 +19,9 @@
 #' @param ... Other arguments passed to the \code{\link[readxl]{read_xlsx}} function.
 #'
 #' @examples
+#' path <- example_xlsx("3dupsin5refs.xlsx") # use this package's example xlsx file
+#' read_Citavi_xlsx(path)
+#'
 #' \dontrun{
 #' CitDat <- read_Citavi_xlsx("data/myCitaviExport.xlsx")
 #' }
@@ -28,7 +31,11 @@
 #' @import dplyr
 #' @export
 
-read_Citavi_xlsx <- function(path, keepMarksCols = TRUE, useYearDerived = TRUE, setSuggestedColOrder = TRUE, ...) {
+read_Citavi_xlsx <- function(path = NULL, keepMarksCols = TRUE, useYearDerived = TRUE, setSuggestedColOrder = TRUE, ...) {
+
+  if (is.null(path)) {
+    stop("You did not provide a path to the Excel file.\n  If you want to use an example file provided in this package instead, try\n  read_Citavi_xlsx(example_xlsx('3dupsin5refs.xlsx'))")
+  }
 
   # import ------------------------------------------------------------------
   suppressMessages( # because usually the first three columns (=MarksCols) have no names so we get message that they are automatically renamed "...1", "...2" and "...3".
@@ -36,58 +43,55 @@ read_Citavi_xlsx <- function(path, keepMarksCols = TRUE, useYearDerived = TRUE, 
   )
 
   # keepMarksCols: handle first 3 columns with marks ----------------
-  if ( all(names(CitDat)[1:3] == c("...1", "...2", "...3")) ) {
-
+  if (all(names(CitDat)[1:3] == c("...1", "...2", "...3"))) {
     if (keepMarksCols) {
-
       CitDat <- CitDat %>%
-        rename("has_attachment" = 1,
-               "red_flag"       = 2,
-               "blue_circle"    = 3)
-
+        rename(
+          "has_attachment" = 1,
+          "red_flag" = 2,
+          "blue_circle" = 3
+        )
     } else {
-
       CitDat <- CitDat %>%
         select(-c("...1", "...2", "...3"))
-
     }
-
   }
 
 
   # useYearDerived: use "Jahr ermittelt" instead of "Jahr"  ---------
   if (useYearDerived) {
-
     year_key <-
-      c("Jahr" = "Jahr ermittelt",
-        "Year" = "Year derived")
+      c(
+        "Jahr" = "Jahr ermittelt",
+        "Year" = "Year derived"
+      )
 
-    if ( any(year_key %in% names(CitDat)) ) {
-
-      CitDat <- CitDat %>%
-        select(-matches(names(year_key)), everything()) %>%  # delete original "year" if present
-        rename(year_key[year_key %in% names(CitDat)])  # rename "year derived" to "year"
-
+    if (any(year_key %in% names(CitDat))) {
+      CitDat <-
+        CitDat[, -which(names(CitDat) %in% names(year_key))] %>% # delete original "year" if present
+        rename(year_key[year_key %in% names(CitDat)]) # rename "year derived" to "year"
     }
-
   }
 
 
   # setSuggestedColOrder: order columns by default -----------------------------
   if (setSuggestedColOrder) {
+    first_cols <- c(
+      "ID",
+      "Kurztitel", "Short title",
+      "Titel", "Title",
+      "Jahr", "Year"
+    )
 
-    first_cols <- c("ID",
-                    "Kurztitel", "Short title",
-                    "Titel", "Title",
-                    "Jahr", "Year")
-
-    last_cols  <- c("has_attachment",
-                    "red_flag",
-                    "blue_circle")
+    last_cols <- c(
+      "has_attachment",
+      "red_flag",
+      "blue_circle"
+    )
 
     CitDat <- CitDat %>%
       relocate(any_of(first_cols[first_cols %in% names(CitDat)])) %>%
-      relocate(any_of(last_cols[last_cols  %in% names(CitDat)]), .after = last_col())
+      relocate(any_of(last_cols[last_cols %in% names(CitDat)]), .after = last_col())
   }
 
   CitDat

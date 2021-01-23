@@ -5,7 +5,7 @@
 \title{Importing Excel files created via Citavi Export}
 \usage{
 read_Citavi_xlsx(
-  path,
+  path = NULL,
   keepMarksCols = TRUE,
   useYearDerived = TRUE,
   setSuggestedColOrder = TRUE,
@@ -40,6 +40,9 @@ Currently this only works for files that were generated while Citavi
 was set to "English" or "German" so that column names are "Short title" or "Kurztitel" etc.
 }
 \examples{
+path <- example_xlsx("3dupsin5refs.xlsx") # use this package's example xlsx file
+read_Citavi_xlsx(path)
+
 \dontrun{
 CitDat <- read_Citavi_xlsx("data/myCitaviExport.xlsx")
 }
