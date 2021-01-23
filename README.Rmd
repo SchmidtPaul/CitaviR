@@ -22,22 +22,40 @@ The reference management software [Citavi](https://www.citavi.com/de) allows for
 
 You can install the development version of `CitaviR` from GitHub:
 
-```{r, message=FALSE}
+```{r install_devtools, eval=FALSE}
 devtools::install_github('SchmidtPaul/CitaviR')
 ```
 
 
-<!-- You can install the released version of CitaviR from [CRAN](https://CRAN.R-project.org) with: -->
+## Example
 
-<!-- ``` r -->
-<!-- install.packages("CitaviR") -->
-<!-- ``` -->
+This is a small example showing an entire work flow from start to finish.
 
-<!-- ## Example -->
+### Step 1: Export xslx from Citavi
 
-<!-- This is a basic example which shows you how to solve a common problem: -->
+In your Citavi project open the table view,
 
-<!-- ```{r example} -->
-<!-- library(CitaviR) -->
-<!-- ## basic example code -->
-<!-- ``` -->
+```{r, echo=FALSE, out.width = "33%"}
+knitr::include_graphics("img/Citavi_Table.png")
+```
+
+make sure all relevant columns are selected (e.g. via making use of Citavi's [customizable selection presets](https://www1.citavi.com/sub/manual6/en/index.html?referencegridformworkspaceeditor.html)) and export to an Excel file.
+
+```{r, echo=FALSE, out.width = "100%"}
+knitr::include_graphics("img/Citavi_TableToExcel.png")
+```
+
+## Step 2: Import xlsx to R
+
+The Excel file exported above is available as an example dataset of `CitaviR`. Furthermore, `read_Citavi_xlsx()` offers an import function based on `readxl::read_xlsx()` with some functionality specifically for xls/xlsx files created with Citavi via export to Excel.
+
+```{r example}
+library(CitaviR)
+
+path <- example_xlsx('3dupsin5refs.xlsx') # replace with path to your xlsx file
+read_Citavi_xlsx(path)
+```
+
+## Step 3: Find duplicates
+
+TO DO
