@@ -30,7 +30,7 @@ via the Citavi export.}
 
 \item{setSuggestedColOrder}{If TRUE (default) columns a reordered in a suggested order.}
 
-\item{...}{Other arguments passed to the \code{\link{readxl::read_xlsx()}} function.}
+\item{...}{Other arguments passed to the \code{\link[readxl]{read_xlsx}} function.}
 }
 \value{
 A tibble containing the information of the xls/xlsx file \href{https://www1.citavi.com/sub/manual6/en/index.html?exporting_to_excel.html}{created with Citavi via export to Excel}.

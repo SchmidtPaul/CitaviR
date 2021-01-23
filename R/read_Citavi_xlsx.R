@@ -16,7 +16,7 @@
 #' the original basic column "year" (DE: "Jahr") which may have also been created
 #' via the Citavi export.
 #' @param setSuggestedColOrder If TRUE (default) columns a reordered in a suggested order.
-#' @param ... Other arguments passed to the \code{\link{readxl::read_xlsx()}} function.
+#' @param ... Other arguments passed to the \code{\link[readxl]{read_xlsx}} function.
 #'
 #' @examples
 #' \dontrun{
@@ -24,6 +24,8 @@
 #' }
 #'
 #' @return A tibble containing the information of the xls/xlsx file \href{https://www1.citavi.com/sub/manual6/en/index.html?exporting_to_excel.html}{created with Citavi via export to Excel}.
+#' @importFrom readxl read_xlsx
+#' @import dplyr
 #' @export
 
 read_Citavi_xlsx <- function(path, keepMarksCols = TRUE, useYearDerived = TRUE, setSuggestedColOrder = TRUE, ...) {
