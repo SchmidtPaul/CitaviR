@@ -1,32 +1,34 @@
 #' @title Importing Excel files created via Citavi Export
 #'
-#' @description Currently this only works for files that were generated while Citavi
+#' @description
+#' `r lifecycle::badge("maturing")`
+#' Currently this only works for files that were generated while Citavi
 #' was set to "English" or "German" so that column names are "Short title" or "Kurztitel" etc.
 #'
-#' @param path Path to the xls/xlsx file \href{https://www1.citavi.com/sub/manual6/en/index.html?exporting_to_excel.html}{created with Citavi via export to Excel}.
+#' @param path Path to the xls/xlsx file [created with Citavi via export to Excel](https://www1.citavi.com/sub/manual6/en/index.html?exporting_to_excel.html).
 #' @param keepMarksCols If TRUE (default) it will keep and rename the first three
 #' nameless columns of the imported excel file. These columns are automatically
 #' created by the Citavi export and contain information about the attachment/paper-clip marker,
-#' \href{https://www1.citavi.com/sub/manual6/en/index.html?using_labels.html}{the red flag marker and the blue circle marker}. If kept, the columns are renamed
-#' \code{has_attachment}, \code{red_flag} and \code{blue_circle}.
+#' [the red flag marker and the blue circle marker](https://www1.citavi.com/sub/manual6/en/index.html?using_labels.html). If kept, the columns are renamed
+#' `has_attachment`, `red_flag` and `blue_circle`.
 #' If FALSE, these three columns are deleted.
 #' @param useYearDerived If TRUE (default) the
-#' \href{https://www1.citavi.com/sub/manual6/en/index.html?cse_using_special_components.html}{special column "Year derived"}
-#' (DE: \href{https://www1.citavi.com/sub/manual6/de/index.html?cse_using_special_components.html}{"Jahr ermittelt"}) is renamed to "year" (DE:"Jahr") and thus replaces
+#' [special column "Year derived"](https://www1.citavi.com/sub/manual6/en/index.html?cse_using_special_components.html)
+#' (DE: ["Jahr ermittelt"](https://www1.citavi.com/sub/manual6/de/index.html?cse_using_special_components.html)) is renamed to "year" (DE:"Jahr") and thus replaces
 #' the original basic column "year" (DE: "Jahr") which may have also been created
 #' via the Citavi export.
 #' @param setSuggestedColOrder If TRUE (default) columns a reordered in a suggested order.
-#' @param ... Other arguments passed to the \code{\link[readxl]{read_xlsx}} function.
+#' @param ... Other arguments passed to the [readxl::read_xlsx()] function.
 #'
 #' @examples
 #' path <- example_xlsx("3dupsin5refs.xlsx") # use this package's example xlsx file
 #' read_Citavi_xlsx(path)
 #'
 #' \dontrun{
-#' CitDat <- read_Citavi_xlsx("data/myCitaviExport.xlsx")
+#' CitDat <- read_Citavi_xlsx("data/yourCitaviExport.xlsx")
 #' }
 #'
-#' @return A tibble containing the information of the xls/xlsx file \href{https://www1.citavi.com/sub/manual6/en/index.html?exporting_to_excel.html}{created with Citavi via export to Excel}.
+#' @return A tibble containing the information of the xls/xlsx file [created with Citavi via export to Excel](https://www1.citavi.com/sub/manual6/en/index.html?exporting_to_excel.html).
 #' @importFrom readxl read_xlsx
 #' @import dplyr
 #' @export

@@ -14,6 +14,7 @@ knitr::opts_chunk$set(
 # CitaviR
 
 <!-- badges: start -->
+[![Lifecycle: experimental](https://lifecycle.r-lib.org/articles/figures/lifecycle-experimental.svg)](https://www.tidyverse.org/lifecycle/#experimental)
 <!-- badges: end -->
 
 The reference management software [Citavi](https://www.citavi.com/de) allows for [exports to Excel](https://www1.citavi.com/sub/manual6/en/index.html?exporting_to_excel.html). With a bit of effort (i.e. via customized [Citavi Macros](https://www1.citavi.com/sub/manual6/en/index.html?add_on_display_macros.html)) it also allows for [imports from Excel](https://github.com/Citavi/Macros/blob/master/CIM%20Import/CIM007%20Import%20arbitrary%20data%20from%20Microsoft%20Excel%20into%20custom%20fields%20of%20existing%20references%20by%20short%20title/readme.de.md). `CitaviR` provides functionality for dealing with the data while it is *outside* Citavi to get the most out of it. 
@@ -64,13 +65,13 @@ read_Citavi_xlsx(path)
 
 ### Step 3: Process data in R
 
-At this point there are many things one may wish to do with the data. In this example we will make use of the `CitaviR` functions to identify *obvious duplicates* and *potential duplicates*.
+At this point there are many things one may wish to do with the data. In this example we will make use of the `CitaviR` functions to identify and handle *obvious duplicates*.
 
-#### 3a: Obvious duplicates
+#### 3a: Find obvious duplicates
 
 TO DO
 
-#### 3b: Likely duplicates
+#### 3b: Handle obvious duplicates
 
 TO DO
 

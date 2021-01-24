@@ -3,6 +3,8 @@
 
 <!-- badges: start -->
 
+[![Lifecycle:
+experimental](https://lifecycle.r-lib.org/articles/figures/lifecycle-experimental.svg)](https://www.tidyverse.org/lifecycle/#experimental)
 <!-- badges: end -->
 
 The reference management software [Citavi](https://www.citavi.com/de)
@@ -75,14 +77,14 @@ read_Citavi_xlsx(path)
 ### Step 3: Process data in R
 
 At this point there are many things one may wish to do with the data. In
-this example we will make use of the `CitaviR` functions to identify
-*obvious duplicates* and *potential duplicates*.
+this example we will make use of the `CitaviR` functions to identify and
+handle *obvious duplicates*.
 
-#### 3a: Obvious duplicates
+#### 3a: Find obvious duplicates
 
 TO DO
 
-#### 3b: Likely duplicates
+#### 3b: Handle obvious duplicates
 
 TO DO
 

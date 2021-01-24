@@ -30,12 +30,13 @@ via the Citavi export.}
 
 \item{setSuggestedColOrder}{If TRUE (default) columns a reordered in a suggested order.}
 
-\item{...}{Other arguments passed to the \code{\link[readxl]{read_xlsx}} function.}
+\item{...}{Other arguments passed to the \code{\link[readxl:read_excel]{readxl::read_xlsx()}} function.}
 }
 \value{
 A tibble containing the information of the xls/xlsx file \href{https://www1.citavi.com/sub/manual6/en/index.html?exporting_to_excel.html}{created with Citavi via export to Excel}.
 }
 \description{
+\ifelse{html}{\out{<a href='https://www.tidyverse.org/lifecycle/#maturing'><img src='figures/lifecycle-maturing.svg' alt='Maturing lifecycle'></a>}}{\strong{Maturing}}
 Currently this only works for files that were generated while Citavi
 was set to "English" or "German" so that column names are "Short title" or "Kurztitel" etc.
 }
@@ -44,7 +45,7 @@ path <- example_xlsx("3dupsin5refs.xlsx") # use this package's example xlsx file
 read_Citavi_xlsx(path)
 
 \dontrun{
-CitDat <- read_Citavi_xlsx("data/myCitaviExport.xlsx")
+CitDat <- read_Citavi_xlsx("data/yourCitaviExport.xlsx")
 }
 
 }

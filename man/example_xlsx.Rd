@@ -7,10 +7,11 @@
 example_xlsx(file = NULL)
 }
 \arguments{
-\item{file}{Name of file. If `NULL`, all example files will be listed.}
+\item{file}{Name of file. If \code{NULL}, all example files will be listed.}
 }
 \description{
-CitaviR comes bundled with some example files in its `inst/extdata`
+\ifelse{html}{\out{<a href='https://www.tidyverse.org/lifecycle/#stable'><img src='figures/lifecycle-stable.svg' alt='Stable lifecycle'></a>}}{\strong{Stable}}
+CitaviR comes bundled with some example files in its \code{inst/extdata}
 directory. This function makes them easy to access.
 }
 \examples{
