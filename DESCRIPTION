@@ -16,7 +16,9 @@ Imports:
     dplyr,
     magrittr,
     readxl,
-    lifecycle
+    lifecycle,
+    janitor,
+    stringr
 Suggests: 
     testthat (>= 3.0.0)
 Config/testthat/edition: 3

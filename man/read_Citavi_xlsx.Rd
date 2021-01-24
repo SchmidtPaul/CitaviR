@@ -2,7 +2,7 @@
 % Please edit documentation in R/read_Citavi_xlsx.R
 \name{read_Citavi_xlsx}
 \alias{read_Citavi_xlsx}
-\title{Importing Excel files created via Citavi Export}
+\title{Import Excel files created via Citavi Export}
 \usage{
 read_Citavi_xlsx(
   path = NULL,
@@ -24,8 +24,8 @@ If FALSE, these three columns are deleted.}
 
 \item{useYearDerived}{If TRUE (default) the
 \href{https://www1.citavi.com/sub/manual6/en/index.html?cse_using_special_components.html}{special column "Year derived"}
-(DE: \href{https://www1.citavi.com/sub/manual6/de/index.html?cse_using_special_components.html}{"Jahr ermittelt"}) is renamed to "year" (DE:"Jahr") and thus replaces
-the original basic column "year" (DE: "Jahr") which may have also been created
+(DE: \href{https://www1.citavi.com/sub/manual6/de/index.html?cse_using_special_components.html}{"Jahr ermittelt"}) is renamed to "Year" (DE:"Jahr") and thus replaces
+the original basic column "Year" (DE: "Jahr") which may have also been created
 via the Citavi export.}
 
 \item{setSuggestedColOrder}{If TRUE (default) columns a reordered in a suggested order.}

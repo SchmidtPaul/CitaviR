@@ -1,4 +1,4 @@
-#' @title Importing Excel files created via Citavi Export
+#' @title Import Excel files created via Citavi Export
 #'
 #' @description
 #' `r lifecycle::badge("maturing")`
@@ -14,8 +14,8 @@
 #' If FALSE, these three columns are deleted.
 #' @param useYearDerived If TRUE (default) the
 #' [special column "Year derived"](https://www1.citavi.com/sub/manual6/en/index.html?cse_using_special_components.html)
-#' (DE: ["Jahr ermittelt"](https://www1.citavi.com/sub/manual6/de/index.html?cse_using_special_components.html)) is renamed to "year" (DE:"Jahr") and thus replaces
-#' the original basic column "year" (DE: "Jahr") which may have also been created
+#' (DE: ["Jahr ermittelt"](https://www1.citavi.com/sub/manual6/de/index.html?cse_using_special_components.html)) is renamed to "Year" (DE:"Jahr") and thus replaces
+#' the original basic column "Year" (DE: "Jahr") which may have also been created
 #' via the Citavi export.
 #' @param setSuggestedColOrder If TRUE (default) columns a reordered in a suggested order.
 #' @param ... Other arguments passed to the [readxl::read_xlsx()] function.
