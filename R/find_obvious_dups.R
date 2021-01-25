@@ -9,6 +9,9 @@
 #' [created with Citavi via export to Excel](https://www1.citavi.com/sub/manual6/en/index.html?exporting_to_excel.html).
 #' Thus, this dataframe may have been imported via \code{\link[CitaviR]{read_Citavi_xlsx}}. The following columns
 #' \bold{must be present} in the dataframe: \code{ID}, \code{Title}, \code{Year}.
+#' @param dupInfoAfterID If TRUE (default), the newly created columns
+#' \code{clean_title_id}, \code{has_obv_dup} and \code{obv_dup_id}.are moved
+#' next to the \code{ID} column.
 #'
 #' @examples
 #' \dontrun{
@@ -21,57 +24,57 @@
 #' \code{clean_title_id}, \code{has_obv_dup} and \code{obv_dup_id}.
 #' @importFrom janitor make_clean_names
 #' @importFrom stringr str_pad str_remove_all
+#' @importFrom utils tail
 #' @import dplyr
 #' @export
 
-find_obvious_dups <- function(CitDat) {
+find_obvious_dups <- function(CitDat, dupInfoAfterID = TRUE) {
 
-  clean_title <- NULL
+  col_names <- c("ID", "Title", "Year")
 
-  # if (!("ID" %in% names(CitDat))) { # TO DO: %not_in%
-    ID <- NULL
-  # } else {stop("'ID' column is missing!")}
-  #
-  # if (!("Title" %in% names(CitDat)==FALSE)) { # TO DO: %not_in%
-    Title <- NULL
-  # } else {stop("'Title' column is missing!")}
-  #
-  # if (!("Year" %in% names(CitDat)==FALSE)) { # TO DO: %not_in%
-    Year <- NULL
-  # } else {stop("'Year' column is missing!")}
+  # ID, Title & Year present? -----------------------------------------------
+  for (col_name_i in col_names) {
+    if (col_name_i %not_in% names(CitDat)) {
+      stop(paste(col_name_i, "column is missing!"))
+    }
+  }
 
-
-  temp <- CitDat[, c("ID", "Title", "Year")] %>%
-    arrange("Title")
+  # reduce for now and sort -------------------------------------------------
+  temp <- CitDat[, col_names] %>%
+    arrange(col_names[2])
 
   # clean_title -------------------------------------------------------------
   temp <- temp %>%
     mutate(
       clean_title =
-        paste(Title, Year, "END") %>%     # combine Title & Year column and end string with "END"
+        paste(.data$Title, .data$Year, "END") %>% # combine Title & Year column and end string with "END"
         janitor::make_clean_names() %>%   # break down string to "_"-character, numbers, and letters
         stringr::str_remove_all("_\\d+$") # remove numbers at end of string created by make_clean_names()
     )
 
   # clean_title & obv_dup ID ------------------------------------------------
   clean_title_id_padding <-
-    temp %>% pull(clean_title) %>% n_distinct() %>% log(10) %>% ceiling() + 1
+    temp %>% pull(.data$clean_title) %>% n_distinct() %>% log(10) %>% ceiling() + 1
 
   obv_dup_id_padding <-
-    temp %>% count(clean_title) %>% pull(n) %>% max() %>% log(10) %>% ceiling() + 1
+    temp %>% count(.data$clean_title) %>% pull(n) %>% max() %>% log(10) %>% ceiling() + 1
 
   temp <- temp %>%
-    group_by(clean_title) %>%
+    group_by(.data$clean_title) %>%
     mutate(clean_title_id =
-             cur_group_id() %>%
-             stringr::str_pad(width = clean_title_id_padding, pad = "0") %>%
-             paste0("ct_", .data)) %>%
+             paste0(
+               "ct_",
+               cur_group_id() %>%
+                 stringr::str_pad(width = clean_title_id_padding, pad = "0")
+             )) %>%
     mutate(has_obv_dup = case_when(n()  > 1 ~ TRUE,
                                    n() == 1 ~ FALSE)) %>%
     mutate(obv_dup_id =
-             1:n() %>%
-             stringr::str_pad(width = obv_dup_id_padding, pad = "0") %>%
-             paste0("dup_", .data)) %>%
+             paste0(
+               "dup_",
+               1:n() %>%
+                 stringr::str_pad(width = obv_dup_id_padding, pad = "0")
+             )) %>%
     ungroup()
 
 
@@ -79,8 +82,14 @@ find_obvious_dups <- function(CitDat) {
   CitDat <- left_join(
     x = CitDat,
     y = temp,
-    by = c("ID", "Title", "Year")
+    by = col_names
   )
+
+  # dupInfoAfterID ----------------------------------------------------------
+  if (dupInfoAfterID) {
+    CitDat <- CitDat %>%
+      relocate(any_of(tail(names(CitDat), 3)), .after = col_names[1])
+  }
 
   CitDat
 
