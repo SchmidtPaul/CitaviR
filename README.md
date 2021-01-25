@@ -165,7 +165,7 @@ be created in the same folder with a slightly altered name:
 write_Citavi_xlsx(CitDat, read_path = path) # will not work for this example dataset
 ```
 
-<img src="img/Excel_files.png" width="25%" />
+<img src="img/Excel_files_out.png" width="25%" />
 
 ### Step 5: xlsx to Citavi
 
