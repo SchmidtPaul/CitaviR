@@ -82,31 +82,71 @@ At this point there are many things one may wish to do with the data. In
 this example we will make use of the `CitaviR` functions to identify and
 handle *obvious duplicates*.
 
-#### 3a: Find obvious duplicates
+#### find obvious duplicates
 
 ``` r
 CitDat <- CitDat %>% 
   find_obvious_dups()
-
-CitDat
-#> # A tibble: 5 x 23
-#>   ID    `Short title` Title Year  Author Categories Groups Abstract `DOI name`
-#>   <chr> <chr>         <chr> <chr> <chr>  <lgl>      <chr>  <chr>    <chr>     
-#> 1 7e04~ Schmidt, Har~ Esti~ 2019  Schmi~ NA         Googl~ Broad-s~ <NA>      
-#> 2 2481~ Schmidt, Har~ Heri~ 2019  Schmi~ NA         Googl~ In plan~ <NA>      
-#> 3 db3a~ Schmidt, Har~ Heri~ 2019  Schmi~ NA         PubMed In plan~ <NA>      
-#> 4 ba57~ Schmidt, Har~ Hrit~ 2019  Schmi~ NA         TypoDB In plan~ 10.1534/g~
-#> 5 fa40~ Schmidt, Möh~ More~ 2018  Schmi~ NA         Googl~ Traditi~ <NA>      
-#> # ... with 14 more variables: `PubMed ID` <chr>, `Online address` <chr>,
-#> #   Periodical <chr>, Volume <chr>, Number <chr>, `Page range` <chr>,
-#> #   Locations <chr>, has_attachment <lgl>, red_flag <lgl>, blue_circle <lgl>,
-#> #   clean_title <chr>, clean_title_id <chr>, has_obv_dup <lgl>,
-#> #   obv_dup_id <chr>
 ```
 
-#### 3b: Handle obvious duplicates
+One way of identifying *obvious duplicates* is via
+`CitaviR::find_obvious_dups()`. In short, it first creates a
+`clean_title` by combining each reference’s **Title** and **Year** into
+a simplified string. This simplification *e.g.* ignores upper- and
+lowercase, removes special characters and removes unnecessary spaces. If
+two references have the same `clean_title`, then they are identified as
+*obvious duplicates*. In this example, two references were indeed
+identified as *obvious duplicates*:
 
-TO DO
+``` r
+CitDat[, c("Title", "Year", "clean_title", "clean_title_id", "has_obv_dup", "obv_dup_id")]
+#> # A tibble: 5 x 6
+#>   Title          Year  clean_title         clean_title_id has_obv_dup obv_dup_id
+#>   <chr>          <chr> <chr>               <chr>          <lgl>       <chr>     
+#> 1 Estimating br~ 2019  estimating_broad_s~ ct_01          FALSE       dup_01    
+#> 2 Heritability ~ 2019  heritability_in_pl~ ct_02          TRUE        dup_01    
+#> 3 Heritability ~ 2019  heritability_in_pl~ ct_02          TRUE        dup_02    
+#> 4 Hritability i~ 2019  hritability_in_pla~ ct_03          FALSE       dup_01    
+#> 5 More, Larger,~ 2018  more_larger_simple~ ct_04          FALSE       dup_01
+```
+
+#### handle obvious duplicates
+
+At this point we have already gained information and could continue with
+steps 4 and 5. However, sometimes duplicates hold different information
+as it is the case here for `ct_02` and the columns *PubMed ID* and
+*Online address*:
+
+``` r
+CitDat[, c("clean_title_id", "obv_dup_id", "Title", "PubMed ID", "Online address")]
+#> # A tibble: 5 x 5
+#>   clean_title_id obv_dup_id Title               `PubMed ID` `Online address`    
+#>   <chr>          <chr>      <chr>               <chr>       <chr>               
+#> 1 ct_01          dup_01     Estimating broad-s~ <NA>        <NA>                
+#> 2 ct_02          dup_01     Heritability in pl~ <NA>        https://www.genetic~
+#> 3 ct_02          dup_02     Heritability in Pl~ 31248886    <NA>                
+#> 4 ct_03          dup_01     Hritability in Pla~ <NA>        <NA>                
+#> 5 ct_04          dup_01     More, Larger, Simp~ <NA>        <NA>
+```
+
+In such a scenario it would be nice to gather all information into the
+one *non-duplicate* (=`dup_01`) that will be kept and evaluated later
+on. Here, `CitaviR::handle_obvious_dups()` comes in handy:
+
+``` r
+CitDat <- CitDat %>% 
+  handle_obvious_dups()
+
+CitDat[, c("clean_title_id", "obv_dup_id", "Title", "PubMed ID", "Online address")]
+#> # A tibble: 5 x 5
+#>   clean_title_id obv_dup_id Title               `PubMed ID` `Online address`    
+#>   <chr>          <chr>      <chr>               <chr>       <chr>               
+#> 1 ct_01          dup_01     Estimating broad-s~ <NA>        <NA>                
+#> 2 ct_02          dup_01     Heritability in pl~ 31248886    https://www.genetic~
+#> 3 ct_02          dup_02     Heritability in Pl~ 31248886    https://www.genetic~
+#> 4 ct_03          dup_01     Hritability in Pla~ <NA>        <NA>                
+#> 5 ct_04          dup_01     More, Larger, Simp~ <NA>        <NA>
+```
 
 ### Step 4: R to xlsx
 

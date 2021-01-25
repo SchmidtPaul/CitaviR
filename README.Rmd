@@ -2,7 +2,7 @@
 output: github_document
 ---
 
-```{r, include = FALSE}
+```{r, include = FALSE, warning = FALSE, message = FALSE}
 knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>",
@@ -69,19 +69,35 @@ CitDat
 
 At this point there are many things one may wish to do with the data. In this example we will make use of the `CitaviR` functions to identify and handle *obvious duplicates*.
 
-#### 3a: Find obvious duplicates
+#### find obvious duplicates
 
 ```{r}
 CitDat <- CitDat %>% 
   find_obvious_dups()
-
-CitDat
 ```
 
+One way of identifying *obvious duplicates* is via `CitaviR::find_obvious_dups()`. In short, it first creates a `clean_title` by combining each reference's **Title** and **Year** into a simplified string. This simplification *e.g.* ignores upper- and lowercase, removes special characters and removes unnecessary spaces. If two references have the same `clean_title`, then they are identified as *obvious duplicates*. In this example, two references were indeed identified as *obvious duplicates*:
+ 
+```{r}
+CitDat[, c("Title", "Year", "clean_title", "clean_title_id", "has_obv_dup", "obv_dup_id")]
+```
+ 
+#### handle obvious duplicates 
+ 
+At this point we have already gained information and could continue with steps 4 and 5. However, sometimes duplicates hold different information as it is the case here for `ct_02` and the columns *PubMed ID* and *Online address*:
 
-#### 3b: Handle obvious duplicates
+```{r}
+CitDat[, c("clean_title_id", "obv_dup_id", "Title", "PubMed ID", "Online address")]
+```
 
-TO DO
+In such a scenario it would be nice to gather all information into the one *non-duplicate* (=`dup_01`) that will be kept and evaluated later on. Here, `CitaviR::handle_obvious_dups()` comes in handy:
+
+```{r}
+CitDat <- CitDat %>% 
+  handle_obvious_dups()
+
+CitDat[, c("clean_title_id", "obv_dup_id", "Title", "PubMed ID", "Online address")]
+```
 
 ### Step 4: R to xlsx
 

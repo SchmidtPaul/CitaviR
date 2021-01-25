@@ -10,6 +10,7 @@
 #' @examples
 #' example_xlsx()
 #' example_xlsx("3dupsin5refs.xlsx")
+
 example_xlsx <- function(file = NULL) {
   if (is.null(file)) {
     dir(system.file("extdata", package = "CitaviR"))

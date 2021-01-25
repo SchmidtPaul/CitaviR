@@ -13,23 +13,21 @@ Thus, this dataframe may have been imported via \code{\link[CitaviR]{read_Citavi
 \bold{must be present} in the dataframe: \code{ID}, \code{Title}, \code{Year}.}
 
 \item{dupInfoAfterID}{If TRUE (default), the newly created columns
-\code{clean_title_id}, \code{has_obv_dup} and \code{obv_dup_id}.are moved
-next to the \code{ID} column.}
+\code{clean_title}, \code{clean_title_id}, \code{has_obv_dup} and \code{obv_dup_id}
+are moved right next to the \code{ID} column.}
 }
 \value{
 A tibble containing three additional columns:
 \code{clean_title_id}, \code{has_obv_dup} and \code{obv_dup_id}.
 }
 \description{
-\ifelse{html}{\out{<a href='https://www.tidyverse.org/lifecycle/#experimental'><img src='figures/lifecycle-experimental.svg' alt='Experimental lifecycle'></a>}}{\strong{Experimental}}
+\ifelse{html}{\out{<a href='https://www.tidyverse.org/lifecycle/#maturing'><img src='figures/lifecycle-maturing.svg' alt='Maturing lifecycle'></a>}}{\strong{Maturing}}
 Currently this only works for files that were generated while Citavi
-was set to "German" so that column names are "Kurztitel" etc.
+was set to "English" so that column names are "Short Title" etc.
 }
 \examples{
-\dontrun{
-path <- example_xlsx("3dupsin5refs.xlsx") # use this package's example xlsx file
+path <- example_xlsx("3dupsin5refs.xlsx")
 read_Citavi_xlsx(path) \%>\%
    find_obvious_dups()
-}
 
 }

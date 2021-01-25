@@ -1,24 +1,22 @@
 #' @title Identify obvious duplicates based on title and year
 #'
 #' @description
-#' `r lifecycle::badge("experimental")`
+#' `r lifecycle::badge("maturing")`
 #' Currently this only works for files that were generated while Citavi
-#' was set to "German" so that column names are "Kurztitel" etc.
+#' was set to "English" so that column names are "Short Title" etc.
 #'
 #' @param CitDat A dataframe holding the information of the xls/xlsx file
 #' [created with Citavi via export to Excel](https://www1.citavi.com/sub/manual6/en/index.html?exporting_to_excel.html).
 #' Thus, this dataframe may have been imported via \code{\link[CitaviR]{read_Citavi_xlsx}}. The following columns
 #' \bold{must be present} in the dataframe: \code{ID}, \code{Title}, \code{Year}.
 #' @param dupInfoAfterID If TRUE (default), the newly created columns
-#' \code{clean_title_id}, \code{has_obv_dup} and \code{obv_dup_id}.are moved
-#' next to the \code{ID} column.
+#' \code{clean_title}, \code{clean_title_id}, \code{has_obv_dup} and \code{obv_dup_id}
+#' are moved right next to the \code{ID} column.
 #'
 #' @examples
-#' \dontrun{
-#' path <- example_xlsx("3dupsin5refs.xlsx") # use this package's example xlsx file
+#' path <- example_xlsx("3dupsin5refs.xlsx")
 #' read_Citavi_xlsx(path) %>%
 #'    find_obvious_dups()
-#' }
 #'
 #' @return A tibble containing three additional columns:
 #' \code{clean_title_id}, \code{has_obv_dup} and \code{obv_dup_id}.
@@ -88,7 +86,7 @@ find_obvious_dups <- function(CitDat, dupInfoAfterID = TRUE) {
   # dupInfoAfterID ----------------------------------------------------------
   if (dupInfoAfterID) {
     CitDat <- CitDat %>%
-      relocate(any_of(tail(names(CitDat), 3)), .after = col_names[1])
+      relocate(any_of(tail(names(CitDat), 4)), .after = col_names[1])
   }
 
   CitDat
