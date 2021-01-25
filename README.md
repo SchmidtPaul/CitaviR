@@ -51,16 +51,18 @@ and export to an Excel file.
 
 ### Step 2: xlsx to R
 
-The Excel file exported above is available as an example dataset of
-`CitaviR`. Furthermore, `read_Citavi_xlsx()` offers an import function
-based on `readxl::read_xlsx()` with some functionality specifically for
-xls/xlsx files created with Citavi via export to Excel.
+The Excel file exported above is available in `CitaviR` as the example
+dataset `3dupsin5refs.xlsx`. Furthermore, `read_Citavi_xlsx()` offers an
+import function based on `readxl::read_xlsx()` with some functionality
+specifically for xls/xlsx files created with Citavi via export to Excel.
 
 ``` r
 library(CitaviR)
 
-path <- example_xlsx('3dupsin5refs.xlsx') # replace with path to your xlsx file
-read_Citavi_xlsx(path)
+path   <- example_xlsx('3dupsin5refs.xlsx') # replace with path to your xlsx file
+CitDat <- read_Citavi_xlsx(path)
+
+CitDat
 #> # A tibble: 5 x 19
 #>   ID    `Short title` Title Year  Author Categories Groups Abstract `DOI name`
 #>   <chr> <chr>         <chr> <chr> <chr>  <lgl>      <chr>  <chr>    <chr>     
@@ -82,7 +84,25 @@ handle *obvious duplicates*.
 
 #### 3a: Find obvious duplicates
 
-TO DO
+``` r
+CitDat <- CitDat %>% 
+  find_obvious_dups()
+
+CitDat
+#> # A tibble: 5 x 23
+#>   ID    `Short title` Title Year  Author Categories Groups Abstract `DOI name`
+#>   <chr> <chr>         <chr> <chr> <chr>  <lgl>      <chr>  <chr>    <chr>     
+#> 1 7e04~ Schmidt, Har~ Esti~ 2019  Schmi~ NA         Googl~ Broad-s~ <NA>      
+#> 2 2481~ Schmidt, Har~ Heri~ 2019  Schmi~ NA         Googl~ In plan~ <NA>      
+#> 3 db3a~ Schmidt, Har~ Heri~ 2019  Schmi~ NA         PubMed In plan~ <NA>      
+#> 4 ba57~ Schmidt, Har~ Hrit~ 2019  Schmi~ NA         TypoDB In plan~ 10.1534/g~
+#> 5 fa40~ Schmidt, Möh~ More~ 2018  Schmi~ NA         Googl~ Traditi~ <NA>      
+#> # ... with 14 more variables: `PubMed ID` <chr>, `Online address` <chr>,
+#> #   Periodical <chr>, Volume <chr>, Number <chr>, `Page range` <chr>,
+#> #   Locations <chr>, has_attachment <lgl>, red_flag <lgl>, blue_circle <lgl>,
+#> #   clean_title <chr>, clean_title_id <chr>, has_obv_dup <lgl>,
+#> #   obv_dup_id <chr>
+```
 
 #### 3b: Handle obvious duplicates
 

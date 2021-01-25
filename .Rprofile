@@ -1,1 +1,2 @@
-library(devtools)
+suppressMessages(library(devtools))
+suppressMessages(library(testthat))

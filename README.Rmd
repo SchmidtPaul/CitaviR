@@ -54,13 +54,15 @@ knitr::include_graphics("img/Citavi_TableToExcel.png")
 
 ### Step 2: xlsx to R
 
-The Excel file exported above is available as an example dataset of `CitaviR`. Furthermore, `read_Citavi_xlsx()` offers an import function based on `readxl::read_xlsx()` with some functionality specifically for xls/xlsx files created with Citavi via export to Excel.
+The Excel file exported above is available in `CitaviR` as the example dataset `3dupsin5refs.xlsx`. Furthermore, `read_Citavi_xlsx()` offers an import function based on `readxl::read_xlsx()` with some functionality specifically for xls/xlsx files created with Citavi via export to Excel.
 
 ```{r example}
 library(CitaviR)
 
-path <- example_xlsx('3dupsin5refs.xlsx') # replace with path to your xlsx file
-read_Citavi_xlsx(path)
+path   <- example_xlsx('3dupsin5refs.xlsx') # replace with path to your xlsx file
+CitDat <- read_Citavi_xlsx(path)
+
+CitDat
 ```
 
 ### Step 3: Process data in R
@@ -69,7 +71,13 @@ At this point there are many things one may wish to do with the data. In this ex
 
 #### 3a: Find obvious duplicates
 
-TO DO
+```{r}
+CitDat <- CitDat %>% 
+  find_obvious_dups()
+
+CitDat
+```
+
 
 #### 3b: Handle obvious duplicates
 
