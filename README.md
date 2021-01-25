@@ -25,16 +25,21 @@ You can install the development version of `CitaviR` from GitHub:
 devtools::install_github('SchmidtPaul/CitaviR')
 ```
 
-## Example
+## Example / Workflow
 
 This is an example showing an entire work flow from start to finish. It
-is structured as five steps:
+is structured in five steps:
 
-  - [Step 1: Citavi to xlsx](#step-1-citavi-to-xlsx)
-  - [Step 2: xlsx to R](#step-2-xlsx-to-r)
-  - [Step 3: Process data in R](#step-3-process-data-in-r)
-  - [Step 4: R to xlsx](#step-4-r-to-xlsx)
-  - [Step 5: xlsx to Citavi](#step-5-xlsx-to-citavi)
+| Step                                                   | CitaviR              | Effort: 1st time setup | Effort: regular use |
+| ------------------------------------------------------ | -------------------- | ---------------------- | ------------------- |
+| [Step 1: Citavi to xlsx](#step-1-citavi-to-xlsx)       |                      | :ok\_hand:             | :smiley:            |
+| [Step 2: xlsx to R](#step-2-xlsx-to-r)                 | :heavy\_check\_mark: | :smiley:               | :smiley:            |
+| [Step 3: Process data in R](#step-3-process-data-in-r) | :heavy\_check\_mark: | :ok\_hand:             | :smiley:            |
+| [Step 4: R to xlsx](#step-4-r-to-xlsx)                 | :heavy\_check\_mark: | :smiley:               | :smiley:            |
+| [Step 5: xlsx to Citavi](#step-5-xlsx-to-citavi)       |                      | :fire:                 | :ok\_hand:          |
+
+**Effort levels:** low effort :smiley:; acceptable effort :ok\_hand:;
+can be cumbersome :fire:
 
 ### Step 1: Citavi to xlsx
 
@@ -143,15 +148,53 @@ CitDat[, c("clean_title_id", "obv_dup_id", "Title", "PubMed ID", "Online address
 #>   <chr>          <chr>      <chr>               <chr>       <chr>               
 #> 1 ct_01          dup_01     Estimating broad-s~ <NA>        <NA>                
 #> 2 ct_02          dup_01     Heritability in pl~ 31248886    https://www.genetic~
-#> 3 ct_02          dup_02     Heritability in Pl~ 31248886    https://www.genetic~
+#> 3 ct_02          dup_02     Heritability in Pl~ 31248886    <NA>                
 #> 4 ct_03          dup_01     Hritability in Pla~ <NA>        <NA>                
 #> 5 ct_04          dup_01     More, Larger, Simp~ <NA>        <NA>
 ```
 
 ### Step 4: R to xlsx
 
-TO DO
+To export this table to Excel, `write_Citavi_xlsx()` offers an import
+function based on `openxlsx::write.xlsx()` with some extra
+functionality. For example, when supplying the same `path` we used for
+`read_Citavi_xlsx()` in [Step 2](#step-2-xlsx-to-r), the xlsx file will
+be created in the same folder with a slightly altered name:
+
+``` r
+write_Citavi_xlsx(CitDat, read_path = path) # will not work for this example dataset
+```
+
+<img src="img/Excel_files.png" width="25%" />
 
 ### Step 5: xlsx to Citavi
 
-TO DO
+Unfortunately, importing xlsx into Citavi is not as trivials as
+exporting xlsx from it. In order to generally make this work you must
+
+  - [enable Citavi
+    Macros](https://www1.citavi.com/sub/manual6/en/index.html?add_on_display_macros.html)
+  - install an *OLE-DB-Provider*. Citavi suggests the *Microsoft Access
+    Database Engine 2016 Redistributable Kit* as described [here in
+    German](https://github.com/Citavi/Macros/blob/master/CIM%20Import/CIM007%20Import%20arbitrary%20data%20from%20Microsoft%20Excel%20into%20custom%20fields%20of%20existing%20references%20by%20short%20title/readme.de.md).
+
+Afterwards, you should be able to run the Macro [**CIM007** Import
+arbitrary data from Microsoft Excel into custom fields of existing
+references by short
+title](https://github.com/Citavi/Macros/tree/master/CIM%20Import/CIM007%20Import%20arbitrary%20data%20from%20Microsoft%20Excel%20into%20custom%20fields%20of%20existing%20references%20by%20short%20title)
+provided by Citavi.
+
+> Note that it is this very Macro **CIM007** that makes all of this
+> possible. Without it, `CitaviR` would not nearly be as useful since -
+> according to my knowledge - there is still no other way to import
+> Excel data into Citavi.
+
+However, we are not actually going to use the original *CIM007* Macro
+here, but a modified version of it. The main reason is that *CIM007*
+merges the imported data by `Short title`. However, for duplicates the
+short titles are identical. Instead, we want to merge by `ID` because it
+is a unique identifier for each reference.
+
+TO DO: LINK TO REPO WITH CUSTOM CITAVI MACROS WILL FOLLOW HERE
+
+TO DO: SCREENSHOT
