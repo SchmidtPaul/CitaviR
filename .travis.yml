@@ -9,5 +9,6 @@ os:
   - os
 
 r:
+  - oldrel
   - release
   - devel
