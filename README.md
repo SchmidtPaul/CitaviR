@@ -10,6 +10,8 @@ developed.](https://www.repostatus.org/badges/latest/active.svg)](https://www.re
 experimental](https://lifecycle.r-lib.org/articles/figures/lifecycle-experimental.svg)](https://www.tidyverse.org/lifecycle/#experimental)
 [![Travis build
 status](https://travis-ci.com/SchmidtPaul/CitaviR.svg?branch=master)](https://travis-ci.com/SchmidtPaul/CitaviR)
+[![AppVeyor build
+status](https://ci.appveyor.com/api/projects/status/github/SchmidtPaul/CitaviR?branch=master&svg=true)](https://ci.appveyor.com/project/SchmidtPaul/CitaviR)
 <!-- badges: end -->
 
 The reference management software [Citavi](https://www.citavi.com/de)
@@ -28,15 +30,6 @@ You can install the development version of `CitaviR` from GitHub:
 
 ``` r
 devtools::install_github('SchmidtPaul/CitaviR')
-#> 
-#>          checking for file 'C:\Users\PSchmidt\AppData\Local\Temp\RtmpqgfH5x\remotesc4011425cac\SchmidtPaul-CitaviR-700e3cb/DESCRIPTION' ...  v  checking for file 'C:\Users\PSchmidt\AppData\Local\Temp\RtmpqgfH5x\remotesc4011425cac\SchmidtPaul-CitaviR-700e3cb/DESCRIPTION'
-#>       -  preparing 'CitaviR':
-#>    checking DESCRIPTION meta-information ...     checking DESCRIPTION meta-information ...   v  checking DESCRIPTION meta-information
-#>       -  checking for LF line-endings in source and make files and shell scripts
-#>       -  checking for empty or unneeded directories
-#>       -  building 'CitaviR_0.1.0.tar.gz'
-#>      
-#> 
 ```
 
 ## Example / Workflow

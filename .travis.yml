@@ -7,8 +7,3 @@ warnings_are_errors: true
 os:
   - linux
   - os
-
-r:
-  - oldrel
-  - release
-  - devel

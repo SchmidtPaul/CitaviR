@@ -4,3 +4,4 @@
 ^data-raw$
 ^img$
 ^\.travis\.yml$
+^appveyor\.yml$
