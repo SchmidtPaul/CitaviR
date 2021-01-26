@@ -3,8 +3,11 @@ test_that("missing path gives error", {
 
 })
 
+
+# Tests based on 3dupsin5refs ---------------------------------------------
+path <- example_xlsx('3dupsin5refs.xlsx')
+
 test_that("basic read_xlsx [for 3dupsin5refs]", {
-  path <- example_xlsx('3dupsin5refs.xlsx')
   raw  <- suppressMessages(readxl::read_xlsx(path))
   dat  <- read_Citavi_xlsx(
     path,
@@ -21,7 +24,6 @@ test_that("basic read_xlsx [for 3dupsin5refs]", {
 })
 
 test_that("keepMarksCols [for 3dupsin5refs]", {
-  path <- example_xlsx('3dupsin5refs.xlsx')
   raw  <- suppressMessages(readxl::read_xlsx(path))
   dat_FALSE <- read_Citavi_xlsx(path, keepMarksCols = FALSE)
   dat_TRUE  <- read_Citavi_xlsx(path, keepMarksCols = TRUE)
@@ -45,7 +47,6 @@ test_that("keepMarksCols [for 3dupsin5refs]", {
 })
 
 test_that("useYearDerived [for 3dupsin5refs]", {
-  path <- example_xlsx('3dupsin5refs.xlsx')
   raw  <- suppressMessages(readxl::read_xlsx(path))
   dat_FALSE <- read_Citavi_xlsx(path, useYearDerived = FALSE)
   dat_TRUE  <- read_Citavi_xlsx(path, useYearDerived = TRUE)
@@ -66,7 +67,6 @@ test_that("useYearDerived [for 3dupsin5refs]", {
 })
 
 test_that("setSuggestedColOrder [for 3dupsin5refs]", {
-  path <- example_xlsx('3dupsin5refs.xlsx')
   raw  <- suppressMessages(readxl::read_xlsx(path))
   dat_FALSE <- read_Citavi_xlsx(path, setSuggestedColOrder = FALSE)
   dat_TRUE  <- read_Citavi_xlsx(path, setSuggestedColOrder = TRUE)

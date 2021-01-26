@@ -3,6 +3,9 @@
 
 <!-- badges: start -->
 
+[![Project Status: Active – The project has reached a stable, usable
+state and is being actively
+developed.](https://www.repostatus.org/badges/latest/active.svg)](https://www.repostatus.org/#active)
 [![Lifecycle:
 experimental](https://lifecycle.r-lib.org/articles/figures/lifecycle-experimental.svg)](https://www.tidyverse.org/lifecycle/#experimental)
 <!-- badges: end -->
@@ -11,7 +14,7 @@ The reference management software [Citavi](https://www.citavi.com/de)
 allows for [exports to
 Excel](https://www1.citavi.com/sub/manual6/en/index.html?exporting_to_excel.html).
 With a bit of effort (i.e. via customized [Citavi
-Macros](https://www1.citavi.com/sub/manual6/en/index.html?add_on_display_macros.html))
+macros](https://www1.citavi.com/sub/manual6/en/index.html?add_on_display_macros.html))
 it also allows for [imports from
 Excel](https://github.com/Citavi/Macros/blob/master/CIM%20Import/CIM007%20Import%20arbitrary%20data%20from%20Microsoft%20Excel%20into%20custom%20fields%20of%20existing%20references%20by%20short%20title/readme.de.md).
 `CitaviR` provides functionality for dealing with the data while it is
@@ -96,12 +99,12 @@ CitDat <- CitDat %>%
 
 One way of identifying *obvious duplicates* is via
 `CitaviR::find_obvious_dups()`. In short, it first creates a
-`clean_title` by combining each reference’s **Title** and **Year** into
-a simplified string. This simplification *e.g.* ignores upper- and
-lowercase, removes special characters and removes unnecessary spaces. If
-two references have the same `clean_title`, then they are identified as
-*obvious duplicates*. In this example, two references were indeed
-identified as *obvious duplicates*:
+`clean_title` by combining each reference’s `Title` and `Year` into a
+simplified string. This simplification *e.g.* converts to all-lowercase,
+removes special characters and removes unnecessary spaces. If two
+references have the same `clean_title`, they are identified as *obvious
+duplicates*. In this example, two references were indeed identified as
+*obvious duplicates*:
 
 ``` r
 CitDat[, c("Title", "Year", "clean_title", "clean_title_id", "has_obv_dup", "obv_dup_id")]
@@ -119,19 +122,16 @@ CitDat[, c("Title", "Year", "clean_title", "clean_title_id", "has_obv_dup", "obv
 
 At this point we have already gained information and could continue with
 steps 4 and 5. However, sometimes duplicates hold different information
-as it is the case here for `ct_02` and the columns *PubMed ID* and
-*Online address*:
+as it is the case here for `ct_02` and the columns `PubMed ID` and
+`Online address`:
 
 ``` r
-CitDat[, c("clean_title_id", "obv_dup_id", "Title", "PubMed ID", "Online address")]
-#> # A tibble: 5 x 5
-#>   clean_title_id obv_dup_id Title               `PubMed ID` `Online address`    
-#>   <chr>          <chr>      <chr>               <chr>       <chr>               
-#> 1 ct_01          dup_01     Estimating broad-s~ <NA>        <NA>                
-#> 2 ct_02          dup_01     Heritability in pl~ <NA>        https://www.genetic~
-#> 3 ct_02          dup_02     Heritability in Pl~ 31248886    <NA>                
-#> 4 ct_03          dup_01     Hritability in Pla~ <NA>        <NA>                
-#> 5 ct_04          dup_01     More, Larger, Simp~ <NA>        <NA>
+CitDat[2:3, c("clean_title_id", "obv_dup_id", "Title", "PubMed ID", "Online address")]
+#> # A tibble: 2 x 5
+#>   clean_title_id obv_dup_id Title              `PubMed ID` `Online address`     
+#>   <chr>          <chr>      <chr>              <chr>       <chr>                
+#> 1 ct_02          dup_01     Heritability in p~ <NA>        https://www.genetics~
+#> 2 ct_02          dup_02     Heritability in P~ 31248886    <NA>
 ```
 
 In such a scenario it would be nice to gather all information into the
@@ -142,15 +142,12 @@ on. Here, `CitaviR::handle_obvious_dups()` comes in handy:
 CitDat <- CitDat %>% 
   handle_obvious_dups()
 
-CitDat[, c("clean_title_id", "obv_dup_id", "Title", "PubMed ID", "Online address")]
-#> # A tibble: 5 x 5
-#>   clean_title_id obv_dup_id Title               `PubMed ID` `Online address`    
-#>   <chr>          <chr>      <chr>               <chr>       <chr>               
-#> 1 ct_01          dup_01     Estimating broad-s~ <NA>        <NA>                
-#> 2 ct_02          dup_01     Heritability in pl~ 31248886    https://www.genetic~
-#> 3 ct_02          dup_02     Heritability in Pl~ 31248886    <NA>                
-#> 4 ct_03          dup_01     Hritability in Pla~ <NA>        <NA>                
-#> 5 ct_04          dup_01     More, Larger, Simp~ <NA>        <NA>
+CitDat[2:3, c("clean_title_id", "obv_dup_id", "Title", "PubMed ID", "Online address")]
+#> # A tibble: 2 x 5
+#>   clean_title_id obv_dup_id Title              `PubMed ID` `Online address`     
+#>   <chr>          <chr>      <chr>              <chr>       <chr>                
+#> 1 ct_02          dup_01     Heritability in p~ 31248886    https://www.genetics~
+#> 2 ct_02          dup_02     Heritability in P~ 31248886    <NA>
 ```
 
 ### Step 4: R to xlsx
@@ -169,27 +166,27 @@ write_Citavi_xlsx(CitDat, read_path = path) # will not work for this example dat
 
 ### Step 5: xlsx to Citavi
 
-Unfortunately, importing xlsx into Citavi is not as trivials as
-exporting xlsx from it. In order to generally make this work you must
+Unfortunately, importing xlsx into Citavi is not as trivial as exporting
+xlsx from it. In order to generally make this work you must first
 
   - [enable Citavi
-    Macros](https://www1.citavi.com/sub/manual6/en/index.html?add_on_display_macros.html)
+    macros](https://www1.citavi.com/sub/manual6/en/index.html?add_on_display_macros.html)
   - install an *OLE-DB-Provider*. Citavi suggests the *Microsoft Access
     Database Engine 2016 Redistributable Kit* as described [here in
     German](https://github.com/Citavi/Macros/blob/master/CIM%20Import/CIM007%20Import%20arbitrary%20data%20from%20Microsoft%20Excel%20into%20custom%20fields%20of%20existing%20references%20by%20short%20title/readme.de.md).
 
-Afterwards, you should be able to run the Macro [**CIM007** Import
+Afterwards, you should be able to run the macro [**CIM007** Import
 arbitrary data from Microsoft Excel into custom fields of existing
 references by short
 title](https://github.com/Citavi/Macros/tree/master/CIM%20Import/CIM007%20Import%20arbitrary%20data%20from%20Microsoft%20Excel%20into%20custom%20fields%20of%20existing%20references%20by%20short%20title)
 provided by Citavi.
 
-> Note that it is this very Macro **CIM007** that makes all of this
+> Note that it is this very macro **CIM007** that makes all of this
 > possible. Without it, `CitaviR` would not nearly be as useful since -
-> according to my knowledge - there is still no other way to import
+> according to my knowledge - there is currently no other way to import
 > Excel data into Citavi.
 
-However, we are not actually going to use the original *CIM007* Macro
+However, we are not actually going to use the original *CIM007* macro
 here, but a modified version of it. The main reason is that *CIM007*
 merges the imported data by `Short title`. However, for duplicates the
 short titles are identical. Instead, we want to merge by `ID` because it
