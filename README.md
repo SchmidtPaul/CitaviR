@@ -14,6 +14,9 @@ status](https://travis-ci.com/SchmidtPaul/CitaviR.svg?branch=master)](https://tr
 status](https://ci.appveyor.com/api/projects/status/github/SchmidtPaul/CitaviR?branch=master&svg=true)](https://ci.appveyor.com/project/SchmidtPaul/CitaviR)
 <!-- badges: end -->
 
+> This is an **unofficial** helper package for dealing with Citavi. I am
+> not affiliated with Citavi, just a customer and fan.
+
 The reference management software [Citavi](https://www.citavi.com/de)
 allows for [exports to
 Excel](https://www1.citavi.com/sub/manual6/en/index.html?exporting_to_excel.html).
