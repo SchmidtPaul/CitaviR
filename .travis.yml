@@ -4,7 +4,9 @@ language: R
 cache: packages
 warnings_are_errors: true
 
-before_install: R -e 'source("https://install-github.me/r-lib/remotes")'
+os:
+  - linux
+  - osx
 
 notifications:
   email:
@@ -12,10 +14,3 @@ notifications:
       - schmidpaul@hotmail.de
     on_success: never # default: change
     on_failure: never # default: always
-
-os:
-  - linux
-  - os
-
-notifications:
-  email: false
