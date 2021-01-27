@@ -1,5 +1,5 @@
 
-# CitaviR
+# CitaviR <img src='man/figures/logo.png' align="right" height="138" />
 
 <!-- badges: start -->
 
@@ -15,10 +15,11 @@ status](https://ci.appveyor.com/api/projects/status/github/SchmidtPaul/CitaviR?b
 <!-- badges: end -->
 
 > This is an **unofficial** helper package for dealing with Citavi. I am
-> not affiliated with Citavi, just a customer and fan.
+> not affiliated with Citavi, just a fan.
 
-The reference management software [Citavi](https://www.citavi.com/de)
-allows for [exports to
+The reference management software **Citavi** ([Official
+Website](https://www.citavi.com/de), [Official
+GitHub](https://github.com/Citavi)) allows for [exports to
 Excel](https://www1.citavi.com/sub/manual6/en/index.html?exporting_to_excel.html).
 With a bit of effort (i.e. via customized [Citavi
 macros](https://www1.citavi.com/sub/manual6/en/index.html?add_on_display_macros.html))
@@ -81,11 +82,11 @@ CitDat
 #> # A tibble: 5 x 19
 #>   ID    `Short title` Title Year  Author Categories Groups Abstract `DOI name`
 #>   <chr> <chr>         <chr> <chr> <chr>  <lgl>      <chr>  <chr>    <chr>     
-#> 1 7e04~ Schmidt, Har~ Esti~ 2019  Schmi~ NA         Googl~ Broad-s~ <NA>      
-#> 2 2481~ Schmidt, Har~ Heri~ 2019  Schmi~ NA         Googl~ In plan~ <NA>      
+#> 1 7e04~ Schmidt, Har~ Esti~ 2019  Schmi~ NA         Googl~ Broad-s~ 10.2135/c~
+#> 2 2481~ Schmidt, Har~ Heri~ 2019  Schmi~ NA         Googl~ In plan~ 10.1534/g~
 #> 3 db3a~ Schmidt, Har~ Heri~ 2019  Schmi~ NA         PubMed In plan~ <NA>      
 #> 4 ba57~ Schmidt, Har~ Hrit~ 2019  Schmi~ NA         TypoDB In plan~ 10.1534/g~
-#> 5 fa40~ Schmidt, Möh~ More~ 2018  Schmi~ NA         Googl~ Traditi~ <NA>      
+#> 5 fa40~ Schmidt, Möh~ More~ 2018  Schmi~ NA         Googl~ Traditi~ 10.2135/c~
 #> # ... with 10 more variables: `PubMed ID` <chr>, `Online address` <chr>,
 #> #   Periodical <chr>, Volume <chr>, Number <chr>, `Page range` <chr>,
 #> #   Locations <chr>, has_attachment <lgl>, red_flag <lgl>, blue_circle <lgl>
@@ -137,7 +138,7 @@ CitDat[2:3, c("clean_title_id", "obv_dup_id", "Title", "PubMed ID", "Online addr
 #> # A tibble: 2 x 5
 #>   clean_title_id obv_dup_id Title              `PubMed ID` `Online address`     
 #>   <chr>          <chr>      <chr>              <chr>       <chr>                
-#> 1 ct_02          dup_01     Heritability in p~ <NA>        https://www.genetics~
+#> 1 ct_02          dup_01     Heritability in p~ 31248886    https://www.genetics~
 #> 2 ct_02          dup_02     Heritability in P~ 31248886    <NA>
 ```
 
