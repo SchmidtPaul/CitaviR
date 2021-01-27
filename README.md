@@ -8,14 +8,12 @@ state and is being actively
 developed.](https://www.repostatus.org/badges/latest/active.svg)](https://www.repostatus.org/#active)
 [![Lifecycle:
 experimental](https://lifecycle.r-lib.org/articles/figures/lifecycle-experimental.svg)](https://www.tidyverse.org/lifecycle/#experimental)
-[![Travis build
-status](https://travis-ci.com/SchmidtPaul/CitaviR.svg?branch=master)](https://travis-ci.com/SchmidtPaul/CitaviR)
-[![AppVeyor build
-status](https://ci.appveyor.com/api/projects/status/github/SchmidtPaul/CitaviR?branch=master&svg=true)](https://ci.appveyor.com/project/SchmidtPaul/CitaviR)
+<!-- [![Travis build status](https://travis-ci.com/SchmidtPaul/CitaviR.svg?branch=master)](https://travis-ci.com/SchmidtPaul/CitaviR) -->
+<!-- [![AppVeyor build status](https://ci.appveyor.com/api/projects/status/github/SchmidtPaul/CitaviR?branch=master&svg=true)](https://ci.appveyor.com/project/SchmidtPaul/CitaviR) -->
 <!-- badges: end -->
 
-> This is an **unofficial** helper package for dealing with Citavi. I am
-> not affiliated with Citavi, just a fan.
+> This is an **unofficial** helper package for dealing with Citavi.
+> </br> I am not affiliated with Citavi, just a fan.
 
 The reference management software **Citavi** ([Official
 Website](https://www.citavi.com/de), [Official
@@ -138,7 +136,7 @@ CitDat[2:3, c("clean_title_id", "obv_dup_id", "Title", "PubMed ID", "Online addr
 #> # A tibble: 2 x 5
 #>   clean_title_id obv_dup_id Title              `PubMed ID` `Online address`     
 #>   <chr>          <chr>      <chr>              <chr>       <chr>                
-#> 1 ct_02          dup_01     Heritability in p~ 31248886    https://www.genetics~
+#> 1 ct_02          dup_01     Heritability in p~ <NA>        https://www.genetics~
 #> 2 ct_02          dup_02     Heritability in P~ 31248886    <NA>
 ```
 
