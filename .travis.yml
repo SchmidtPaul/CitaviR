@@ -7,3 +7,6 @@ warnings_are_errors: true
 os:
   - linux
   - os
+
+notifications:
+  email: false
