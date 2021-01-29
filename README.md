@@ -26,7 +26,7 @@ Excel](https://github.com/Citavi/Macros/blob/master/CIM%20Import/CIM007%20Import
 `CitaviR` provides functionality for dealing with the data while it is
 *outside* Citavi to get the most out of it. Using CitaviR goes hand in
 hand with using the custom Citavi macros in the [CitaviRMacros
-repository](https://github.com/SchmidtPaul/CitaviRMacros/blob/main/README.md).
+repository](https://github.com/SchmidtPaul/CitaviRMacros).
 
 ## Installation
 
@@ -206,8 +206,7 @@ is a unique identifier for each reference.
 #### Ok, then what?
 
 We make use of the custom macro **\[TODO\]**, which can be found in the
-repository
-[CitaviRMacros](https://github.com/SchmidtPaul/CitaviRMacros/blob/main/README.md)
+repository [CitaviRMacros](https://github.com/SchmidtPaul/CitaviRMacros)
 to allow for an easier download.
 
 **TO DO: SCREENSHOT OF HOW IT WORKS**

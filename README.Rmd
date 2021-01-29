@@ -23,7 +23,7 @@ knitr::opts_chunk$set(
 > This is an **unofficial** helper package for dealing with Citavi. </br>
 > I am not affiliated with Citavi, just a fan.
 
-The reference management software **Citavi** ([Official Website](https://www.citavi.com/de), [Official GitHub](https://github.com/Citavi)) allows for [exports to Excel](https://www1.citavi.com/sub/manual6/en/index.html?exporting_to_excel.html). With a bit of effort (i.e. via customized [Citavi macros](https://www1.citavi.com/sub/manual6/en/index.html?add_on_display_macros.html)) it also allows for [imports from Excel](https://github.com/Citavi/Macros/blob/master/CIM%20Import/CIM007%20Import%20arbitrary%20data%20from%20Microsoft%20Excel%20into%20custom%20fields%20of%20existing%20references%20by%20short%20title/readme.de.md). `CitaviR` provides functionality for dealing with the data while it is *outside* Citavi to get the most out of it. Using CitaviR goes hand in hand with using the custom Citavi macros in the [CitaviRMacros repository](https://github.com/SchmidtPaul/CitaviRMacros/blob/main/README.md).
+The reference management software **Citavi** ([Official Website](https://www.citavi.com/de), [Official GitHub](https://github.com/Citavi)) allows for [exports to Excel](https://www1.citavi.com/sub/manual6/en/index.html?exporting_to_excel.html). With a bit of effort (i.e. via customized [Citavi macros](https://www1.citavi.com/sub/manual6/en/index.html?add_on_display_macros.html)) it also allows for [imports from Excel](https://github.com/Citavi/Macros/blob/master/CIM%20Import/CIM007%20Import%20arbitrary%20data%20from%20Microsoft%20Excel%20into%20custom%20fields%20of%20existing%20references%20by%20short%20title/readme.de.md). `CitaviR` provides functionality for dealing with the data while it is *outside* Citavi to get the most out of it. Using CitaviR goes hand in hand with using the custom Citavi macros in the [CitaviRMacros repository](https://github.com/SchmidtPaul/CitaviRMacros).
 
 ## Installation
 
@@ -137,6 +137,6 @@ However, we are not actually going to use the original *CIM007* macro here, but 
 
 #### Ok, then what?
 
-We make use of the custom macro **[TODO]**, which can be found in the repository [CitaviRMacros](https://github.com/SchmidtPaul/CitaviRMacros/blob/main/README.md) to allow for an easier download.
+We make use of the custom macro **[TODO]**, which can be found in the repository [CitaviRMacros](https://github.com/SchmidtPaul/CitaviRMacros) to allow for an easier download.
 
 **TO DO: SCREENSHOT OF HOW IT WORKS**
