@@ -4,12 +4,14 @@
 \alias{handle_obvious_dups}
 \title{Handle obvious duplicates}
 \usage{
-handle_obvious_dups(CitDat, colsOfInterest = "refInfo")
+handle_obvious_dups(CitDat, colsToWriteInto = "refInfo", nameDupCat = NULL)
 }
 \arguments{
 \item{CitDat}{A dataframe returned by \code{\link[CitaviR]{find_obvious_dups}}.}
 
-\item{colsOfInterest}{Can be "refInfo", "all" or a custom character vector with column names. (TO DO)}
+\item{colsToWriteInto}{Can be "refInfo", "all" or a custom character vector with column names. (TO DO)}
+
+\item{nameDupCat}{What should the duplicate category be named? (TO DO)}
 }
 \value{
 A tibble where information was spread across obvious duplicates. (TO DO)

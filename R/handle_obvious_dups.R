@@ -6,7 +6,8 @@
 #' was set to "English" so that column names are "Short Title" etc.
 #'
 #' @param CitDat A dataframe returned by \code{\link[CitaviR]{find_obvious_dups}}.
-#' @param colsOfInterest Can be "refInfo", "all" or a custom character vector with column names. (TO DO)
+#' @param colsToWriteInto Can be "refInfo", "all" or a custom character vector with column names. (TO DO)
+#' @param nameDupCat What should the duplicate category be named? (TO DO)
 #'
 #' @examples
 #' path <- example_xlsx("3dupsin5refs.xlsx")
@@ -19,21 +20,51 @@
 #' @import dplyr
 #' @export
 
-handle_obvious_dups <- function(CitDat, colsOfInterest = "refInfo") { # TO DO: better name?
+handle_obvious_dups <- function(CitDat, colsToWriteInto = "refInfo", nameDupCat = NULL) { # TO DO: better name?
 
-  if (colsOfInterest[1] == "refInfo") {
-    colsOfInterest <- c("PubMed ID", "Online address") # TO DO: more default columns of interest!
+  # Which columns to handle -------------------------------------------------
+  if (colsToWriteInto[1] == "refInfo") {
+    colsToWriteInto <- c("Online address", "PubMed ID") # TO DO: more default columns of interest!
+    colsCatGroKey   <- c("Categories") #, "Group", "Keyword") # TO DO: Add Group & Keyword possibility!
   }
-  if (colsOfInterest[1] == "all") {
+  if (colsToWriteInto[1] == "all") {
     # TO DO: all columns except Title etc.
   }
 
-  colsOfInterestHere <- colsOfInterest[colsOfInterest %in% names(CitDat)]
+  # colsToWriteInto ---------------------------------------------------------
+  colsToWriteIntoHere <- colsToWriteInto[colsToWriteInto %in% names(CitDat)]
 
   CitDat <- CitDat %>%
     group_by(.data$clean_title) %>%
-    tidyr::fill(colsOfInterestHere, .direction = "up") %>% # TO DO: more sophisticated. What if multiple entries?
+    tidyr::fill(colsToWriteIntoHere, .direction = "up") %>% # TO DO: more sophisticated. What if multiple entries?
     ungroup()
+
+  # colsCatGroKey -----------------------------------------------------------
+  colsCatGroKeyHere <- colsCatGroKey[colsCatGroKey %in% names(CitDat)]
+
+  # collapse unique categories per clean_title_id
+  CitDat <- CitDat %>%
+    group_by(.data$clean_title_id) %>%
+    mutate_at(
+      .vars = vars(colsCatGroKeyHere),
+      .funs = ~ case_when(.data$has_obv_dup == TRUE ~ paste(unique(.), collapse = "; "),
+                          TRUE ~ .)
+    ) %>%
+    ungroup()
+
+  if (!is.null(nameDupCat)) {
+    # overwrite collapsed categories with "nameDupCat" string
+    CitDat <- CitDat %>%
+      mutate_at(
+        .vars = vars(colsCatGroKeyHere),
+        .funs = ~ case_when(
+          .data$has_obv_dup == TRUE &
+            .data$obv_dup_id != "dup_01" ~ paste(nameDupCat),
+          TRUE ~ .
+        )
+      )
+
+  }
 
   CitDat
 
