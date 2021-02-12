@@ -5,67 +5,90 @@
 #' Currently this only works for files that were generated while Citavi
 #' was set to "English" so that column names are "Short Title" etc.
 #'
-#' @param CitDat A dataframe returned by \code{\link[CitaviR]{find_obvious_dups}}.
-#' @param colsToWriteInto Can be "refInfo", "all" or a custom character vector with column names. (TO DO)
-#' @param nameDupCat What should the duplicate category be named? (TO DO)
+#' @param CitDat A tibble returned by \code{\link[CitaviR]{find_obvious_dups}}.
+#' @param fieldsToHandle A character vector with all column/field names that should be handled.
+#' Note that this does not include "Categories", "Groups" and "Keywords".
+#' @param nameDupCategories Name that "Categories" of obvious duplicates should be set to. See details below.
+#' @param nameDupGroups Name that "Groups" of obvious duplicates should be set to. See details below.
+#' @param nameDupKeywords Name that "Keywords" of obvious duplicates should be set to. See details below.
+#'
+#' @details
+#' \code{nameDupCategories}, \code{nameDupGroups} and \code{nameDupKeywords} are all \code{NA_character_}
+#' by default. If a character string is provided for one of them, the respective column
+#' (i.e. Categories, Groups or Keywords) is handled. This means that whenever obvious duplicates are present,
+#' all unique entries are collapsed into \code{dup_01}, while \code{dup_02}, \code{dup_03} etc. are set
+#' to the provided character string.
 #'
 #' @examples
 #' path <- example_xlsx("3dupsin5refs.xlsx")
 #' read_Citavi_xlsx(path) %>%
 #'    find_obvious_dups() %>%
-#'    handle_obvious_dups()
+#'    handle_obvious_dups(fieldsToHandle = c("Online address", "PubMed ID"))
 #'
-#' @return A tibble where information was spread across obvious duplicates. (TO DO)
+#' @return A tibble where information from obvious duplicates was brought together for \code{dup_01}, respectively.
 #' @importFrom tidyr fill
 #' @import dplyr
 #' @export
 
-handle_obvious_dups <- function(CitDat, colsToWriteInto = "refInfo", nameDupCat = NULL) { # TO DO: better name?
+handle_obvious_dups <- function(CitDat, fieldsToHandle = NULL, nameDupCategories = NA_character_, nameDupGroups = NA_character_, nameDupKeywords = NA_character_) { # TO DO: better name?
 
-  # Which columns to handle -------------------------------------------------
-  if (colsToWriteInto[1] == "refInfo") {
-    colsToWriteInto <- c("Online address", "PubMed ID") # TO DO: more default columns of interest!
-    colsCatGroKey   <- c("Categories") #, "Group", "Keyword") # TO DO: Add Group & Keyword possibility!
+  # handle fields -----------------------------------------------------------
+  if (is.null(fieldsToHandle)) {
+    stop("'fieldsToHandle' must not be NULL.")
+    # } else if (fieldsToHandle[1] == "basic") {
+    #   # TO DO: a basic selection of columns
+    # } else if (fieldsToHandle[1] == "all") {
+    #   # TO DO: all columns except Title etc.
+  } else if (any(fieldsToHandle %not_in% names(CitDat))) {
+    stop("At least one of the 'fieldsToHandle' you gave is missing in the dataset.")
   }
-  if (colsToWriteInto[1] == "all") {
-    # TO DO: all columns except Title etc.
-  }
-
-  # colsToWriteInto ---------------------------------------------------------
-  colsToWriteIntoHere <- colsToWriteInto[colsToWriteInto %in% names(CitDat)]
 
   CitDat <- CitDat %>%
     group_by(.data$clean_title) %>%
-    tidyr::fill(colsToWriteIntoHere, .direction = "up") %>% # TO DO: more sophisticated. What if multiple entries?
+    tidyr::fill(fieldsToHandle, .direction = "up") %>% # TO DO: more sophisticated. What if multiple entries?
     ungroup()
 
-  # colsCatGroKey -----------------------------------------------------------
-  colsCatGroKeyHere <- colsCatGroKey[colsCatGroKey %in% names(CitDat)]
 
-  # collapse unique categories per clean_title_id
-  CitDat <- CitDat %>%
-    group_by(.data$clean_title_id) %>%
-    mutate_at(
-      .vars = vars(colsCatGroKeyHere),
-      .funs = ~ case_when(.data$has_obv_dup == TRUE ~ paste(unique(.), collapse = "; "),
-                          TRUE ~ .)
-    ) %>%
-    ungroup()
+  # handle categories/groups/keywords ---------------------------------------
+  CatGroKey <- data.frame(
+    collapse = rep(FALSE, 3),
+    nameDup  = c(nameDupCategories, nameDupGroups, nameDupKeywords)
+  )
+  row.names(CatGroKey) <- c("Categories", "Groups", "Keywords")
 
-  if (!is.null(nameDupCat)) {
-    # overwrite collapsed categories with "nameDupCat" string
-    CitDat <- CitDat %>%
-      mutate_at(
-        .vars = vars(colsCatGroKeyHere),
-        .funs = ~ case_when(
-          .data$has_obv_dup == TRUE &
-            .data$obv_dup_id != "dup_01" ~ paste(nameDupCat),
-          TRUE ~ .
-        )
-      )
+  for (CatGroKey_i in row.names(CatGroKey)) {
+    if (!is.na(CatGroKey[CatGroKey_i, "nameDup"])) {
+      if (CatGroKey_i %not_in% names(CitDat)) {
+        stop(paste0("There is no column named '", CatGroKey_i , "' to handle."))
+      } else {
 
+        # collapse unique categories/groups/keywords per clean_title_id
+        CitDat <- CitDat %>%
+          group_by(.data$clean_title_id) %>%
+          mutate_at(
+            .vars = vars(CatGroKey_i),
+            .funs = ~ if_else(.data$has_obv_dup == TRUE,
+                              paste(unique(.), collapse = "; "),
+                              .)
+          ) %>%
+          ungroup()
+
+        # for duplicates: overwrite collapsed categories/groups/keywords with nameDup
+        CitDat <- CitDat %>%
+          mutate_at(
+            .vars = vars(CatGroKey_i),
+            .funs = ~ if_else(
+              .data$has_obv_dup == TRUE & .data$obv_dup_id != "dup_01",
+              paste(CatGroKey[CatGroKey_i, "nameDup"]),
+              .
+            )
+          )
+
+      }
+    }
   }
 
+  # return tibble -----------------------------------------------------------
   CitDat
 
 }

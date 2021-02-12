@@ -4,27 +4,45 @@
 \alias{handle_obvious_dups}
 \title{Handle obvious duplicates}
 \usage{
-handle_obvious_dups(CitDat, colsToWriteInto = "refInfo", nameDupCat = NULL)
+handle_obvious_dups(
+  CitDat,
+  fieldsToHandle = NULL,
+  nameDupCategories = NA_character_,
+  nameDupGroups = NA_character_,
+  nameDupKeywords = NA_character_
+)
 }
 \arguments{
-\item{CitDat}{A dataframe returned by \code{\link[CitaviR]{find_obvious_dups}}.}
+\item{CitDat}{A tibble returned by \code{\link[CitaviR]{find_obvious_dups}}.}
 
-\item{colsToWriteInto}{Can be "refInfo", "all" or a custom character vector with column names. (TO DO)}
+\item{fieldsToHandle}{A character vector with all column/field names that should be handled.
+Note that this does not include "Categories", "Groups" and "Keywords".}
 
-\item{nameDupCat}{What should the duplicate category be named? (TO DO)}
+\item{nameDupCategories}{Name that "Categories" of obvious duplicates should be set to. See details below.}
+
+\item{nameDupGroups}{Name that "Groups" of obvious duplicates should be set to. See details below.}
+
+\item{nameDupKeywords}{Name that "Keywords" of obvious duplicates should be set to. See details below.}
 }
 \value{
-A tibble where information was spread across obvious duplicates. (TO DO)
+A tibble where information from obvious duplicates was brought together for \code{dup_01}, respectively.
 }
 \description{
 \ifelse{html}{\out{<a href='https://www.tidyverse.org/lifecycle/#experimental'><img src='figures/lifecycle-experimental.svg' alt='Experimental lifecycle'></a>}}{\strong{Experimental}}
 Currently this only works for files that were generated while Citavi
 was set to "English" so that column names are "Short Title" etc.
 }
+\details{
+\code{nameDupCategories}, \code{nameDupGroups} and \code{nameDupKeywords} are all \code{NA_character_}
+by default. If a character string is provided for one of them, the respective column
+(i.e. Categories, Groups or Keywords) is handled. This means that whenever obvious duplicates are present,
+all unique entries are collapsed into \code{dup_01}, while \code{dup_02}, \code{dup_03} etc. are set
+to the provided character string.
+}
 \examples{
 path <- example_xlsx("3dupsin5refs.xlsx")
 read_Citavi_xlsx(path) \%>\%
    find_obvious_dups() \%>\%
-   handle_obvious_dups()
+   handle_obvious_dups(fieldsToHandle = c("Online address", "PubMed ID"))
 
 }

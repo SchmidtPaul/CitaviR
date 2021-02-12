@@ -81,12 +81,12 @@ CitDat <- read_Citavi_xlsx(path)
 CitDat
 #> # A tibble: 5 x 19
 #>   ID    `Short title` Title Year  Author Categories Groups Abstract `DOI name`
-#>   <chr> <chr>         <chr> <chr> <chr>  <lgl>      <chr>  <chr>    <chr>     
-#> 1 7e04~ Schmidt, Har~ Esti~ 2019  Schmi~ NA         Googl~ Broad-s~ 10.2135/c~
-#> 2 2481~ Schmidt, Har~ Heri~ 2019  Schmi~ NA         Googl~ In plan~ 10.1534/g~
-#> 3 db3a~ Schmidt, Har~ Heri~ 2019  Schmi~ NA         PubMed In plan~ <NA>      
-#> 4 ba57~ Schmidt, Har~ Hrit~ 2019  Schmi~ NA         TypoDB In plan~ 10.1534/g~
-#> 5 fa40~ Schmidt, Möh~ More~ 2018  Schmi~ NA         Googl~ Traditi~ 10.2135/c~
+#>   <chr> <chr>         <chr> <chr> <chr>  <chr>      <chr>  <chr>    <chr>     
+#> 1 7e04~ Schmidt, Har~ Esti~ 2019  Schmi~ 1 catA     Googl~ Broad-s~ 10.2135/c~
+#> 2 2481~ Schmidt, Har~ Heri~ 2019  Schmi~ 1 catA     Googl~ In plan~ 10.1534/g~
+#> 3 db3a~ Schmidt, Har~ Heri~ 2019  Schmi~ 2 catB     PubMed In plan~ <NA>      
+#> 4 ba57~ Schmidt, Har~ Hrit~ 2019  Schmi~ 1 catA     TypoDB In plan~ 10.1534/g~
+#> 5 fa40~ Schmidt, Möh~ More~ 2018  Schmi~ 2 catB     Googl~ Traditi~ 10.2135/c~
 #> # ... with 10 more variables: `PubMed ID` <chr>, `Online address` <chr>,
 #> #   Periodical <chr>, Volume <chr>, Number <chr>, `Page range` <chr>,
 #> #   Locations <chr>, has_attachment <lgl>, red_flag <lgl>, blue_circle <lgl>
@@ -149,7 +149,7 @@ on. Here, `CitaviR::handle_obvious_dups()` comes in handy:
 
 ``` r
 CitDat <- CitDat %>% 
-  handle_obvious_dups()
+  handle_obvious_dups(fieldsToHandle = c("Online address", "PubMed ID"))
 
 CitDat[2:3, c("clean_title_id", "obv_dup_id", "Title", "PubMed ID", "Online address")]
 #> # A tibble: 2 x 5
@@ -205,8 +205,9 @@ is a unique identifier for each reference.
 
 #### Ok, then what?
 
-We make use of the custom macro **\[TODO\]**, which can be found in the
-repository [CitaviRMacros](https://github.com/SchmidtPaul/CitaviRMacros)
-to allow for an easier download.
+We make use of the custom macro **\[TODO: CIMR 002\]**, which can be
+found in the repository
+[CitaviRMacros](https://github.com/SchmidtPaul/CitaviRMacros) to allow
+for an easier download.
 
 **TO DO: SCREENSHOT OF HOW IT WORKS**
