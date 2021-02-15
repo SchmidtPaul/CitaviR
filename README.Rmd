@@ -103,7 +103,7 @@ In such a scenario it would be nice to gather all information into the one *non-
 
 ```{r}
 CitDat <- CitDat %>% 
-  handle_obvious_dups(fieldsToHandle = c("Online address", "PubMed ID"))
+  handle_obvious_dups(fieldsToHandle = c("PubMed ID", "Online address"))
 
 CitDat[2:3, c("clean_title_id", "obv_dup_id", "Title", "PubMed ID", "Online address")]
 ```

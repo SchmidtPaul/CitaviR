@@ -83,12 +83,15 @@ find_obvious_dups <- function(CitDat, dupInfoAfterID = TRUE) {
     by = col_names
   )
 
+
   # dupInfoAfterID ----------------------------------------------------------
   if (dupInfoAfterID) {
     CitDat <- CitDat %>%
-      relocate(any_of(tail(names(CitDat), 4)), .after = col_names[1])
+      relocate(any_of(tail(names(CitDat), 4)), .after = "ID")
   }
 
+
+  # return tibble -----------------------------------------------------------
   CitDat
 
 }

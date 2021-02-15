@@ -23,7 +23,10 @@ Imports:
     tidyr,
     openxlsx,
     crayon,
-    remotes
+    remotes,
+    RecordLinkage,
+    scales,
+    seplyr
 Suggests: 
     testthat (>= 3.0.0)
 Config/testthat/edition: 3

@@ -149,7 +149,7 @@ on. Here, `CitaviR::handle_obvious_dups()` comes in handy:
 
 ``` r
 CitDat <- CitDat %>% 
-  handle_obvious_dups(fieldsToHandle = c("Online address", "PubMed ID"))
+  handle_obvious_dups(fieldsToHandle = c("PubMed ID", "Online address"))
 
 CitDat[2:3, c("clean_title_id", "obv_dup_id", "Title", "PubMed ID", "Online address")]
 #> # A tibble: 2 x 5
