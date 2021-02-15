@@ -11,7 +11,13 @@
 #' @param potDupAfterObvDup If TRUE (default), the newly created column
 #' \code{pot_dup_id} is moved right next to the \code{obv_dup_id} column.
 #'
-#' @return A tibble containing three one columns: \code{pot_dup_id}.
+#' @examples
+#' path <- example_xlsx("3dupsin5refs.xlsx")
+#' read_Citavi_xlsx(path) %>%
+#'    find_obvious_dups() %>%
+#'    find_potential_dups()
+#'
+#' @return A tibble containing one new column: \code{pot_dup_id}.
 #' @importFrom RecordLinkage levenshteinSim
 #' @importFrom scales percent
 #' @importFrom stringr str_pad

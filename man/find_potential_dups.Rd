@@ -16,10 +16,17 @@ or \code{\link[CitaviR]{handle_obvious_dups}}.}
 \code{pot_dup_id} is moved right next to the \code{obv_dup_id} column.}
 }
 \value{
-A tibble containing three one columns: \code{pot_dup_id}.
+A tibble containing one new column: \code{pot_dup_id}.
 }
 \description{
 \ifelse{html}{\out{<a href='https://www.tidyverse.org/lifecycle/#experimental'><img src='figures/lifecycle-experimental.svg' alt='Experimental lifecycle'></a>}}{\strong{Experimental}}
 Currently this only works for files that were generated while Citavi
 was set to "English" so that column names are "Short Title" etc.
+}
+\examples{
+path <- example_xlsx("3dupsin5refs.xlsx")
+read_Citavi_xlsx(path) \%>\%
+   find_obvious_dups() \%>\%
+   find_potential_dups()
+
 }
