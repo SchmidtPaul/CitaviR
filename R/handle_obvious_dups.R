@@ -32,21 +32,23 @@
 
 handle_obvious_dups <- function(CitDat, fieldsToHandle = NULL, nameDupCategories = NA_character_, nameDupGroups = NA_character_, nameDupKeywords = NA_character_) { # TO DO: better name?
 
-  # handle fields -----------------------------------------------------------
-  if (is.null(fieldsToHandle)) {
-    stop("'fieldsToHandle' must not be NULL.")
-    # } else if (fieldsToHandle[1] == "basic") {
-    #   # TO DO: a basic selection of columns
-    # } else if (fieldsToHandle[1] == "all") {
-    #   # TO DO: all columns except Title etc.
-  } else if (any(fieldsToHandle %not_in% names(CitDat))) {
-    stop("At least one of the 'fieldsToHandle' you gave is missing in the dataset.")
+  # stop if nothing to be handled -------------------------------------------
+  if (is.null(c(fieldsToHandle, nameDupCategories, nameDupGroups, nameDupKeywords))) {
+    stop("At least one of 'fieldsToHandle', 'nameDupCategories', 'nameDupGroups' or 'nameDupKeywords' must not be NULL.")
   }
 
-  CitDat <- CitDat %>%
-    group_by(.data$clean_title) %>%
-    tidyr::fill(fieldsToHandle, .direction = "up") %>% # TO DO: more sophisticated. What if multiple entries?
-    ungroup()
+  # handle fields -----------------------------------------------------------
+  if (is.character(fieldsToHandle)) {
+    if (any(fieldsToHandle %not_in% names(CitDat))) {
+      stop("At least one of the 'fieldsToHandle' you gave is missing in the dataset.")
+    }
+
+    CitDat <- CitDat %>%
+      group_by(.data$clean_title) %>%
+      tidyr::fill(fieldsToHandle, .direction = "up") %>% # TO DO: more sophisticated. What if multiple entries?
+      ungroup()
+
+  }
 
 
   # handle categories/groups/keywords ---------------------------------------
