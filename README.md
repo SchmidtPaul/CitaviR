@@ -38,7 +38,7 @@ devtools::install_github('SchmidtPaul/CitaviR')
 
 ## Example / Workflow
 
-This is an example showing an entire work flow from start to finish. It
+Here is an example showing an entire work flow from start to finish. It
 is structured in five steps.
 
 <img src="man/figures/Workflow.png" width="66%" />
@@ -177,39 +177,44 @@ write_Citavi_xlsx(CitDat, read_path = path) # works in real life, but not for ex
 
 ### Step 5: xlsx to Citavi
 
-#### Side note: 1st time setup
+In this case, we make use of the custom macro
+[CIMR 002](https://github.com/SchmidtPaul/CitaviRMacros/tree/main/CIMR%20Import/CIMR%20002%20-%20Import%20handle_obvious_dup%20info),
+which is one of the macro templates provided in the repository
+[CitaviRMacros](https://github.com/SchmidtPaul/CitaviRMacros). As can be
+seen in the gif, we here store the information on which titles are
+obvious duplicates into *Custom field 1*, while it is made sure to keep
+the *PubMed ID* information present only for the obvious duplicate
+(=`dup_02`) and save it for the non-duplicate (=`dup_01`). Afterwards,
+we could delete all titles that are not `dup_01` and get rid of all
+obvious duplicates simultaneously without losing information.
 
-Unfortunately, importing xlsx into Citavi is not as trivial as exporting
-xlsx from it. In order to make this work you must first
+![](https://github.com/SchmidtPaul/CitaviRMacros/blob/main/CIMR%20Import/CIMR%20002%20-%20Import%20handle_obvious_dup%20info/CIMR%20002.gif?raw=true)
 
-  - [enable Citavi
-    macros](https://www1.citavi.com/sub/manual6/en/index.html?add_on_display_macros.html)
-  - install an *OLE-DB-Provider*. Citavi suggests the *Microsoft Access
-    Database Engine 2016 Redistributable Kit* as described [here in
-    German](https://github.com/Citavi/Macros/blob/master/CIM%20Import/CIM007%20Import%20arbitrary%20data%20from%20Microsoft%20Excel%20into%20custom%20fields%20of%20existing%20references%20by%20short%20title/readme.de.md).
-
-Afterwards, you should be able to run the macro [**CIM007** Import
-arbitrary data from Microsoft Excel into custom fields of existing
-references by short
-title](https://github.com/Citavi/Macros/tree/master/CIM%20Import/CIM007%20Import%20arbitrary%20data%20from%20Microsoft%20Excel%20into%20custom%20fields%20of%20existing%20references%20by%20short%20title)
-provided by Citavi.
-
+> #### Side note: 1st time setup
+> 
+> Unfortunately, importing xlsx into Citavi is not as trivial as
+> exporting xlsx from it. In order to make this work and reproduce
+> *e.g.* what can be seen in the gif you must first
+> 
+>   - [enable Citavi
+>     macros](https://www1.citavi.com/sub/manual6/en/index.html?add_on_display_macros.html)
+>   - install an *OLE-DB-Provider*. Citavi suggests the *Microsoft
+>     Access Database Engine 2016 Redistributable Kit* as described
+>     [here in
+>     German](https://github.com/Citavi/Macros/blob/master/CIM%20Import/CIM007%20Import%20arbitrary%20data%20from%20Microsoft%20Excel%20into%20custom%20fields%20of%20existing%20references%20by%20short%20title/readme.de.md).
+> 
+> Afterwards, you should be able to run the original Excel-import macro
+> [**CIM007** Import arbitrary data from Microsoft Excel into custom
+> fields of existing references by short
+> title](https://github.com/Citavi/Macros/tree/master/CIM%20Import/CIM007%20Import%20arbitrary%20data%20from%20Microsoft%20Excel%20into%20custom%20fields%20of%20existing%20references%20by%20short%20title)
+> provided by Citavi, as well as all Excel-import macros in the
+> repository
+> [CitaviRMacros](https://github.com/SchmidtPaul/CitaviRMacros).
+> 
 > Note that it is this very macro **CIM007** that makes all of this
 > possible. Without it, `CitaviR` would not nearly be as useful since -
 > according to my knowledge - there is currently no other way to import
-> Excel data into Citavi.
-
-However, we are not actually going to use the original *CIM007* macro
-here, but a modified version of it. The main reason is that *CIM007*
-merges the imported data by `Short title`. However, for duplicates the
-short titles are identical. Instead, we want to merge by `ID` because it
-is a unique identifier for each reference.
-
-#### Ok, then what?
-
-We make use of the custom macro **\[TODO: CIMR 002\]**, which can be
-found in the repository
-[CitaviRMacros](https://github.com/SchmidtPaul/CitaviRMacros) to allow
-for an easier download.
-
-**TO DO: SCREENSHOT OF HOW IT WORKS**
+> Excel data into Citavi. All Import-macros (“CIMR” prefix) in the
+> repository
+> [CitaviRMacros](https://github.com/SchmidtPaul/CitaviRMacros) are
+> basically adpated versions of CIM007.

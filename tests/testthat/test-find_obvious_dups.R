@@ -28,6 +28,12 @@ test_that("if obv_dup_id!='dup_01' then has_obv_dup==TRUE", {
   ))
 })
 
+test_that("At least one of ID, Title or Year is missing", {
+  expect_error(
+    CitDat_before[, "ID"] %>% find_obvious_dups()
+  )
+})
+
 
 
 

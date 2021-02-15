@@ -33,8 +33,8 @@
 handle_obvious_dups <- function(CitDat, fieldsToHandle = NULL, nameDupCategories = NA_character_, nameDupGroups = NA_character_, nameDupKeywords = NA_character_) { # TO DO: better name?
 
   # stop if nothing to be handled -------------------------------------------
-  if (is.null(c(fieldsToHandle, nameDupCategories, nameDupGroups, nameDupKeywords))) {
-    stop("At least one of 'fieldsToHandle', 'nameDupCategories', 'nameDupGroups' or 'nameDupKeywords' must not be NULL.")
+  if (is.null(fieldsToHandle) & all(is.na(c(nameDupCategories, nameDupGroups, nameDupKeywords)))) {
+    stop("At least one of 'fieldsToHandle', 'nameDupCategories', 'nameDupGroups' or 'nameDupKeywords' must not be NULL/NA.")
   }
 
   # handle fields -----------------------------------------------------------
