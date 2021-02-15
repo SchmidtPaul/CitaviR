@@ -14,7 +14,6 @@
 #' @return A tibble containing three one columns: \code{pot_dup_id}.
 #' @importFrom RecordLinkage levenshteinSim
 #' @importFrom scales percent
-#' @importFrom seplyr group_indices_se
 #' @importFrom stringr str_pad
 #' @importFrom tidyr pivot_longer
 #' @importFrom utils combn
@@ -28,14 +27,18 @@ find_potential_dups <- function(CitDat, minSimilarity = 0.6, potDupAfterObvDup =
 
 
   # calculate similarity = Levenshtein distance -----------------------------
-  similarities <- combn(ct, 2) %>% # get unique combinations of clean_titles
-    t(.data) %>%
-    as.data.frame(.data) %>%
+  similarities <- as.data.frame(t(combn(ct, 2))) %>% # get unique combinations of clean_titles
     mutate(similarity = RecordLinkage::levenshteinSim(str1 = .data$V1,
-                                                      str2 = .data$V2)) %>% # similarity per pair
+                                                      str2 = .data$V2))
+
+
+  # create clean_title_similarity -------------------------------------------
+  similarities <- similarities %>% # similarity per pair
     filter(.data$similarity >= minSimilarity) %>% # keep only those with a minimum similarity
-    mutate(similarityRank = seplyr::group_indices_se(.data, "similarity")) %>% # similarity rank (by default reversed order)
-    mutate(similarityRank = .data$similarityRank * -1 + max(.data$similarityRank) + 1) %>% # reverse rank
+    arrange(.data$similarity, .desc = TRUE) %>%
+    group_by(.data$V1, .data$V2) %>%
+      mutate(similarityRank = cur_group_id()) %>% # similarity rank
+    ungroup() %>%
     mutate(pot_dup_id = paste0(
       "potdup_",
       stringr::str_pad(.data$similarityRank, ct_padding, pad = "0"),
@@ -43,15 +46,14 @@ find_potential_dups <- function(CitDat, minSimilarity = 0.6, potDupAfterObvDup =
       scales::percent(.data$similarity, accuracy = 0.1),
       " similarity"
     )) %>%
-    select(-.data$similarity, -.data$similarityRank)
+    select(-.data$similarity, -.data$similarityRank) %>%
+    pivot_longer(cols = .data$V1:.data$V2,
+                 values_to = "clean_title",
+                 names_to = NULL)
 
 
   # join with CitDat --------------------------------------------------------
-  CitDat <- similarities %>%
-    pivot_longer(cols = .data$V1:.data$V2,
-                 values_to = "clean_title",
-                 names_to = NULL) %>%
-    left_join(x = CitDat, y = .data, by = "clean_title") %>%
+  CitDat <- left_join(x = CitDat, y = similarities, by = "clean_title") %>%
     mutate(pot_dup_id = if_else(.data$obv_dup_id != "dup_01", NA_character_, .data$pot_dup_id))
 
 
