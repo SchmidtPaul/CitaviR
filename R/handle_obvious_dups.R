@@ -38,21 +38,84 @@ handle_obvious_dups <- function(CitDat, fieldsToHandle = NULL, nameDupCategories
     stop("At least one of 'fieldsToHandle', 'nameDupCategories', 'nameDupGroups' or 'nameDupKeywords' must not be NULL/NA.")
   }
 
-  # handle fields -----------------------------------------------------------
+
+  # fields ------------------------------------------------------------------
   if (is.character(all_of(fieldsToHandle))) {
     if (any(all_of(fieldsToHandle) %not_in% names(CitDat))) {
       stop("At least one of the 'fieldsToHandle' you gave is missing in the dataset.")
     }
 
+
+    # fields - online address -------------------------------------------------
+    if ("Online Address" %in% fieldsToHandle) {
+
+      # combine "Online address" and "Locations" column
+      URLs <- CitDat %>%
+        group_by(.data$clean_title_id) %>%
+        summarise_at(
+          .vars = vars(.data$`Online address`, .data$Locations),
+          .funs = function(x)
+            paste(x[!is.na(x)], collapse = "; ")
+        ) %>%
+        ungroup() %>%
+        tidyr::unite(
+          col = "URL",
+          .data$`Online address`,
+          .data$Locations,
+          na.rm = TRUE,
+          sep = "; "
+        )
+
+      # separate and rank all URLs
+      URLs <- URLs %>%
+        tidyr::separate_rows(URL, sep = "; ") %>%
+        filter(stringr::str_detect(URL, "http:|https:")) %>%
+        mutate(
+          prefer_pts = case_when(
+            stringr::str_detect(URL, "doi.org")              ~ 100, # best choice
+            stringr::str_detect(URL, "onlinelibrary.wiley")  ~  50,
+            stringr::str_detect(URL, "ncbi.nlm.nih.gov")     ~  -1,
+            stringr::str_detect(URL, "epistemonikos.org")    ~ -90,
+            stringr::str_detect(URL, "search.ebscohost")     ~ -91,
+            stringr::str_detect(URL, "scopus")               ~ -92,
+            stringr::str_detect(URL, "search.ebscohost")     ~ -93,
+            TRUE ~ 0
+          )
+        )
+
+
+      # per clean_title_id: keep only first/best URL
+      URLs <- URLs %>%
+        arrange(clean_title_id, desc(prefer_pts)) %>%
+        group_by(.data$clean_title_id) %>%
+        slice(1) %>%
+        ungroup() %>%
+        mutate(obv_dup_id = nth(sort(CitDat$obv_dup_id), 1)) %>%
+        select(-.data$prefer_pts)
+
+      # replace `Online address` with best URL for dup_01
+      CitDat <- left_join(
+        x = CitDat,
+        y = URLs,
+        by = c("clean_title_id", "obv_dup_id")
+      ) %>%
+        mutate(`Online address` = allURL, .keep = "unused")
+
+    }
+
+
+    # fields - all else -------------------------------------------------------
+    fieldsToHandle <- fieldsToHandle[fieldsToHandle %not_in% "Online Address"]
+
     CitDat <- CitDat %>%
       group_by(.data$clean_title) %>%
-      tidyr::fill(all_of(fieldsToHandle), .direction = "up") %>% # TO DO: more sophisticated. What if multiple entries?
+      tidyr::fill(all_of(fieldsToHandle), .direction = "up") %>% # TO DO: What if multiple entries? Do we care?
       ungroup()
 
   }
 
 
-  # handle categories/groups/keywords ---------------------------------------
+  # categories/groups/keywords ----------------------------------------------
   CatGroKey <- data.frame(
     collapse = rep(FALSE, 3),
     nameDup  = c(nameDupCategories, nameDupGroups, nameDupKeywords)
