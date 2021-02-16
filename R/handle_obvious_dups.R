@@ -82,7 +82,7 @@ handle_obvious_dups <- function(CitDat, fieldsToHandle = NULL, nameDupCategories
             .vars = vars(all_of(CatGroKey_i)),
             .funs = ~ if_else(
               .data$has_obv_dup == TRUE &
-                !stringr::str_detect(.data$obv_dup_id, "dup_[0]++1"), # not dup_01 or dup_001 or dup_0001 ...
+                as.integer(stringr::str_remove(.data$obv_dup_id, "dup_")) > 1, # not dup_01 or dup_001 or dup_0001 ...
               paste(CatGroKey[CatGroKey_i, "nameDup"]),
               .
             )
