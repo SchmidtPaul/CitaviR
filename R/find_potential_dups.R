@@ -20,6 +20,7 @@
 #' @return A tibble containing one new column: \code{pot_dup_id}.
 #' @importFrom RecordLinkage levenshteinSim
 #' @importFrom scales percent
+#' @importFrom stringr str_detect
 #' @importFrom stringr str_pad
 #' @importFrom tidyr pivot_longer
 #' @importFrom utils combn
@@ -28,7 +29,9 @@
 
 find_potential_dups <- function(CitDat, minSimilarity = 0.6, potDupAfterObvDup = TRUE) {
 
-  ct <- CitDat %>% filter(.data$obv_dup_id == "dup_01") %>% pull(.data$clean_title)
+  ct <- CitDat %>%
+    filter(stringr::str_detect(.data$obv_dup_id, "dup_[0]++1")) %>% # dup_01 or dup_001 or dup_0001 ...
+    pull(.data$clean_title)
   ct_padding <- ct %>% n_distinct() %>% log(10) %>% ceiling() + 1
 
 
@@ -59,8 +62,13 @@ find_potential_dups <- function(CitDat, minSimilarity = 0.6, potDupAfterObvDup =
 
 
   # join with CitDat --------------------------------------------------------
-  CitDat <- left_join(x = CitDat, y = similarities, by = "clean_title") %>%
-    mutate(pot_dup_id = if_else(.data$obv_dup_id != "dup_01", NA_character_, .data$pot_dup_id))
+  CitDat <-
+    left_join(x = CitDat, y = similarities, by = "clean_title") %>%
+    mutate(pot_dup_id = if_else(
+      !stringr::str_detect(.data$obv_dup_id, "dup_[0]++1"),  # not dup_01 or dup_001 or dup_0001 ...
+      NA_character_,
+      .data$pot_dup_id
+    ))
 
 
   # potDupAfterObvDup -------------------------------------------------------

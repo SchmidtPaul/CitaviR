@@ -26,6 +26,7 @@
 #'    handle_obvious_dups(fieldsToHandle = c("Online address", "PubMed ID"))
 #'
 #' @return A tibble where information from obvious duplicates was brought together for \code{dup_01}, respectively.
+#' @importFrom stringr str_detect
 #' @importFrom tidyr fill
 #' @import dplyr
 #' @export
@@ -33,19 +34,19 @@
 handle_obvious_dups <- function(CitDat, fieldsToHandle = NULL, nameDupCategories = NA_character_, nameDupGroups = NA_character_, nameDupKeywords = NA_character_) { # TO DO: better name?
 
   # stop if nothing to be handled -------------------------------------------
-  if (is.null(fieldsToHandle) & all(is.na(c(nameDupCategories, nameDupGroups, nameDupKeywords)))) {
+  if (is.null(all_of(fieldsToHandle)) & all(is.na(c(nameDupCategories, nameDupGroups, nameDupKeywords)))) {
     stop("At least one of 'fieldsToHandle', 'nameDupCategories', 'nameDupGroups' or 'nameDupKeywords' must not be NULL/NA.")
   }
 
   # handle fields -----------------------------------------------------------
-  if (is.character(fieldsToHandle)) {
-    if (any(fieldsToHandle %not_in% names(CitDat))) {
+  if (is.character(all_of(fieldsToHandle))) {
+    if (any(all_of(fieldsToHandle) %not_in% names(CitDat))) {
       stop("At least one of the 'fieldsToHandle' you gave is missing in the dataset.")
     }
 
     CitDat <- CitDat %>%
       group_by(.data$clean_title) %>%
-      tidyr::fill(fieldsToHandle, .direction = "up") %>% # TO DO: more sophisticated. What if multiple entries?
+      tidyr::fill(all_of(fieldsToHandle), .direction = "up") %>% # TO DO: more sophisticated. What if multiple entries?
       ungroup()
 
   }
@@ -68,7 +69,7 @@ handle_obvious_dups <- function(CitDat, fieldsToHandle = NULL, nameDupCategories
         CitDat <- CitDat %>%
           group_by(.data$clean_title_id) %>%
           mutate_at(
-            .vars = vars(CatGroKey_i),
+            .vars = vars(all_of(CatGroKey_i)),
             .funs = ~ if_else(.data$has_obv_dup == TRUE,
                               paste(unique(.), collapse = "; "),
                               .)
@@ -78,9 +79,10 @@ handle_obvious_dups <- function(CitDat, fieldsToHandle = NULL, nameDupCategories
         # for duplicates: overwrite collapsed categories/groups/keywords with nameDup
         CitDat <- CitDat %>%
           mutate_at(
-            .vars = vars(CatGroKey_i),
+            .vars = vars(all_of(CatGroKey_i)),
             .funs = ~ if_else(
-              .data$has_obv_dup == TRUE & .data$obv_dup_id != "dup_01",
+              .data$has_obv_dup == TRUE &
+                !stringr::str_detect(.data$obv_dup_id, "dup_[0]++1"), # not dup_01 or dup_001 or dup_0001 ...
               paste(CatGroKey[CatGroKey_i, "nameDup"]),
               .
             )
