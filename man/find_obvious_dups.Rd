@@ -4,7 +4,7 @@
 \alias{find_obvious_dups}
 \title{Identify obvious duplicates based on title and year}
 \usage{
-find_obvious_dups(CitDat, dupInfoAfterID = TRUE)
+find_obvious_dups(CitDat, dupInfoAfterID = TRUE, preferDupsWithPDF = TRUE)
 }
 \arguments{
 \item{CitDat}{A dataframe holding the information of the xls/xlsx file
@@ -15,6 +15,11 @@ Thus, this dataframe may have been imported via \code{\link[CitaviR]{read_Citavi
 \item{dupInfoAfterID}{If TRUE (default), the newly created columns
 \code{clean_title}, \code{clean_title_id}, \code{has_obv_dup} and \code{obv_dup_id}
 are moved right next to the \code{ID} column.}
+
+\item{preferDupsWithPDF}{If TRUE (default), obvious duplicates are sorted by their info
+in columns \code{has_attachment} and/or \code{Locations} (given they are present in the dataset).
+After sorting, duplicates with the most occurences of \code{".pdf"} in \code{Locations} and a
+\code{TRUE} in \code{has_attachment} are first and will thus be chosen as \code{dup_01}.}
 }
 \value{
 A tibble containing three additional columns:

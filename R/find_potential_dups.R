@@ -30,7 +30,7 @@
 find_potential_dups <- function(CitDat, minSimilarity = 0.6, potDupAfterObvDup = TRUE) {
 
   ct <- CitDat %>%
-    filter(as.integer(stringr::str_remove(.data$obv_dup_id, "dup_")) == 1) %>% # dup_01 or dup_001 or dup_0001 ...
+    filter(as.integer(gsub("dup_","",.data$obv_dup_id)) == 1) %>% # dup_01 or dup_001 or dup_0001 ...
     pull(.data$clean_title)
   ct_padding <- ct %>% n_distinct() %>% log(10) %>% ceiling() + 1
 
@@ -65,7 +65,7 @@ find_potential_dups <- function(CitDat, minSimilarity = 0.6, potDupAfterObvDup =
   CitDat <-
     left_join(x = CitDat, y = similarities, by = "clean_title") %>%
     mutate(pot_dup_id = if_else(
-      as.integer(stringr::str_remove(.data$obv_dup_id, "dup_")) > 1,  # not dup_01 or dup_001 or dup_0001 ...
+      as.integer(gsub("dup_","",.data$obv_dup_id)) > 1,  # not dup_01 or dup_001 or dup_0001 ...
       NA_character_,
       .data$pot_dup_id
     ))

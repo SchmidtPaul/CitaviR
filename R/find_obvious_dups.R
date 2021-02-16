@@ -12,6 +12,10 @@
 #' @param dupInfoAfterID If TRUE (default), the newly created columns
 #' \code{clean_title}, \code{clean_title_id}, \code{has_obv_dup} and \code{obv_dup_id}
 #' are moved right next to the \code{ID} column.
+#' @param preferDupsWithPDF If TRUE (default), obvious duplicates are sorted by their info
+#' in columns \code{has_attachment} and/or \code{Locations} (given they are present in the dataset).
+#' After sorting, duplicates with the most occurences of \code{".pdf"} in \code{Locations} and a
+#' \code{TRUE} in \code{has_attachment} are first and will thus be chosen as \code{dup_01}.
 #'
 #' @examples
 #' path <- example_xlsx("3dupsin5refs.xlsx")
@@ -21,28 +25,26 @@
 #' @return A tibble containing three additional columns:
 #' \code{clean_title_id}, \code{has_obv_dup} and \code{obv_dup_id}.
 #' @importFrom janitor make_clean_names
+#' @importFrom stringr str_count
 #' @importFrom stringr str_pad str_remove_all
 #' @importFrom utils tail
 #' @import dplyr
 #' @export
 
-find_obvious_dups <- function(CitDat, dupInfoAfterID = TRUE) {
+find_obvious_dups <- function(CitDat, dupInfoAfterID = TRUE, preferDupsWithPDF = TRUE) {
 
-  col_names <- c("ID", "Title", "Year")
+  required_cols <- c("ID", "Title", "Year")
 
   # ID, Title & Year present? -----------------------------------------------
-  for (col_name_i in col_names) {
+  for (col_name_i in required_cols) {
     if (col_name_i %not_in% names(CitDat)) {
       stop(paste(col_name_i, "column is missing!"))
     }
   }
 
-  # reduce for now and sort -------------------------------------------------
-  temp <- CitDat[, col_names] %>%
-    arrange(col_names[2])
 
   # clean_title -------------------------------------------------------------
-  temp <- temp %>%
+  CitDat <- CitDat %>%
     mutate(
       clean_title =
         paste(.data$Title, .data$Year, "END") %>% # combine Title & Year column and end string with "END"
@@ -50,14 +52,30 @@ find_obvious_dups <- function(CitDat, dupInfoAfterID = TRUE) {
         stringr::str_remove_all("_\\d+$") # remove numbers at end of string created by make_clean_names()
     )
 
+
+  # if titles have (pdf) attachments, prefer those (for dup_01) -------------
+  if (preferDupsWithPDF) {
+    if (all("has_attachment" %in% names(CitDat) & "Locations" %not_in% names(CitDat))) {
+      CitDat <- CitDat %>% arrange(.data$clean_title,
+                                   desc(.data$has_attachment))
+    }
+
+    if (all(c("has_attachment", "Locations") %in% names(CitDat))) {
+      CitDat <- CitDat %>% arrange(.data$clean_title,
+                                   desc(stringr::str_count(.data$Locations, ".PDF|.pdf")),
+                                   desc(.data$has_attachment))
+    }
+  }
+
+
   # clean_title & obv_dup ID ------------------------------------------------
   clean_title_id_padding <-
-    temp %>% pull(.data$clean_title) %>% n_distinct() %>% log(10) %>% ceiling() + 1
+    CitDat %>% pull(.data$clean_title) %>% n_distinct() %>% log(10) %>% ceiling() + 1
 
   obv_dup_id_padding <-
-    temp %>% count(.data$clean_title) %>% pull(n) %>% max() %>% log(10) %>% ceiling() + 1
+    CitDat %>% count(.data$clean_title) %>% pull(n) %>% max() %>% log(10) %>% ceiling() + 1
 
-  temp <- temp %>%
+  CitDat <- CitDat %>%
     group_by(.data$clean_title) %>%
     mutate(clean_title_id =
              paste0(
@@ -76,18 +94,16 @@ find_obvious_dups <- function(CitDat, dupInfoAfterID = TRUE) {
     ungroup()
 
 
-  # merge -------------------------------------------------------------------
-  CitDat <- left_join(
-    x = CitDat,
-    y = temp,
-    by = col_names
-  )
-
-
   # dupInfoAfterID ----------------------------------------------------------
   if (dupInfoAfterID) {
     CitDat <- CitDat %>%
-      relocate(any_of(tail(names(CitDat), 4)), .after = "ID")
+      relocate(c(
+        "clean_title",
+        "clean_title_id",
+        "has_obv_dup",
+        "obv_dup_id"
+      ),
+      .after = "ID")
   }
 
 
