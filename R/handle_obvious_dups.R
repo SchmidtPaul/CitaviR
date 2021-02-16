@@ -28,6 +28,8 @@
 #' @return A tibble where information from obvious duplicates was brought together for \code{dup_01}, respectively.
 #' @importFrom stringr str_detect
 #' @importFrom tidyr fill
+#' @importFrom tidyr separate_rows
+#' @importFrom tidyr unite
 #' @import dplyr
 #' @export
 
@@ -68,17 +70,17 @@ handle_obvious_dups <- function(CitDat, fieldsToHandle = NULL, nameDupCategories
 
       # separate and rank all URLs
       URLs <- URLs %>%
-        tidyr::separate_rows(URL, sep = "; ") %>%
-        filter(stringr::str_detect(URL, "http:|https:")) %>%
+        tidyr::separate_rows(.data$URL, sep = "; ") %>%
+        filter(stringr::str_detect(.data$URL, "http:|https:")) %>%
         mutate(
           prefer_pts = case_when(
-            stringr::str_detect(URL, "doi.org")              ~ 100, # best choice
-            stringr::str_detect(URL, "onlinelibrary.wiley")  ~  50,
-            stringr::str_detect(URL, "ncbi.nlm.nih.gov")     ~  -1,
-            stringr::str_detect(URL, "epistemonikos.org")    ~ -90,
-            stringr::str_detect(URL, "search.ebscohost")     ~ -91,
-            stringr::str_detect(URL, "scopus")               ~ -92,
-            stringr::str_detect(URL, "search.ebscohost")     ~ -93,
+            stringr::str_detect(.data$URL, "doi.org")              ~ 100, # best choice
+            stringr::str_detect(.data$URL, "onlinelibrary.wiley")  ~  50,
+            stringr::str_detect(.data$URL, "ncbi.nlm.nih.gov")     ~  -1,
+            stringr::str_detect(.data$URL, "epistemonikos.org")    ~ -90,
+            stringr::str_detect(.data$URL, "search.ebscohost")     ~ -91,
+            stringr::str_detect(.data$URL, "scopus")               ~ -92,
+            stringr::str_detect(.data$URL, "search.ebscohost")     ~ -93,
             TRUE ~ 0
           )
         )
@@ -86,7 +88,7 @@ handle_obvious_dups <- function(CitDat, fieldsToHandle = NULL, nameDupCategories
 
       # per clean_title_id: keep only first/best URL
       URLs <- URLs %>%
-        arrange(clean_title_id, desc(prefer_pts)) %>%
+        arrange(.data$clean_title_id, desc(.data$prefer_pts)) %>%
         group_by(.data$clean_title_id) %>%
         slice(1) %>%
         ungroup() %>%
@@ -99,7 +101,7 @@ handle_obvious_dups <- function(CitDat, fieldsToHandle = NULL, nameDupCategories
         y = URLs,
         by = c("clean_title_id", "obv_dup_id")
       ) %>%
-        mutate(`Online address` = allURL, .keep = "unused")
+        mutate(`Online address` = .data$allURL, .keep = "unused")
 
     }
 
