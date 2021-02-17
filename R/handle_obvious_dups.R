@@ -87,7 +87,6 @@ handle_obvious_dups <- function(CitDat, fieldsToHandle = NULL, nameDupCategories
           )
         )
 
-
       # per clean_title_id: keep only first/best URL
       URLs <- URLs %>%
         arrange(.data$clean_title_id, desc(.data$prefer_pts)) %>%
@@ -132,7 +131,7 @@ handle_obvious_dups <- function(CitDat, fieldsToHandle = NULL, nameDupCategories
         stop(paste0("There is no column named '", CatGroKey_i , "' to handle."))
       } else {
 
-        # collapse unique categories/groups/keywords per clean_title_id
+        # collapse sorted unique categories/groups/keywords per clean_title_id
         CitDat <- CitDat %>%
           group_by(.data$clean_title_id) %>%
           mutate_at(
@@ -142,18 +141,16 @@ handle_obvious_dups <- function(CitDat, fieldsToHandle = NULL, nameDupCategories
                               .)
           ) %>%
           ungroup() %>%
-          mutate(
-            Keywords = .data$Keywords %>%
-              stringr::str_split("; ") %>%
+          mutate_at(
+            .vars = vars(all_of(CatGroKey_i)),
+            .funs = stringr::str_split(string = .data, pattern = "; ") %>%
               purrr::map(
-                .x = .data,
                 .f = function(x) {
                   x[!is.na(x)] %>%
-                    .data[.data != "NA"] %>%
-                    unique %>% sort %>% paste(.data, collapse = "; ")
+                    unique %>% sort %>% paste(collapse = "; ")
                 }
               ) %>% unlist %>%
-              gsub("^\\; ","", .data) # TO DO: Why is this necessary? (= remove "; "at beginning / empty first entry )
+              gsub(pattern = "^\\; ", replacement = "") # TO DO: Is this necessary? (= remove "; "at beginning / empty first entry )
           )
 
         # for duplicates: overwrite collapsed categories/groups/keywords with nameDup
