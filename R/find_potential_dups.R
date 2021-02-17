@@ -36,10 +36,11 @@ find_potential_dups <- function(CitDat, minSimilarity = 0.6, potDupAfterObvDup =
 
 
   # calculate similarity = Levenshtein distance -----------------------------
-  similarities <- as.data.frame(t(combn(ct, 2))) %>% # get unique combinations of clean_titles
-    mutate(similarity = RecordLinkage::levenshteinSim(str1 = .data$V1,
-                                                      str2 = .data$V2))
-
+  similarities <-
+    as.data.frame(t(combn(ct, 2))) %>% # get unique combinations of clean_titles
+    mutate(similarity =
+             # Calculate similarity (=Levenshtein distance) between strings of possibly different lengths
+             stringdist::stringdist(.data$V1, .data$V2, method = "lv") / (nchar(.data$V1) + nchar(.data$V2) / 2))
 
   # create clean_title_similarity -------------------------------------------
   similarities <- similarities %>% # similarity per pair
