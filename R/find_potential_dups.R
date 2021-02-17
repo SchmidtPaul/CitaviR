@@ -18,8 +18,8 @@
 #'    find_potential_dups()
 #'
 #' @return A tibble containing one new column: \code{pot_dup_id}.
-#' @importFrom RecordLinkage levenshteinSim
 #' @importFrom scales percent
+#' @importFrom stringdist stringdist
 #' @importFrom stringr str_detect
 #' @importFrom stringr str_pad
 #' @importFrom tidyr pivot_longer
