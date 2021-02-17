@@ -26,7 +26,9 @@
 #'    handle_obvious_dups(fieldsToHandle = c("Online address", "PubMed ID"))
 #'
 #' @return A tibble where information from obvious duplicates was brought together for \code{dup_01}, respectively.
+#' @importFrom purrr map
 #' @importFrom stringr str_detect
+#' @importFrom stringr str_split
 #' @importFrom tidyr fill
 #' @importFrom tidyr separate_rows
 #' @importFrom tidyr unite
@@ -139,7 +141,20 @@ handle_obvious_dups <- function(CitDat, fieldsToHandle = NULL, nameDupCategories
                               paste(unique(.), collapse = "; "),
                               .)
           ) %>%
-          ungroup()
+          ungroup() %>%
+          mutate(
+            Keywords = .data$Keywords %>%
+              stringr::str_split("; ") %>%
+              purrr::map(
+                .x = .data,
+                .f = function(x) {
+                  x[!is.na(x)] %>%
+                    .data[.data != "NA"] %>%
+                    unique %>% sort %>% paste(.data, collapse = "; ")
+                }
+              ) %>% unlist %>%
+              gsub("^\\; ","", .data) # TO DO: Why is this necessary? (= remove "; "at beginning / empty first entry )
+          )
 
         # for duplicates: overwrite collapsed categories/groups/keywords with nameDup
         CitDat <- CitDat %>%
