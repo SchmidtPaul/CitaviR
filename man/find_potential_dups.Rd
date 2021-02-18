@@ -4,7 +4,12 @@
 \alias{find_potential_dups}
 \title{Identify potential duplicates based on title and year}
 \usage{
-find_potential_dups(CitDat, minSimilarity = 0.6, potDupAfterObvDup = TRUE)
+find_potential_dups(
+  CitDat,
+  minSimilarity = 0.6,
+  potDupAfterObvDup = TRUE,
+  maxNumberOfComp = 1e+06
+)
 }
 \arguments{
 \item{CitDat}{A dataframe/tibble returned by \code{\link[CitaviR]{find_obvious_dups}}
@@ -14,12 +19,15 @@ or \code{\link[CitaviR]{handle_obvious_dups}}.}
 
 \item{potDupAfterObvDup}{If TRUE (default), the newly created column
 \code{pot_dup_id} is moved right next to the \code{obv_dup_id} column.}
+
+\item{maxNumberOfComp}{Maximum number of clean_title similarity calculations to be made.
+It is set to 1,000,000 by default (which corresponds to ~ 1414 clean_titles). TO DO: Document while-loop.}
 }
 \value{
 A tibble containing one new column: \code{pot_dup_id}.
 }
 \description{
-\ifelse{html}{\out{<a href='https://www.tidyverse.org/lifecycle/#experimental'><img src='figures/lifecycle-experimental.svg' alt='Experimental lifecycle'></a>}}{\strong{Experimental}}
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
 Currently this only works for files that were generated while Citavi
 was set to "English" so that column names are "Short Title" etc.
 }

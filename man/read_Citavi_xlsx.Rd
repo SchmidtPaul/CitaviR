@@ -36,7 +36,7 @@ via the Citavi export.}
 A tibble containing the information of the xls/xlsx file \href{https://www1.citavi.com/sub/manual6/en/index.html?exporting_to_excel.html}{created with Citavi via export to Excel}.
 }
 \description{
-\ifelse{html}{\out{<a href='https://www.tidyverse.org/lifecycle/#maturing'><img src='figures/lifecycle-maturing.svg' alt='Maturing lifecycle'></a>}}{\strong{Maturing}}
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#maturing}{\figure{lifecycle-maturing.svg}{options: alt='[Maturing]'}}}{\strong{[Maturing]}}
 Currently this only works for files that were generated while Citavi
 was set to "English" or "German" so that column names are "Short title" or "Kurztitel" etc.
 }

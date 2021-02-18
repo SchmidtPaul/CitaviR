@@ -28,7 +28,7 @@ Note that this does not include "Categories", "Groups" and "Keywords".}
 A tibble where information from obvious duplicates was brought together for \code{dup_01}, respectively.
 }
 \description{
-\ifelse{html}{\out{<a href='https://www.tidyverse.org/lifecycle/#experimental'><img src='figures/lifecycle-experimental.svg' alt='Experimental lifecycle'></a>}}{\strong{Experimental}}
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
 Currently this only works for files that were generated while Citavi
 was set to "English" so that column names are "Short Title" etc.
 }

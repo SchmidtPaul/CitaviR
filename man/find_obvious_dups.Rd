@@ -26,7 +26,7 @@ A tibble containing three additional columns:
 \code{clean_title_id}, \code{has_obv_dup} and \code{obv_dup_id}.
 }
 \description{
-\ifelse{html}{\out{<a href='https://www.tidyverse.org/lifecycle/#maturing'><img src='figures/lifecycle-maturing.svg' alt='Maturing lifecycle'></a>}}{\strong{Maturing}}
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#maturing}{\figure{lifecycle-maturing.svg}{options: alt='[Maturing]'}}}{\strong{[Maturing]}}
 Currently this only works for files that were generated while Citavi
 was set to "English" so that column names are "Short Title" etc.
 }

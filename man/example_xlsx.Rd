@@ -10,7 +10,7 @@ example_xlsx(file = NULL)
 \item{file}{Name of file. If \code{NULL}, all example files will be listed.}
 }
 \description{
-\ifelse{html}{\out{<a href='https://www.tidyverse.org/lifecycle/#stable'><img src='figures/lifecycle-stable.svg' alt='Stable lifecycle'></a>}}{\strong{Stable}}
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#stable}{\figure{lifecycle-stable.svg}{options: alt='[Stable]'}}}{\strong{[Stable]}}
 CitaviR comes bundled with some example files in its \code{inst/extdata}
 directory. This function makes them easy to access.
 }
