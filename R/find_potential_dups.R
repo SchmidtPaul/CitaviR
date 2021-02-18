@@ -10,6 +10,8 @@
 #' @param minSimilarity Minimum similarity (between 0 and 1). Default is 0.6. (TO DO)
 #' @param potDupAfterObvDup If TRUE (default), the newly created column
 #' \code{pot_dup_id} is moved right next to the \code{obv_dup_id} column.
+#' @param maxNumberOfComp Maximum number of clean_title similarity calculations to be made.
+#' It is set to 1,000,000 by default (which corresponds to ~ 1414 clean_titles). TO DO: Document while-loop.
 #'
 #' @examples
 #' path <- example_xlsx("3dupsin5refs.xlsx")
@@ -18,66 +20,98 @@
 #'    find_potential_dups()
 #'
 #' @return A tibble containing one new column: \code{pot_dup_id}.
+#' @importFrom RcppAlgos comboGeneral
 #' @importFrom scales percent
 #' @importFrom stringdist stringdist
-#' @importFrom stringr str_detect
+#' @importFrom stringr str_length
 #' @importFrom stringr str_pad
 #' @importFrom tidyr pivot_longer
-#' @importFrom utils combn
 #' @import dplyr
+#' @import tictoc
 #' @export
 
-find_potential_dups <- function(CitDat, minSimilarity = 0.6, potDupAfterObvDup = TRUE) {
+find_potential_dups <- function(CitDat, minSimilarity = 0.6, potDupAfterObvDup = TRUE, maxNumberOfComp = 1000000) {
 
-  ct <- CitDat %>%
-    filter(as.integer(gsub("dup_","",.data$obv_dup_id)) == 1) %>% # dup_01 or dup_001 or dup_0001 ...
-    pull(.data$clean_title)
-  ct_padding <- ct %>% n_distinct() %>% log(10) %>% ceiling() + 1
+  myf <- function(x){format(x, digits = 0, big.mark = ",")}
+
+  # combinations of clean_title ---------------------------------------------
+  ct <- CitDat %>% pull(.data$clean_title) %>% unique # should be equal to filtering for dup_01
+  pot_dup_id_padding <- ct %>% n_distinct() %>% log(10) %>% ceiling() + 1
+
+  ct_similar <- RcppAlgos::comboGeneral(v = ct, 2) %>% # slower alternative: combn()
+    as_tibble(.name_repair = ~c("ct1", "ct2")) %>%
+    mutate(ct1nchar = stringr::str_length(.data$ct1), # number of characters in string
+           ct2nchar = stringr::str_length(.data$ct2)) # slower alternative: nchar()
 
 
-  # calculate similarity = Levenshtein distance -----------------------------
-  similarities <-
-    as.data.frame(t(combn(ct, 2))) %>% # get unique combinations of clean_titles
-    mutate(similarity =
-             # Calculate similarity (=Levenshtein distance) between strings of possibly different lengths
-             stringdist::stringdist(.data$V1, .data$V2, method = "lv") / (nchar(.data$V1) + nchar(.data$V2) / 2))
+  # Too many combinations? --------------------------------------------------
+  NumberOfComp <- nrow(ct_similar)
+  ncharDiffCutoff <- 42 # Don't panic!
+
+  if (NumberOfComp > maxNumberOfComp) {
+
+    cat("clean_title comparisons =", myf(NumberOfComp), ">", myf(maxNumberOfComp), "= maxNumberOfComp",
+        "\n  Trying to ignore comparisons with large differences in character length:\n   ")
+
+    while (NumberOfComp > maxNumberOfComp) {
+      cat(ncharDiffCutoff, "")
+      ncharDiffCutoff <- ncharDiffCutoff - 1
+      ct_similar <-
+        ct_similar %>% filter(abs(.data$ct1nchar - .data$ct2nchar) <= ncharDiffCutoff)
+      NumberOfComp <- nrow(ct_similar)
+
+      if (ncharDiffCutoff == 1) {
+        stop("You must set a larger maxNumberOfComp!")
+      }
+    }
+
+    cat("\n   clean_title comparisons with a character length difference >",
+        ncharDiffCutoff, "are ignored.\n")
+  }
+
+  cat("clean_title comparisons =", myf(NumberOfComp), "<", myf(maxNumberOfComp), "= maxNumberOfComp\n",
+      "  calculating similarity...\n")
+
+  tictoc::tic("   calculating similarity complete") # TO DO: Progress bar without losing efficiency?
+  ct_similar <- ct_similar %>%
+    mutate(
+      similarity = 1 -
+        stringdist::stringdist(.data$ct1, .data$ct2, method = "lv") /
+        pmax(.data$ct1nchar, .data$ct2nchar)
+      # RecordLinkage::levenshteinSim(str1 = .data$ct1, str2 = .data$ct2), # slower alternative
+    )
+  tictoc::toc()
 
   # create clean_title_similarity -------------------------------------------
-  similarities <- similarities %>% # similarity per pair
+  ct_similar <- ct_similar %>% # similarity per pair
     filter(.data$similarity >= minSimilarity) %>% # keep only those with a minimum similarity
-    arrange(.data$similarity, .desc = TRUE) %>%
-    group_by(.data$V1, .data$V2) %>%
-      mutate(similarityRank = cur_group_id()) %>% # similarity rank
-    ungroup() %>%
+    arrange(desc(.data$similarity)) %>%
+    mutate(similarityRank = 1:n()) %>%
     mutate(pot_dup_id = paste0(
-      "potdup_",
-      stringr::str_pad(.data$similarityRank, ct_padding, pad = "0"),
-      " ",
-      scales::percent(.data$similarity, accuracy = 0.1),
-      " similarity"
+      "potdup_", stringr::str_pad(.data$similarityRank, pot_dup_id_padding, pad = "0"),
+      " (", scales::percent(.data$similarity, accuracy = 0.1), " similarity)"
     )) %>%
     select(-.data$similarity, -.data$similarityRank) %>%
-    pivot_longer(cols = .data$V1:.data$V2,
-                 values_to = "clean_title",
-                 names_to = NULL)
-
+    tidyr::pivot_longer(
+      cols = .data$ct1:.data$ct2,
+      values_to = "clean_title",
+      names_to = NULL
+    )
 
   # join with CitDat --------------------------------------------------------
   CitDat <-
-    left_join(x = CitDat, y = similarities, by = "clean_title") %>%
+    left_join(x = CitDat, y = ct_similar, by = "clean_title") %>%
     mutate(pot_dup_id = if_else(
       as.integer(gsub("dup_","",.data$obv_dup_id)) > 1,  # not dup_01 or dup_001 or dup_0001 ...
       NA_character_,
       .data$pot_dup_id
     ))
 
-
   # potDupAfterObvDup -------------------------------------------------------
   if (potDupAfterObvDup) {
     CitDat <- CitDat %>%
       relocate("pot_dup_id", .after = "obv_dup_id")
   }
-
 
   # return tibble -----------------------------------------------------------
   CitDat
