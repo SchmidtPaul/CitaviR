@@ -51,7 +51,7 @@ handle_obvious_dups <- function(CitDat, fieldsToHandle = NULL, nameDupCategories
 
 
     # fields - online address -------------------------------------------------
-    if ("Online Address" %in% fieldsToHandle) {
+    if ("Online address" %in% fieldsToHandle) {
 
       # combine "Online address" and "Locations" column
       URLs <- CitDat %>%
@@ -102,13 +102,13 @@ handle_obvious_dups <- function(CitDat, fieldsToHandle = NULL, nameDupCategories
         y = URLs,
         by = c("clean_title_id", "obv_dup_id")
       ) %>%
-        mutate(`Online address` = .data$allURL, .keep = "unused")
+        mutate(`Online address` = .data$URL, .keep = "unused")
 
     }
 
 
     # fields - all else -------------------------------------------------------
-    fieldsToHandle <- fieldsToHandle[fieldsToHandle %not_in% "Online Address"]
+    fieldsToHandle <- fieldsToHandle[fieldsToHandle %not_in% "Online address"]
 
     CitDat <- CitDat %>%
       group_by(.data$clean_title) %>%
@@ -143,14 +143,20 @@ handle_obvious_dups <- function(CitDat, fieldsToHandle = NULL, nameDupCategories
           ungroup() %>%
           mutate_at(
             .vars = vars(all_of(CatGroKey_i)),
-            .funs = stringr::str_split(string = .data, pattern = "; ") %>%
-              purrr::map(
-                .f = function(x) {
-                  x[!is.na(x)] %>%
-                    unique %>% sort %>% paste(collapse = "; ")
-                }
-              ) %>% unlist %>%
-              gsub(pattern = "^\\; ", replacement = "") # TO DO: Is this necessary? (= remove "; "at beginning / empty first entry )
+            .funs = function(x) {
+              x %>%
+                # split into elements
+                stringr::str_split(pattern = "; ") %>%
+                # collapse sorted and unique elements back togehter
+                purrr::map(
+                  .f = function(y) {
+                    y[!is.na(y)] %>%
+                      unique %>% sort %>% paste(collapse = "; ")
+                  }
+                ) %>% unlist %>%
+                # TO DO: Is this necessary? (= remove "; "at beginning / empty first entry )
+                gsub(pattern = "^\\; ", replacement = "")
+            }
           )
 
         # for duplicates: overwrite collapsed categories/groups/keywords with nameDup
