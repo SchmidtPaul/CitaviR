@@ -1,17 +1,16 @@
 ---
-title: "Basic Workflow"
+title: "CitaviR"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Basic Workflow}
+  %\VignetteIndexEntry{CitaviR}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
 
-```{r, include = FALSE, warning = FALSE, message = FALSE}
+```{r, include = FALSE}
 knitr::opts_chunk$set(
   collapse = TRUE,
-  comment = "#>",
-  out.width = "100%"
+  comment = "#>"
 )
 ```
 

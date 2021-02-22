@@ -42,18 +42,18 @@ The entire work flow from start to finish is structured in five steps.
 
 <img src="man/figures/Workflow.png" width="66%" />
 
-| Step                      | CitaviR              | Effort: 1st time setup | Effort: regular use |
-| ------------------------- | -------------------- | ---------------------- | ------------------- |
-| Step 1: Citavi to xlsx    |                      | :ok\_hand:             | :smiley:            |
-| Step 2: xlsx to R         | :heavy\_check\_mark: | :smiley:               | :smiley:            |
-| Step 3: Process data in R | :heavy\_check\_mark: | :ok\_hand:             | :smiley:            |
-| Step 4: R to xlsx         | :heavy\_check\_mark: | :smiley:               | :smiley:            |
-| Step 5: xlsx to Citavi    |                      | :fire:                 | :ok\_hand:          |
+| Step                      | CitaviR | Effort: 1st time setup | Effort: regular use |
+| ------------------------- | ------- | ---------------------- | ------------------- |
+| Step 1: Citavi to xlsx    |         | 🙂                      | 😎                   |
+| Step 2: xlsx to R         | ✅       | 😎                      | 😎                   |
+| Step 3: Process data in R | ✅       | 🙂                      | 😎                   |
+| Step 4: R to xlsx         | ✅       | 😎                      | 😎                   |
+| Step 5: xlsx to Citavi    |         | 💥                      | 🙂                   |
 
-**Effort levels:** low effort :smiley:; acceptable effort :ok\_hand:;
-can be cumbersome :fire:
+**Effort levels:** low effort 😎; acceptable effort 🙂; can be cumbersome
+💥
 
 ### Example
 
-Click here to find an example for such a workflow (and also other
-resources).
+Go to “Get started” at the top of the page to go through an example of
+such a workflow.

@@ -20,11 +20,6 @@ navbar:
     github:
       icon: fab fa-github fa-lg
       href: https://github.com/SchmidtPaul/CitaviR/
-    articles:
-      text: Articles
-      menu:
-      - text: Basic Workflow
-        href: articles/basic-workflow.html
 
 reference:
 - title: Core functions
@@ -43,8 +38,3 @@ reference:
   contents:
   - '`%not_in%`'
   - '`example_xlsx`'
-
-articles:
-- title: All vignettes
-  desc: ~
-  contents: '`basic-workflow`'
