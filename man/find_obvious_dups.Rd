@@ -7,10 +7,8 @@
 find_obvious_dups(CitDat, dupInfoAfterID = TRUE, preferDupsWithPDF = TRUE)
 }
 \arguments{
-\item{CitDat}{A dataframe holding the information of the xls/xlsx file
-\href{https://www1.citavi.com/sub/manual6/en/index.html?exporting_to_excel.html}{created with Citavi via export to Excel}.
-Thus, this dataframe may have been imported via \code{\link[CitaviR]{read_Citavi_xlsx}}. The following columns
-\bold{must be present} in the dataframe: \code{ID}, \code{Title}, \code{Year}.}
+\item{CitDat}{A dataframe/tibble returned by \code{\link[CitaviR]{read_Citavi_xlsx}}.
+The following columns #' \bold{must be present}: \code{ID}, \code{Title}, \code{Year}.}
 
 \item{dupInfoAfterID}{If TRUE (default), the newly created columns
 \code{clean_title}, \code{clean_title_id}, \code{has_obv_dup} and \code{obv_dup_id}

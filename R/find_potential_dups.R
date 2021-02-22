@@ -86,15 +86,20 @@ find_potential_dups <- function(CitDat, minSimilarity = 0.6, potDupAfterObvDup =
 
 
   # create clean_title_similarity -------------------------------------------
-  ct_similar <- ct_similar %>% # similarity per pair
+  ct_similar <- ct_similar %>%                    # similarity per pair
     filter(.data$similarity >= minSimilarity) %>% # keep only those with a minimum similarity
-    arrange(desc(.data$similarity)) %>%
-    mutate(similarityRank = 1:n()) %>%
-    mutate(pot_dup_id = paste0(
+    arrange(desc(.data$similarity)) %>%           # highest similarity ...
+    mutate(similarityRank = 1:n()) %>%            # ... gets best rank
+    mutate(pot_dup_id = paste0(                   # "potdup_001 (99.9% similarity)" etc.
       "potdup_", stringr::str_pad(.data$similarityRank, pot_dup_id_padding, pad = "0"),
       " (", scales::percent(.data$similarity, accuracy = 0.1), " similarity)"
     )) %>%
-    select(-.data$similarity, -.data$similarityRank, -.data$ct1nchar, -.data$ct2nchar) %>%
+    # columns served their purpose
+    select(-.data$similarity,
+           -.data$similarityRank,
+           -.data$ct1nchar,
+           -.data$ct2nchar) %>%
+    # convert wide: [ct1 ct2 pot_dup_id] to long: [ct pot_dup_id]
     tidyr::pivot_longer(
       cols = .data$ct1:.data$ct2,
       values_to = "clean_title",
@@ -102,7 +107,8 @@ find_potential_dups <- function(CitDat, minSimilarity = 0.6, potDupAfterObvDup =
     ) %>%
     # in case there are multiple pot_dup_id per clean_title: collapse
     group_by(.data$clean_title) %>%
-    mutate(pot_dup_id = paste(stats::na.omit(.data$pot_dup_id), collapse="; ")) %>%
+    mutate(pot_dup_id = paste(stats::na.omit(.data$pot_dup_id), collapse =
+                                "; ")) %>%
     ungroup() %>%
     unique()
 
