@@ -14,10 +14,6 @@ knitr::opts_chunk$set(
 )
 ```
 
-```{r setup}
-library(CitaviR)
-```
-
 ### Step 1: Citavi to xlsx
 
 In your Citavi project open the table view.
