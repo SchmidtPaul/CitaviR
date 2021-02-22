@@ -22,6 +22,7 @@
 #' @return A tibble containing one new column: \code{pot_dup_id}.
 #' @importFrom RcppAlgos comboGeneral
 #' @importFrom scales percent
+#' @importFrom stats na.omit
 #' @importFrom stringdist stringdist
 #' @importFrom stringr str_length
 #' @importFrom stringr str_pad
@@ -33,6 +34,7 @@
 find_potential_dups <- function(CitDat, minSimilarity = 0.6, potDupAfterObvDup = TRUE, maxNumberOfComp = 1000000) {
 
   myf <- function(x){format(x, digits = 0, big.mark = ",")}
+
 
   # combinations of clean_title ---------------------------------------------
   ct <- CitDat %>% pull(.data$clean_title) %>% unique # should be equal to filtering for dup_01
@@ -82,6 +84,7 @@ find_potential_dups <- function(CitDat, minSimilarity = 0.6, potDupAfterObvDup =
     )
   tictoc::toc()
 
+
   # create clean_title_similarity -------------------------------------------
   ct_similar <- ct_similar %>% # similarity per pair
     filter(.data$similarity >= minSimilarity) %>% # keep only those with a minimum similarity
@@ -91,12 +94,18 @@ find_potential_dups <- function(CitDat, minSimilarity = 0.6, potDupAfterObvDup =
       "potdup_", stringr::str_pad(.data$similarityRank, pot_dup_id_padding, pad = "0"),
       " (", scales::percent(.data$similarity, accuracy = 0.1), " similarity)"
     )) %>%
-    select(-.data$similarity, -.data$similarityRank) %>%
+    select(-.data$similarity, -.data$similarityRank, -.data$ct1nchar, -.data$ct2nchar) %>%
     tidyr::pivot_longer(
       cols = .data$ct1:.data$ct2,
       values_to = "clean_title",
       names_to = NULL
-    )
+    ) %>%
+    # in case there are multiple pot_dup_id per clean_title: collapse
+    group_by(.data$clean_title) %>%
+    mutate(pot_dup_id = paste(stats::na.omit(.data$pot_dup_id), collapse="; ")) %>%
+    ungroup() %>%
+    unique()
+
 
   # join with CitDat --------------------------------------------------------
   CitDat <-
@@ -107,11 +116,13 @@ find_potential_dups <- function(CitDat, minSimilarity = 0.6, potDupAfterObvDup =
       .data$pot_dup_id
     ))
 
+
   # potDupAfterObvDup -------------------------------------------------------
   if (potDupAfterObvDup) {
     CitDat <- CitDat %>%
       relocate("pot_dup_id", .after = "obv_dup_id")
   }
+
 
   # return tibble -----------------------------------------------------------
   CitDat
