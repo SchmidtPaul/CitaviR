@@ -42,17 +42,18 @@ The entire work flow from start to finish is structured in five steps.
 
 <img src="man/figures/Workflow.png" width="66%" />
 
-| Step                                                   | CitaviR              | Effort: 1st time setup | Effort: regular use |
-| ------------------------------------------------------ | -------------------- | ---------------------- | ------------------- |
-| [Step 1: Citavi to xlsx](#step-1-citavi-to-xlsx)       |                      | :ok\_hand:             | :smiley:            |
-| [Step 2: xlsx to R](#step-2-xlsx-to-r)                 | :heavy\_check\_mark: | :smiley:               | :smiley:            |
-| [Step 3: Process data in R](#step-3-process-data-in-r) | :heavy\_check\_mark: | :ok\_hand:             | :smiley:            |
-| [Step 4: R to xlsx](#step-4-r-to-xlsx)                 | :heavy\_check\_mark: | :smiley:               | :smiley:            |
-| [Step 5: xlsx to Citavi](#step-5-xlsx-to-citavi)       |                      | :fire:                 | :ok\_hand:          |
+| Step                      | CitaviR              | Effort: 1st time setup | Effort: regular use |
+| ------------------------- | -------------------- | ---------------------- | ------------------- |
+| Step 1: Citavi to xlsx    |                      | :ok\_hand:             | :smiley:            |
+| Step 2: xlsx to R         | :heavy\_check\_mark: | :smiley:               | :smiley:            |
+| Step 3: Process data in R | :heavy\_check\_mark: | :ok\_hand:             | :smiley:            |
+| Step 4: R to xlsx         | :heavy\_check\_mark: | :smiley:               | :smiley:            |
+| Step 5: xlsx to Citavi    |                      | :fire:                 | :ok\_hand:          |
 
 **Effort levels:** low effort :smiley:; acceptable effort :ok\_hand:;
 can be cumbersome :fire:
 
 ### Example
 
-Click here to find an example for such a workflow.
+Click here to find an example for such a workflow (and also other
+resources).
