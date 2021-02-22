@@ -16,7 +16,7 @@ write_Citavi_xlsx(CitDat, read_path = NULL, write_path = NULL, ...)
 \item{...}{Other arguments passed to the \code{\link[openxlsx:write.xlsx]{openxlsx::write.xlsx()}} function.}
 }
 \description{
-\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#maturing}{\figure{lifecycle-maturing.svg}{options: alt='[Maturing]'}}}{\strong{[Maturing]}}
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
 }
 \examples{
 \dontrun{
