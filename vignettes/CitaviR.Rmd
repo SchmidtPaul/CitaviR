@@ -91,7 +91,9 @@ knitr::include_graphics("Excel_files_out.png")
 
 In this case, we make use of the custom macro [CIMR 002](https://github.com/SchmidtPaul/CitaviRMacros/tree/main/CIMR%20Import/CIMR%20002%20-%20Import%20handle_obvious_dup%20info), which is one of the macro templates provided in the repository [CitaviRMacros](https://github.com/SchmidtPaul/CitaviRMacros). As can be seen in the gif, we here store the information on which titles are obvious duplicates into *Custom field 1*, while it is made sure to keep the *PubMed ID* information present only for the obvious duplicate (=`dup_02`) and save it for the non-duplicate (=`dup_01`). Afterwards, we could delete all titles that are not `dup_01` and get rid of all obvious duplicates simultaneously without losing information.
 
-![](https://github.com/SchmidtPaul/CitaviRMacros/blob/main/CIMR%20Import/CIMR%20002%20-%20Import%20handle_obvious_dup%20info/CIMR%20002.gif?raw=true)
+<!-- ```{r, echo=FALSE, out.width = "100%"} -->
+<!-- knitr::include_graphics("https://github.com/SchmidtPaul/CitaviRMacros/blob/main/CIMR%20Import/CIMR%20002%20-%20Import%20handle_obvious_dup%20info/CIMR%20002.gif?raw=true") -->
+<!-- ``` -->
 
 > #### Side note: 1st time setup
 >
