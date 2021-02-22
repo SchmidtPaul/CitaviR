@@ -1,7 +1,7 @@
 #' @title Handle obvious duplicates
 #'
 #' @description
-#' `r lifecycle::badge("experimental")`
+#' `r lifecycle::badge("maturing")`
 #' Currently this only works for files that were generated while Citavi
 #' was set to "English" so that column names are "Short Title" etc.
 #'

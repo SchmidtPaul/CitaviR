@@ -4,27 +4,31 @@
 \alias{write_Citavi_xlsx}
 \title{Export}
 \usage{
-write_Citavi_xlsx(CitDat, read_path = NULL)
+write_Citavi_xlsx(CitDat, read_path = NULL, write_path = NULL, ...)
 }
 \arguments{
-\item{CitDat}{A tibble of processed Citavi data TO DO}
+\item{CitDat}{A tibble.}
 
-\item{read_path}{The path used for \code{\link[CitaviR]{read_Citavi_xlsx}}.}
-}
-\value{
-nothing ?! TO DO
+\item{read_path}{The path/xlsx file name that was used for \code{\link[CitaviR]{read_Citavi_xlsx}}.}
+
+\item{write_path}{path/xlsx file name}
+
+\item{...}{Other arguments passed to the \code{\link[openxlsx:write.xlsx]{openxlsx::write.xlsx()}} function.}
 }
 \description{
-\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
-#'
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#maturing}{\figure{lifecycle-maturing.svg}{options: alt='[Maturing]'}}}{\strong{[Maturing]}}
 }
 \examples{
 \dontrun{
 your_path <- "data/yourCitaviExport.xlsx"
-read_Citavi_xlsx(your_path) \%>\%
-   find_obvious_duplicates \%>\%
-   handle_obvious_duplcates \%>\%
-   write_Citavi_xlsx(your_path)
+
+read_Citavi_xlsx(path = your_path) \%>\%
+   find_obvious_duplicates() \%>\%
+   write_Citavi_xlsx(read_path = your_path)
+
+read_Citavi_xlsx(path = your_path) \%>\%
+   find_obvious_duplicates() \%>\%
+   write_Citavi_xlsx(write_path = "output/yourNewFile.xlsx")
 }
 
 }
