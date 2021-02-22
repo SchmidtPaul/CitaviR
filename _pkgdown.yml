@@ -1,0 +1,50 @@
+url: https://schmidtpaul.github.io/CitaviR/
+
+navbar:
+  structure:
+    left:
+    - home
+    - intro
+    - reference
+    - articles
+    - tutorials
+    - news
+    right: github
+  components:
+    home:
+      icon: fas fa-home fa-lg
+      href: index.html
+    reference:
+      text: Reference
+      href: reference/index.html
+    github:
+      icon: fab fa-github fa-lg
+      href: https://github.com/SchmidtPaul/CitaviR/
+    articles:
+      text: Articles
+      menu:
+      - text: Basic Workflow
+        href: articles/basic-workflow.html
+
+reference:
+- title: Core functions
+  contents:
+  - '`find_obvious_dups`'
+  - '`handle_obvious_dups`'
+  - '`find_potential_dups`'
+  - '`detect_language`'
+
+- title: Dealing with Excel
+  contents:
+  - '`read_Citavi_xlsx`'
+  - '`write_Citavi_xlsx`'
+
+- title: Utility
+  contents:
+  - '`%not_in%`'
+  - '`example_xlsx`'
+
+articles:
+- title: All vignettes
+  desc: ~
+  contents: '`basic-workflow`'

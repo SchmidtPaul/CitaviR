@@ -3,5 +3,8 @@ pkgdown: 1.6.1
 pkgdown_sha: ~
 articles:
   basic-workflow: basic-workflow.html
-last_built: 2021-02-22T15:38Z
+last_built: 2021-02-22T16:42Z
+urls:
+  reference: https://schmidtpaul.github.io/CitaviR//reference
+  article: https://schmidtpaul.github.io/CitaviR//articles
 

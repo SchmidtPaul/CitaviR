@@ -36,10 +36,9 @@ You can install the development version of `CitaviR` from GitHub:
 devtools::install_github('SchmidtPaul/CitaviR')
 ```
 
-## Example / Workflow
+## Workflow
 
-Here is an example showing an entire work flow from start to finish. It
-is structured in five steps.
+The entire work flow from start to finish is structured in five steps.
 
 <img src="man/figures/Workflow.png" width="66%" />
 
@@ -53,3 +52,7 @@ is structured in five steps.
 
 **Effort levels:** low effort :smiley:; acceptable effort :ok\_hand:;
 can be cumbersome :fire:
+
+### Example
+
+Click here to find an example for such a workflow.
