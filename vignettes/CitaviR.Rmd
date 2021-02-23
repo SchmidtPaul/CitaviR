@@ -19,13 +19,13 @@ knitr::opts_chunk$set(
 In your Citavi project open the table view.
 
 ```{r, echo=FALSE, out.width = "30%"}
-knitr::include_graphics("Citavi_Table.png")
+knitr::include_graphics("https://github.com/SchmidtPaul/CitaviR/blob/master/vignettes/Citavi_Table.png?raw=true")
 ```
 
 Make sure all relevant columns are selected (e.g. via Citavi's [customizable selection presets](https://www1.citavi.com/sub/manual6/en/index.html?referencegridformworkspaceeditor.html)) and export to an Excel file.
 
 ```{r, echo=FALSE, out.width = "100%"}
-knitr::include_graphics("Citavi_TableToExcel.png")
+knitr::include_graphics("https://github.com/SchmidtPaul/CitaviR/blob/master/vignettes/Citavi_TableToExcel.png?raw=true")
 ```
 
 # Step 2: xlsx to R
@@ -84,7 +84,7 @@ write_Citavi_xlsx(CitDat, read_path = path) # works in real life, but not for ex
 ```
 
 ```{r, echo=FALSE, out.width = "25%"}
-knitr::include_graphics("Excel_files_out.png")
+knitr::include_graphics("https://github.com/SchmidtPaul/CitaviR/blob/master/vignettes/Excel_files_out.png?raw=true")
 ```
 
 # Step 5: xlsx to Citavi

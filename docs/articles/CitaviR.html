@@ -91,9 +91,9 @@
 <h1 class="hasAnchor">
 <a href="#step-1-citavi-to-xlsx" class="anchor"></a>Step 1: Citavi to xlsx</h1>
 <p>In your Citavi project open the table view.</p>
-<p><img src="../../../../../../../BioMath%20GmbH/BM%20-%20Dokumente/BM%20Tools/R/CitaviR/CitaviR/vignettes/Citavi_Table.png" width="30%"></p>
+<p><img src="https://github.com/SchmidtPaul/CitaviR/blob/master/vignettes/Citavi_Table.png?raw=true" width="30%"></p>
 <p>Make sure all relevant columns are selected (e.g. via Citavi’s <a href="https://www1.citavi.com/sub/manual6/en/index.html?referencegridformworkspaceeditor.html">customizable selection presets</a>) and export to an Excel file.</p>
-<p><img src="../../../../../../../BioMath%20GmbH/BM%20-%20Dokumente/BM%20Tools/R/CitaviR/CitaviR/vignettes/Citavi_TableToExcel.png" width="100%"></p>
+<p><img src="https://github.com/SchmidtPaul/CitaviR/blob/master/vignettes/Citavi_TableToExcel.png?raw=true" width="100%"></p>
 </div>
 <div id="step-2-xlsx-to-r" class="section level1">
 <h1 class="hasAnchor">
@@ -107,15 +107,15 @@
 
 <span class="va">CitDat</span>
 <span class="co">#&gt; # A tibble: 5 x 19</span>
-<span class="co">#&gt;   ID    `Short title` Title Year  Author Categories Groups Abstract `DOI name`</span>
-<span class="co">#&gt;   &lt;chr&gt; &lt;chr&gt;         &lt;chr&gt; &lt;chr&gt; &lt;chr&gt;  &lt;chr&gt;      &lt;chr&gt;  &lt;chr&gt;    &lt;chr&gt;     </span>
-<span class="co">#&gt; 1 7e04~ Schmidt, Har~ Esti~ 2019  Schmi~ 1 catA     Googl~ Broad-s~ 10.2135/c~</span>
-<span class="co">#&gt; 2 2481~ Schmidt, Har~ Heri~ 2019  Schmi~ 1 catA     Googl~ In plan~ 10.1534/g~</span>
-<span class="co">#&gt; 3 db3a~ Schmidt, Har~ Heri~ 2019  Schmi~ 2 catB     PubMed In plan~ &lt;NA&gt;      </span>
-<span class="co">#&gt; 4 ba57~ Schmidt, Har~ Hrit~ 2019  Schmi~ 1 catA     TypoDB In plan~ 10.1534/g~</span>
-<span class="co">#&gt; 5 fa40~ Schmidt, Möh~ More~ 2018  Schmi~ 2 catB     Googl~ Traditi~ 10.2135/c~</span>
-<span class="co">#&gt; # ... with 10 more variables: `PubMed ID` &lt;chr&gt;, `Online address` &lt;chr&gt;,</span>
-<span class="co">#&gt; #   Periodical &lt;chr&gt;, Volume &lt;chr&gt;, Number &lt;chr&gt;, `Page range` &lt;chr&gt;,</span>
+<span class="co">#&gt;   ID     `Short title`  Title Year  Author Categories Groups Abstract `DOI name`</span>
+<span class="co">#&gt;   &lt;chr&gt;  &lt;chr&gt;          &lt;chr&gt; &lt;chr&gt; &lt;chr&gt;  &lt;chr&gt;      &lt;chr&gt;  &lt;chr&gt;    &lt;chr&gt;     </span>
+<span class="co">#&gt; 1 7e04d~ Schmidt, Hart~ Esti~ 2019  Schmi~ 1 catA     Googl~ Broad-s~ 10.2135/c~</span>
+<span class="co">#&gt; 2 2481c~ Schmidt, Hart~ Heri~ 2019  Schmi~ 1 catA     Googl~ In plan~ 10.1534/g~</span>
+<span class="co">#&gt; 3 db3ab~ Schmidt, Hart~ Heri~ 2019  Schmi~ 2 catB     PubMed In plan~ &lt;NA&gt;      </span>
+<span class="co">#&gt; 4 ba575~ Schmidt, Hart~ Hrit~ 2019  Schmi~ 1 catA     TypoDB In plan~ 10.1534/g~</span>
+<span class="co">#&gt; 5 fa402~ Schmidt, Möhr~ More~ 2018  Schmi~ 2 catB     Googl~ Traditi~ 10.2135/c~</span>
+<span class="co">#&gt; # ... with 10 more variables: PubMed ID &lt;chr&gt;, Online address &lt;chr&gt;,</span>
+<span class="co">#&gt; #   Periodical &lt;chr&gt;, Volume &lt;chr&gt;, Number &lt;chr&gt;, Page range &lt;chr&gt;,</span>
 <span class="co">#&gt; #   Locations &lt;chr&gt;, has_attachment &lt;lgl&gt;, red_flag &lt;lgl&gt;, blue_circle &lt;lgl&gt;</span></code></pre></div>
 </div>
 <div id="step-3-process-data-in-r" class="section level1">
@@ -170,7 +170,7 @@
 <p>To export this table to Excel, <code><a href="../reference/write_Citavi_xlsx.html">write_Citavi_xlsx()</a></code> offers an export function based on <code><a href="https://rdrr.io/pkg/openxlsx/man/write.xlsx.html">openxlsx::write.xlsx()</a></code> with some extra functionality. For example, when supplying the same <code>path</code> we used for <code><a href="../reference/read_Citavi_xlsx.html">read_Citavi_xlsx()</a></code> in <a href="#step-2-xlsx-to-r">Step 2</a>, the xlsx file will be created in the same folder with a slightly altered name:</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="../reference/write_Citavi_xlsx.html">write_Citavi_xlsx</a></span><span class="op">(</span><span class="va">CitDat</span>, read_path <span class="op">=</span> <span class="va">path</span><span class="op">)</span> <span class="co"># works in real life, but not for example data</span></code></pre></div>
-<p><img src="../../../../../../../BioMath%20GmbH/BM%20-%20Dokumente/BM%20Tools/R/CitaviR/CitaviR/vignettes/Excel_files_out.png" width="25%"></p>
+<p><img src="https://github.com/SchmidtPaul/CitaviR/blob/master/vignettes/Excel_files_out.png?raw=true" width="25%"></p>
 </div>
 <div id="step-5-xlsx-to-citavi" class="section level1">
 <h1 class="hasAnchor">
