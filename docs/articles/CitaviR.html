@@ -17,7 +17,8 @@
 <script src="../bootstrap-toc.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous">
 <!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- pkgdown --><link href="../pkgdown.css" rel="stylesheet">
-<script src="../pkgdown.js"></script><meta property="og:title" content="CitaviR">
+<script src="../pkgdown.js"></script><link href="../extra.css" rel="stylesheet">
+<meta property="og:title" content="CitaviR">
 <meta property="og:description" content="CitaviR">
 <meta property="og:image" content="https://schmidtpaul.github.io/CitaviR/logo.png">
 <!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script><!--[if lt IE 9]>
@@ -87,6 +88,53 @@
 
     
     
+<div id="general-workflow" class="section level1">
+<h1 class="hasAnchor">
+<a href="#general-workflow" class="anchor"></a>General Workflow</h1>
+<p>The entire work flow from start to finish is structured in five steps.</p>
+<p><img src="https://github.com/SchmidtPaul/CitaviR/blob/master/man/figures/Workflow.png?raw=true" width="66%"></p>
+<table class="table">
+<thead><tr class="header">
+<th>Step</th>
+<th>CitaviR</th>
+<th>Effort: 1st time setup</th>
+<th>Effort: regular use</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td>Step 1: Citavi to xlsx</td>
+<td></td>
+<td>🙂</td>
+<td>😎</td>
+</tr>
+<tr class="even">
+<td>Step 2: xlsx to R</td>
+<td>✅</td>
+<td>😎</td>
+<td>😎</td>
+</tr>
+<tr class="odd">
+<td>Step 3: Process data in R</td>
+<td>✅</td>
+<td>🙂</td>
+<td>😎</td>
+</tr>
+<tr class="even">
+<td>Step 4: R to xlsx</td>
+<td>✅</td>
+<td>😎</td>
+<td>😎</td>
+</tr>
+<tr class="odd">
+<td>Step 5: xlsx to Citavi</td>
+<td></td>
+<td>💥</td>
+<td>🙂</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Effort levels:</strong> low effort 😎; acceptable effort 🙂; can be cumbersome 💥</p>
+</div>
 <div id="step-1-citavi-to-xlsx" class="section level1">
 <h1 class="hasAnchor">
 <a href="#step-1-citavi-to-xlsx" class="anchor"></a>Step 1: Citavi to xlsx</h1>
@@ -175,12 +223,9 @@
 <div id="step-5-xlsx-to-citavi" class="section level1">
 <h1 class="hasAnchor">
 <a href="#step-5-xlsx-to-citavi" class="anchor"></a>Step 5: xlsx to Citavi</h1>
-<p>In this case, we make use of the custom macro <a href="https://github.com/SchmidtPaul/CitaviRMacros/tree/main/CIMR%20Import/CIMR%20002%20-%20Import%20handle_obvious_dup%20info">CIMR 002</a>, which is one of the macro templates provided in the repository <a href="https://github.com/SchmidtPaul/CitaviRMacros">CitaviRMacros</a>. As can be seen in the gif, we here store the information on which titles are obvious duplicates into <em>Custom field 1</em>, while it is made sure to keep the <em>PubMed ID</em> information present only for the obvious duplicate (=<code>dup_02</code>) and save it for the non-duplicate (=<code>dup_01</code>). Afterwards, we could delete all titles that are not <code>dup_01</code> and get rid of all obvious duplicates simultaneously without losing information.</p>
-<!-- ```{r, echo=FALSE, out.width = "100%"} -->
-<!-- knitr::include_graphics("https://github.com/SchmidtPaul/CitaviRMacros/blob/main/CIMR%20Import/CIMR%20002%20-%20Import%20handle_obvious_dup%20info/CIMR%20002.gif?raw=true") -->
-<!-- ``` -->
+<p>In this case, we make use of the custom macro <a href="https://github.com/SchmidtPaul/CitaviRMacros/tree/main/CIMR%20Import/CIMR%20002%20-%20Import%20handle_obvious_dup%20info">CIMR 002</a>, which is one of the macro templates provided in the repository <a href="https://github.com/SchmidtPaul/CitaviRMacros">CitaviRMacros</a>. As can be seen in <a href="https://github.com/SchmidtPaul/CitaviRMacros/tree/main/CIMR%20Import/CIMR%20002%20-%20Import%20handle_obvious_dup%20info#cimr-002-import-handle_obvious_dups">this gif</a>, we here store the information which titles are obvious duplicates into <em>Custom field 1</em>, while it is made sure to keep the <em>PubMed ID</em> information present only for the obvious duplicate (=<code>dup_02</code>) and save it for the non-duplicate (=<code>dup_01</code>). Afterwards, we could delete all titles that are not <code>dup_01</code> and get rid of all obvious duplicates simultaneously without losing information.</p>
 <blockquote>
-<h4 id="side-note-1st-time-setup">Side note: 1st time setup</h4>
+<h4 id="side-note-first-time-setup">Side note: First time setup</h4>
 <p>Unfortunately, importing xlsx into Citavi is not as trivial as exporting xlsx from it. In order to make this work and reproduce <em>e.g.</em> what can be seen in the gif you must first</p>
 <ul>
 <li><a href="https://www1.citavi.com/sub/manual6/en/index.html?add_on_display_macros.html">enable Citavi macros</a></li>
