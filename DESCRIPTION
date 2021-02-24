@@ -2,8 +2,13 @@ Package: CitaviR
 Type: Package
 Title: A set of tools for dealing with Citavi data
 Version: 0.2.0
-Author: Paul Schmidt <schmidtpaul@hotmail.de>
-Maintainer: Paul Schmidt <schmidtpaul@hotmail.de>
+Authors@R: 
+    c(person(given = "Paul",
+             family = "Schmidt",
+             role = c("aut", "cre"),
+             email = "schmidtpaul@hotmail.de"),
+      person(given = "BioMath",
+             role = "fnd"))
 Description: The reference management software Citavi <https://www.citavi.com/de> allows for exports to Excel. With a bit of effort (i.e. via customized Citavi Macros) it also allows for imports from Excel. CitaviR provides functionality for dealing with Citavi data.
 License: GPL-3
 Encoding: UTF-8
@@ -33,7 +38,8 @@ Imports:
 Suggests: 
     testthat (>= 3.0.0),
     knitr,
-    rmarkdown
+    rmarkdown,
+    emo
 Config/testthat/edition: 3
 Roxygen: list(markdown = TRUE)
 VignetteBuilder: knitr

@@ -6,7 +6,7 @@
 #' was set to "English" so that column names are "Short Title" etc.
 #'
 #' @param CitDat A dataframe/tibble returned by \code{\link[CitaviR]{read_Citavi_xlsx}}.
-#' The following columns #' \bold{must be present}: \code{ID}, \code{Title}, \code{Year}.
+#' The following columns \bold{must be present}: \code{ID}, \code{Title}, \code{Year}.
 #' @param dupInfoAfterID If TRUE (default), the newly created columns
 #' \code{clean_title}, \code{clean_title_id}, \code{has_obv_dup} and \code{obv_dup_id}
 #' are moved right next to the \code{ID} column.

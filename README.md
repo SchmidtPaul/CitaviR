@@ -40,7 +40,7 @@ devtools::install_github('SchmidtPaul/CitaviR')
 
 The entire work flow from start to finish is structured in five steps.
 
-<img src="man/figures/Workflow.png" width="66%" />
+<img src="man/figures/Workflow.png" width="60%" />
 
 | Step                      | CitaviR | Effort: 1st time setup | Effort: regular use |
 | ------------------------- | ------- | ---------------------- | ------------------- |

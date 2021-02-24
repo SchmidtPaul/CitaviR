@@ -16,9 +16,9 @@ knitr::opts_chunk$set(
 
 # General Workflow
 
-The entire work flow from start to finish is structured in five steps.
+Generally, the work flow from start to finish is structured in five steps.
 
-```{r, echo=FALSE, out.width = "66%"}
+```{r, echo=FALSE, out.width = "60%"}
 knitr::include_graphics("https://github.com/SchmidtPaul/CitaviR/blob/master/man/figures/Workflow.png?raw=true")
 ```
 
