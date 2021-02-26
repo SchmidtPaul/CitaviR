@@ -5,14 +5,28 @@ template:
     bootswatch: cosmo
 
 navbar:
-  type: default
-  left:
-  - icon: fa-home fa-lg
-    href: index.html
-  - text: Get Started
-    href: articles/CitaviR.html
-  - text: Features
-    href: reference/index.html
+  structure:
+    left:
+    - home
+    - intro
+    - reference
+    - articles
+    - tutorials
+    - news
+    right: github
+  components:
+    home:
+      icon: fas fa-home fa-lg
+      href: index.html
+    reference:
+      text: Reference
+      href: reference/index.html
+    intro:
+      text: Get started
+      href: articles/CitaviR.html
+    github:
+      icon: fab fa-github fa-lg
+      href: https://github.com/SchmidtPaul/CitaviR/
 
 reference:
 - title: Core functions
