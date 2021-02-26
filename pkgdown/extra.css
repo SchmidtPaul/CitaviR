@@ -25,38 +25,8 @@ pre {background-color: #222222;
 
 .fl      {color: #f44336;}  /* numerics */
 .fu      {color: #FF9800;}  /* function */
-.ch,.st  {color: #A8E0FF;}  /* string */
+.ch,.st  {color: #4E83C7;}  /* string */
 .co      {color: #B0BEC5;}  /* comment */
 
 .kw {color: #FF9800;}         /* functions */
 .sourceLine {color: #FCE4EC;} /* functions */
-
-/* custom block quote style */
-blockquote {
-  background: #f9f9f9;
-  border-left: 10px solid #ccc;
-  margin: 1.5em 10px;
-  padding: 0.5em 10px;
-  quotes: "\201C""\201D""\2018""\2019";
-  font-size: 12px;
-}
-
-blockquote:before {
-  color: #ccc;
-  content: "note:";
-  font-size: 12px;
-  line-height: 0.1em;
-  margin-right: 0.25em;
-  vertical-align: 0em;
-}
-
-blockquote p {
-  display: inline;
-}
-
-.center {
-  display: block;
-  margin-left: auto;
-  margin-right: auto;
-  width: 10%;
-}

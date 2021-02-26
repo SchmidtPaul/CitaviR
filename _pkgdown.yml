@@ -4,6 +4,16 @@ template:
   params:
     bootswatch: cosmo
 
+navbar:
+  type: default
+  left:
+  - icon: fa-home fa-lg
+    href: index.html
+  - text: Get Started
+    href: articles/CitaviR.html
+  - text: Features
+    href: reference/index.html
+
 reference:
 - title: Core functions
   contents:
