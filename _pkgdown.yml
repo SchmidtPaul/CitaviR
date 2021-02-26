@@ -1,5 +1,9 @@
 url: https://schmidtpaul.github.io/CitaviR
 
+template:
+  params:
+    bootswatch: cosmo
+
 reference:
 - title: Core functions
   contents:

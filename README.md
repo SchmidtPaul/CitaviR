@@ -38,7 +38,7 @@ devtools::install_github('SchmidtPaul/CitaviR')
 
 ## Workflow
 
-The entire work flow from start to finish is structured in five steps.
+The work flow from start to finish is structured in five steps.
 
 <img src="man/figures/Workflow.png" width="60%" />
 

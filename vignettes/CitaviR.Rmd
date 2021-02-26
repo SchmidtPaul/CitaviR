@@ -1,8 +1,10 @@
 ---
-title: "CitaviR"
+title: "The basic CitaviR workflow"
 output: rmarkdown::html_vignette
+description: >
+  Learn how to get started with the basic 5-step workflow using CitaviR.
 vignette: >
-  %\VignetteIndexEntry{CitaviR}
+  %\VignetteIndexEntry{The basic CitaviR workflow}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -10,11 +12,12 @@ vignette: >
 ```{r, include = FALSE}
 knitr::opts_chunk$set(
   collapse = TRUE,
-  comment = "#>"
+  comment = "#>",
+  dpi = 450
 )
+options(digits = 2)
+set.seed(42)
 ```
-
-# General Workflow
 
 Generally, the work flow from start to finish is structured in five steps.
 
@@ -53,8 +56,8 @@ The Excel file exported above is available in `CitaviR` as the example dataset `
 ```{r example}
 library(CitaviR)
 
-path   <- example_xlsx('3dupsin5refs.xlsx') # in real life: replace with path to your xlsx file
-CitDat <- read_Citavi_xlsx(path)
+my_path <- example_xlsx('3dupsin5refs.xlsx') # in real life: replace with path to your xlsx file
+CitDat  <- read_Citavi_xlsx(path = my_path)
 
 CitDat
 ```
@@ -95,10 +98,10 @@ CitDat[2:3, c("clean_title_id", "obv_dup_id", "Title", "PubMed ID", "Online addr
 
 # Step 4: R to xlsx
 
-To export this table to Excel, `write_Citavi_xlsx()` offers an export function based on `openxlsx::write.xlsx()` with some extra functionality. For example, when supplying the same `path` we used for `read_Citavi_xlsx()` in [Step 2](#step-2-xlsx-to-r), the xlsx file will be created in the same folder with a slightly altered name:
+To export this table to Excel, `write_Citavi_xlsx()` offers an export function based on `openxlsx::write.xlsx()` with some extra functionality. For example, when supplying the same path we used for `read_Citavi_xlsx(path = ...)` in [Step 2](#step-2-xlsx-to-r), the xlsx file will be created in the same folder it was imported from with a slightly altered name:
 
 ```{r, eval=FALSE}
-write_Citavi_xlsx(CitDat, read_path = path) # works in real life, but not for example data
+write_Citavi_xlsx(CitDat, read_path = my_path) # works in real life, but not for example data
 ```
 
 ```{r, echo=FALSE, out.width = "25%"}
@@ -109,12 +112,14 @@ knitr::include_graphics("https://github.com/SchmidtPaul/CitaviR/blob/master/vign
 
 In this case, we make use of the custom macro [CIMR 002](https://github.com/SchmidtPaul/CitaviRMacros/tree/main/CIMR%20Import/CIMR%20002%20-%20Import%20handle_obvious_dup%20info), which is one of the macro templates provided in the repository [CitaviRMacros](https://github.com/SchmidtPaul/CitaviRMacros). As can be seen in [this gif](https://github.com/SchmidtPaul/CitaviRMacros/tree/main/CIMR%20Import/CIMR%20002%20-%20Import%20handle_obvious_dup%20info#cimr-002-import-handle_obvious_dups), we here store the information which titles are obvious duplicates into *Custom field 1*, while it is made sure to keep the *PubMed ID* information present only for the obvious duplicate (=`dup_02`) and save it for the non-duplicate (=`dup_01`). Afterwards, we could delete all titles that are not `dup_01` and get rid of all obvious duplicates simultaneously without losing information.
 
-> #### Side note: 1st time setup
+> **1st time setup**
 >
-> Unfortunately, importing xlsx into Citavi is not as trivial as exporting xlsx from it. In order to make this work and reproduce *e.g.* what can be seen in the gif you must first
+> <br>
+>
+> Unfortunately, importing xlsx into Citavi is not as trivial as exporting xlsx from it. In order to make this work and reproduce *e.g.* what can be seen in [the gif mentioned in step 5](https://github.com/SchmidtPaul/CitaviRMacros/tree/main/CIMR%20Import/CIMR%20002%20-%20Import%20handle_obvious_dup%20info#cimr-002-import-handle_obvious_dups) you must first
 >
 > * [enable Citavi macros](https://www1.citavi.com/sub/manual6/en/index.html?add_on_display_macros.html)
-> * install an *OLE-DB-Provider*. Citavi suggests the *Microsoft Access Database Engine 2016 Redistributable Kit* as described [here in German](https://github.com/Citavi/Macros/blob/master/CIM%20Import/CIM007%20Import%20arbitrary%20data%20from%20Microsoft%20Excel%20into%20custom%20fields%20of%20existing%20references%20by%20short%20title/readme.de.md). 
+> * install an *OLE-DB-Provider*. Citavi suggests the *Microsoft Access Database Engine 2016 Redistributable Kit* as [described here in German](https://github.com/Citavi/Macros/blob/master/CIM%20Import/CIM007%20Import%20arbitrary%20data%20from%20Microsoft%20Excel%20into%20custom%20fields%20of%20existing%20references%20by%20short%20title/readme.de.md). 
 >
 > Afterwards, you should be able to run the original Excel-import macro [**CIM007** Import arbitrary data from Microsoft Excel into custom fields of existing references by short title](https://github.com/Citavi/Macros/tree/master/CIM%20Import/CIM007%20Import%20arbitrary%20data%20from%20Microsoft%20Excel%20into%20custom%20fields%20of%20existing%20references%20by%20short%20title) provided by Citavi, as well as all Excel-import macros in the repository [CitaviRMacros](https://github.com/SchmidtPaul/CitaviRMacros).
 >
