@@ -12,3 +12,6 @@
 ^logo.png
 ^pkgdown/.
 ^\.github$
+^_pkgdown\.yml$
+^docs$
+^pkgdown$

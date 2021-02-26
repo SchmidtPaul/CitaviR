@@ -1,26 +1,3 @@
-/* highlighting text with mouse */
-
-::selection {
-  color: white;
-  background: #00923F; /* WebKit/Blink Browsers */
-}
-::-moz-selection {
-  color: white;
-  background: #00923F; /* WebKit/Blink Browsers */
-}
-
-/* color active dropdown tab */
-
-ul.dropdown-menu>li.active>a:hover{
-    background: #00923F !important;
-}
-
-ul.dropdown-menu>li.active>a{
-    background: #00923F !important;
-}
-
-/* Hyperlinks with a target attribute */
-
 /* unvisited link */
 a:link {
   color: #00923F;
