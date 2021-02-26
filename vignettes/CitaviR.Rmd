@@ -1,12 +1,16 @@
 ---
 title: "The basic CitaviR workflow"
-output: rmarkdown::html_vignette
+output: 
+  rmarkdown::html_document:
+    toc: true
+    fig_width: 10.08
+    fig_height: 6
 description: >
   Learn how to get started with the basic 5-step workflow using CitaviR.
 vignette: >
   %\VignetteIndexEntry{The basic CitaviR workflow}
+  \usepackage[utf8]{inputenc}
   %\VignetteEngine{knitr::rmarkdown}
-  %\VignetteEncoding{UTF-8}
 ---
 
 ```{r, include = FALSE}
