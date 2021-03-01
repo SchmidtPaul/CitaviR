@@ -2,6 +2,7 @@
 #'
 #' @description
 #' `r lifecycle::badge("experimental")`
+#'
 #' Currently this only works for files that were generated while Citavi
 #' was set to "English" so that column names are "Short Title" etc.
 #'
@@ -18,7 +19,8 @@
 #' @examples
 #' path <- example_xlsx("3dupsin5refs.xlsx")
 #' read_Citavi_xlsx(path) %>%
-#'    detect_language()
+#'    detect_language() %>%
+#'    dplyr::select(Title, Year, det_lang, det_lang_wanted)
 #'
 #' @return A tibble containing at least one additional column: \code{det_lang}.
 #' @importFrom textcat textcat

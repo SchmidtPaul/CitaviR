@@ -31,6 +31,7 @@ was set to "English" so that column names are "Short Title" etc.
 \examples{
 path <- example_xlsx("3dupsin5refs.xlsx")
 read_Citavi_xlsx(path) \%>\%
-   find_obvious_dups()
+   find_obvious_dups() \%>\%
+   dplyr::select(clean_title:obv_dup_id)
 
 }

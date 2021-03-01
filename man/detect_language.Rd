@@ -34,6 +34,7 @@ was set to "English" so that column names are "Short Title" etc.
 \examples{
 path <- example_xlsx("3dupsin5refs.xlsx")
 read_Citavi_xlsx(path) \%>\%
-   detect_language()
+   detect_language() \%>\%
+   dplyr::select(Title, Year, det_lang, det_lang_wanted)
 
 }

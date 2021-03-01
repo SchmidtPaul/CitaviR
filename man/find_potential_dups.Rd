@@ -33,8 +33,14 @@ was set to "English" so that column names are "Short Title" etc.
 }
 \examples{
 path <- example_xlsx("3dupsin5refs.xlsx")
-read_Citavi_xlsx(path) \%>\%
+CitDat <- read_Citavi_xlsx(path) \%>\%
    find_obvious_dups() \%>\%
    find_potential_dups()
+
+CitDat \%>\%
+   dplyr::select(clean_title_id, obv_dup_id, pot_dup_id)
+
+CitDat \%>\%
+   dplyr::select(clean_title)
 
 }

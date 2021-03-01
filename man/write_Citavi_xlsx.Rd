@@ -20,11 +20,11 @@ write_Citavi_xlsx(CitDat, read_path = NULL, write_path = NULL, ...)
 }
 \examples{
 \dontrun{
-your_path <- "data/yourCitaviExport.xlsx"
+your_read_path <- "data/yourCitaviExport.xlsx"
 
 read_Citavi_xlsx(path = your_path) \%>\%
    find_obvious_duplicates() \%>\%
-   write_Citavi_xlsx(read_path = your_path)
+   write_Citavi_xlsx(read_path = your_read_path)
 
 read_Citavi_xlsx(path = your_path) \%>\%
    find_obvious_duplicates() \%>\%

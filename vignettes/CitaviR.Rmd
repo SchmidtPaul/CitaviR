@@ -85,19 +85,19 @@ CitDat[, c("Title", "Year", "clean_title", "clean_title_id", "has_obv_dup", "obv
  
 ## Handle obvious duplicates 
  
-At this point we have already gained information and could continue with steps 4 and 5. However, sometimes duplicates hold different information as it is the case here for `ct_02` and the columns `PubMed ID` and `Online address`:
+At this point we have already gained information and could continue with steps 4 and 5. However, sometimes duplicates hold different information as it is the case here for `ct_02` and the columns `PubMed ID` and `DOI name`:
 
 ```{r}
-CitDat[2:3, c("clean_title_id", "obv_dup_id", "Title", "PubMed ID", "Online address")]
+CitDat[2:3, c("clean_title_id", "obv_dup_id", "Title", "PubMed ID", "DOI name")]
 ```
 
 In such a scenario it would be nice to gather all information into the one *non-duplicate* (=`dup_01`) that will be kept and evaluated later on. Here, `CitaviR::handle_obvious_dups()` comes in handy:
 
 ```{r}
 CitDat <- CitDat %>% 
-  handle_obvious_dups(fieldsToHandle = c("PubMed ID", "Online address"))
+  handle_obvious_dups(fieldsToHandle = c("PubMed ID", "DOI name"))
 
-CitDat[2:3, c("clean_title_id", "obv_dup_id", "Title", "PubMed ID", "Online address")]
+CitDat[2:3, c("clean_title_id", "obv_dup_id", "Title", "PubMed ID", "DOI name")]
 ```
 
 # Step 4: R to xlsx

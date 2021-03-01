@@ -40,7 +40,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">CitaviR</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.0</span>
       </span>
     </div>
 
@@ -188,25 +188,25 @@
 <div id="handle-obvious-duplicates" class="section level2">
 <h2 class="hasAnchor">
 <a href="#handle-obvious-duplicates" class="anchor"></a>Handle obvious duplicates</h2>
-<p>At this point we have already gained information and could continue with steps 4 and 5. However, sometimes duplicates hold different information as it is the case here for <code>ct_02</code> and the columns <code>PubMed ID</code> and <code>Online address</code>:</p>
+<p>At this point we have already gained information and could continue with steps 4 and 5. However, sometimes duplicates hold different information as it is the case here for <code>ct_02</code> and the columns <code>PubMed ID</code> and <code>DOI name</code>:</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">CitDat</span><span class="op">[</span><span class="fl">2</span><span class="op">:</span><span class="fl">3</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"clean_title_id"</span>, <span class="st">"obv_dup_id"</span>, <span class="st">"Title"</span>, <span class="st">"PubMed ID"</span>, <span class="st">"Online address"</span><span class="op">)</span><span class="op">]</span>
+<code class="sourceCode R"><span class="va">CitDat</span><span class="op">[</span><span class="fl">2</span><span class="op">:</span><span class="fl">3</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"clean_title_id"</span>, <span class="st">"obv_dup_id"</span>, <span class="st">"Title"</span>, <span class="st">"PubMed ID"</span>, <span class="st">"DOI name"</span><span class="op">)</span><span class="op">]</span>
 <span class="co">#&gt; # A tibble: 2 x 5</span>
-<span class="co">#&gt;   clean_title_id obv_dup_id Title              `PubMed ID` `Online address`     </span>
-<span class="co">#&gt;   &lt;chr&gt;          &lt;chr&gt;      &lt;chr&gt;              &lt;chr&gt;       &lt;chr&gt;                </span>
-<span class="co">#&gt; 1 ct_02          dup_01     Heritability in p~ &lt;NA&gt;        https://www.genetics~</span>
-<span class="co">#&gt; 2 ct_02          dup_02     Heritability in P~ 31248886    &lt;NA&gt;</span></code></pre></div>
+<span class="co">#&gt;   clean_title_id obv_dup_id Title                    `PubMed ID` `DOI name`     </span>
+<span class="co">#&gt;   &lt;chr&gt;          &lt;chr&gt;      &lt;chr&gt;                    &lt;chr&gt;       &lt;chr&gt;          </span>
+<span class="co">#&gt; 1 ct_02          dup_01     Heritability in plant b~ &lt;NA&gt;        10.1534/geneti~</span>
+<span class="co">#&gt; 2 ct_02          dup_02     Heritability in Plant B~ 31248886    &lt;NA&gt;</span></code></pre></div>
 <p>In such a scenario it would be nice to gather all information into the one <em>non-duplicate</em> (=<code>dup_01</code>) that will be kept and evaluated later on. Here, <code><a href="../reference/handle_obvious_dups.html">CitaviR::handle_obvious_dups()</a></code> comes in handy:</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">CitDat</span> <span class="op">&lt;-</span> <span class="va">CitDat</span> <span class="op">%&gt;%</span> 
-  <span class="fu"><a href="../reference/handle_obvious_dups.html">handle_obvious_dups</a></span><span class="op">(</span>fieldsToHandle <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"PubMed ID"</span>, <span class="st">"Online address"</span><span class="op">)</span><span class="op">)</span>
+  <span class="fu"><a href="../reference/handle_obvious_dups.html">handle_obvious_dups</a></span><span class="op">(</span>fieldsToHandle <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"PubMed ID"</span>, <span class="st">"DOI name"</span><span class="op">)</span><span class="op">)</span>
 
-<span class="va">CitDat</span><span class="op">[</span><span class="fl">2</span><span class="op">:</span><span class="fl">3</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"clean_title_id"</span>, <span class="st">"obv_dup_id"</span>, <span class="st">"Title"</span>, <span class="st">"PubMed ID"</span>, <span class="st">"Online address"</span><span class="op">)</span><span class="op">]</span>
+<span class="va">CitDat</span><span class="op">[</span><span class="fl">2</span><span class="op">:</span><span class="fl">3</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"clean_title_id"</span>, <span class="st">"obv_dup_id"</span>, <span class="st">"Title"</span>, <span class="st">"PubMed ID"</span>, <span class="st">"DOI name"</span><span class="op">)</span><span class="op">]</span>
 <span class="co">#&gt; # A tibble: 2 x 5</span>
-<span class="co">#&gt;   clean_title_id obv_dup_id Title              `PubMed ID` `Online address`     </span>
-<span class="co">#&gt;   &lt;chr&gt;          &lt;chr&gt;      &lt;chr&gt;              &lt;chr&gt;       &lt;chr&gt;                </span>
-<span class="co">#&gt; 1 ct_02          dup_01     Heritability in p~ 31248886    https://doi.org/10.1~</span>
-<span class="co">#&gt; 2 ct_02          dup_02     Heritability in P~ 31248886    &lt;NA&gt;</span></code></pre></div>
+<span class="co">#&gt;   clean_title_id obv_dup_id Title                    `PubMed ID` `DOI name`     </span>
+<span class="co">#&gt;   &lt;chr&gt;          &lt;chr&gt;      &lt;chr&gt;                    &lt;chr&gt;       &lt;chr&gt;          </span>
+<span class="co">#&gt; 1 ct_02          dup_01     Heritability in plant b~ 31248886    10.1534/geneti~</span>
+<span class="co">#&gt; 2 ct_02          dup_02     Heritability in Plant B~ 31248886    &lt;NA&gt;</span></code></pre></div>
 </div>
 </div>
 <div id="step-4-r-to-xlsx" class="section level1">
@@ -246,7 +246,7 @@
 
 
       <footer><div class="copyright">
-  <p>Developed by <a href="https://github.com/SchmidtPaul">Paul Schmidt</a>, <a href="https://www.biomath.de/"><img src="https://media-exp1.licdn.com/dms/image/C4E1BAQEjQ12-0ixQWg/company-background_10000/0/1519799083680?e=1614186000&amp;v=beta&amp;t=iGJnm3T9AwNju_nKP5DVVaM2DsymcIJFh-8PatLF0Sc" height="24"></a>.</p>
+  <p>Developed by <a href="https://github.com/SchmidtPaul">Paul Schmidt</a>, <a href="https://www.biomath.de/"><img src="https://raw.githubusercontent.com/SchmidtPaul/CitaviR/master/man/figures/BioMathLogo.svg" height="24"></a>.</p>
 </div>
 
 <div class="pkgdown">

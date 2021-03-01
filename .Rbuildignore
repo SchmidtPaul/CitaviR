@@ -8,6 +8,7 @@
 ^data/.
 ^vignettes/.
 ^logo.png
+^BioMathlogo.svg
 ^README.Rmd
 ^logo.png
 ^pkgdown/.

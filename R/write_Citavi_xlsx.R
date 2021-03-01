@@ -1,7 +1,7 @@
 #' @title Export
 #'
 #' @description
-#' `r lifecycle::badge("experimental")`
+#' `r lifecycle::badge("maturing")`
 #'
 #' @param CitDat A tibble.
 #' @param read_path The path/xlsx file name that was used for \code{\link[CitaviR]{read_Citavi_xlsx}}.
@@ -10,11 +10,11 @@
 #'
 #' @examples
 #' \dontrun{
-#' your_path <- "data/yourCitaviExport.xlsx"
+#' your_read_path <- "data/yourCitaviExport.xlsx"
 #'
 #' read_Citavi_xlsx(path = your_path) %>%
 #'    find_obvious_duplicates() %>%
-#'    write_Citavi_xlsx(read_path = your_path)
+#'    write_Citavi_xlsx(read_path = your_read_path)
 #'
 #' read_Citavi_xlsx(path = your_path) %>%
 #'    find_obvious_duplicates() %>%

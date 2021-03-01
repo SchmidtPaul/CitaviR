@@ -84,7 +84,7 @@ was set to &quot;English&quot; so that column names are &quot;Short Title&quot; 
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">CitaviR</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.0</span>
       </span>
     </div>
 
@@ -171,24 +171,32 @@ It is set to 1,000,000 by default (which corresponds to ~ 1414 clean_titles). TO
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='va'>path</span> <span class='op'>&lt;-</span> <span class='fu'><a href='example_xlsx.html'>example_xlsx</a></span><span class='op'>(</span><span class='st'>"3dupsin5refs.xlsx"</span><span class='op'>)</span>
-<span class='fu'><a href='read_Citavi_xlsx.html'>read_Citavi_xlsx</a></span><span class='op'>(</span><span class='va'>path</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+<span class='va'>CitDat</span> <span class='op'>&lt;-</span> <span class='fu'><a href='read_Citavi_xlsx.html'>read_Citavi_xlsx</a></span><span class='op'>(</span><span class='va'>path</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
    <span class='fu'><a href='find_obvious_dups.html'>find_obvious_dups</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
    <span class='fu'>find_potential_dups</span><span class='op'>(</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; clean_title comparisons = 6 &lt; 1.000000e+06 = maxNumberOfComp
 #&gt;    calculating similarity...
-#&gt;    calculating similarity complete: 0.02 sec elapsed</div><div class='output co'>#&gt; <span style='color: #949494;'># A tibble: 5 x 24</span><span>
-#&gt;   ID        clean_title        clean_title_id has_obv_dup obv_dup_id pot_dup_id 
-#&gt;   </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>     </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>              </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>          </span><span style='color: #949494;font-style: italic;'>&lt;lgl&gt;</span><span>       </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>      </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>      
-#&gt; </span><span style='color: #BCBCBC;'>1</span><span> 7e04d120~ estimating_broad_~ ct_01          FALSE       dup_01     </span><span style='color: #BB0000;'>NA</span><span>         
-#&gt; </span><span style='color: #BCBCBC;'>2</span><span> 2481c993~ heritability_in_p~ ct_02          TRUE        dup_01     potdup_01 ~
-#&gt; </span><span style='color: #BCBCBC;'>3</span><span> db3abc99~ heritability_in_p~ ct_02          TRUE        dup_02     </span><span style='color: #BB0000;'>NA</span><span>         
-#&gt; </span><span style='color: #BCBCBC;'>4</span><span> ba575c25~ hritability_in_pl~ ct_03          FALSE       dup_01     potdup_01 ~
-#&gt; </span><span style='color: #BCBCBC;'>5</span><span> fa402684~ more_larger_simpl~ ct_04          FALSE       dup_01     </span><span style='color: #BB0000;'>NA</span><span>         
-#&gt; </span><span style='color: #949494;'># ... with 18 more variables: Short title &lt;chr&gt;, Title &lt;chr&gt;, Year &lt;chr&gt;,</span><span>
-#&gt; </span><span style='color: #949494;'>#   Author &lt;chr&gt;, Categories &lt;chr&gt;, Groups &lt;chr&gt;, Abstract &lt;chr&gt;,</span><span>
-#&gt; </span><span style='color: #949494;'>#   DOI name &lt;chr&gt;, PubMed ID &lt;chr&gt;, Online address &lt;chr&gt;, Periodical &lt;chr&gt;,</span><span>
-#&gt; </span><span style='color: #949494;'>#   Volume &lt;chr&gt;, Number &lt;chr&gt;, Page range &lt;chr&gt;, Locations &lt;chr&gt;,</span><span>
-#&gt; </span><span style='color: #949494;'>#   has_attachment &lt;lgl&gt;, red_flag &lt;lgl&gt;, blue_circle &lt;lgl&gt;</span><span></div><div class='input'>
+#&gt;    calculating similarity complete: 0 sec elapsed</div><div class='input'>
+<span class='va'>CitDat</span> <span class='op'>%&gt;%</span>
+   <span class='fu'>dplyr</span><span class='fu'>::</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/select.html'>select</a></span><span class='op'>(</span><span class='va'>clean_title_id</span>, <span class='va'>obv_dup_id</span>, <span class='va'>pot_dup_id</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; <span style='color: #949494;'># A tibble: 5 x 3</span><span>
+#&gt;   clean_title_id obv_dup_id pot_dup_id                  
+#&gt;   </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>          </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>      </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>                       
+#&gt; </span><span style='color: #BCBCBC;'>1</span><span> ct_01          dup_01     </span><span style='color: #BB0000;'>NA</span><span>                          
+#&gt; </span><span style='color: #BCBCBC;'>2</span><span> ct_02          dup_01     potdup_01 (98.6% similarity)
+#&gt; </span><span style='color: #BCBCBC;'>3</span><span> ct_02          dup_02     </span><span style='color: #BB0000;'>NA</span><span>                          
+#&gt; </span><span style='color: #BCBCBC;'>4</span><span> ct_03          dup_01     potdup_01 (98.6% similarity)
+#&gt; </span><span style='color: #BCBCBC;'>5</span><span> ct_04          dup_01     </span><span style='color: #BB0000;'>NA</span><span>                          </div><div class='input'>
+<span class='va'>CitDat</span> <span class='op'>%&gt;%</span>
+   <span class='fu'>dplyr</span><span class='fu'>::</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/select.html'>select</a></span><span class='op'>(</span><span class='va'>clean_title</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; </span><span style='color: #949494;'># A tibble: 5 x 1</span><span>
+#&gt;   clean_title                                                                   
+#&gt;   </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>                                                                         
+#&gt; </span><span style='color: #BCBCBC;'>1</span><span> estimating_broad_sense_heritability_with_unbalanced_data_from_agricultural_cu~
+#&gt; </span><span style='color: #BCBCBC;'>2</span><span> heritability_in_plant_breeding_on_a_genotype_difference_basis_2019_end        
+#&gt; </span><span style='color: #BCBCBC;'>3</span><span> heritability_in_plant_breeding_on_a_genotype_difference_basis_2019_end        
+#&gt; </span><span style='color: #BCBCBC;'>4</span><span> hritability_in_plant_breeding_on_a_genotype_difference_basis_2019_end         
+#&gt; </span><span style='color: #BCBCBC;'>5</span><span> more_larger_simpler_how_comparable_are_on_farm_and_on_station_trials_for_cult~</div><div class='input'>
 </div></span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
@@ -201,7 +209,7 @@ It is set to 1,000,000 by default (which corresponds to ~ 1414 clean_titles). TO
 
       <footer>
       <div class="copyright">
-  <p>Developed by <a href='https://github.com/SchmidtPaul'>Paul Schmidt</a>, <a href='https://www.biomath.de/'><img src='https://media-exp1.licdn.com/dms/image/C4E1BAQEjQ12-0ixQWg/company-background_10000/0/1519799083680?e=1614186000&v=beta&t=iGJnm3T9AwNju_nKP5DVVaM2DsymcIJFh-8PatLF0Sc' height=24></a>.</p>
+  <p>Developed by <a href='https://github.com/SchmidtPaul'>Paul Schmidt</a>, <a href='https://www.biomath.de/'><img src='https://raw.githubusercontent.com/SchmidtPaul/CitaviR/master/man/figures/BioMathLogo.svg' height=24></a>.</p>
 </div>
 
 <div class="pkgdown">

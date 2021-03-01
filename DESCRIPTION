@@ -1,7 +1,7 @@
 Package: CitaviR
 Type: Package
 Title: A set of tools for dealing with Citavi data
-Version: 0.2.0
+Version: 0.3.0
 Authors@R: 
     c(person(given = "Paul",
              family = "Schmidt",

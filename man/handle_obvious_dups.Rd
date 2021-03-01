@@ -41,8 +41,16 @@ to the provided character string.
 }
 \examples{
 path <- example_xlsx("3dupsin5refs.xlsx")
-read_Citavi_xlsx(path) \%>\%
-   find_obvious_dups() \%>\%
-   handle_obvious_dups(fieldsToHandle = c("Online address", "PubMed ID"))
+CitDat <- read_Citavi_xlsx(path) \%>\%
+   find_obvious_dups()
+
+# before
+CitDat \%>\%
+   dplyr::select(clean_title, clean_title_id, obv_dup_id, "DOI name", "PubMed ID")
+
+# after
+CitDat \%>\%
+   handle_obvious_dups(fieldsToHandle = c("DOI name", "PubMed ID")) \%>\%
+   dplyr::select(clean_title, clean_title_id, obv_dup_id, "DOI name", "PubMed ID")
 
 }

@@ -2,6 +2,7 @@
 #'
 #' @description
 #' `r lifecycle::badge("maturing")`
+#'
 #' Currently this only works for files that were generated while Citavi
 #' was set to "English" or "German" so that column names are "Short title" or "Kurztitel" etc.
 #'

@@ -84,7 +84,7 @@ was set to &quot;English&quot; so that column names are &quot;Short Title&quot; 
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">CitaviR</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.0</span>
       </span>
     </div>
 
@@ -181,22 +181,32 @@ to the provided character string.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='va'>path</span> <span class='op'>&lt;-</span> <span class='fu'><a href='example_xlsx.html'>example_xlsx</a></span><span class='op'>(</span><span class='st'>"3dupsin5refs.xlsx"</span><span class='op'>)</span>
-<span class='fu'><a href='read_Citavi_xlsx.html'>read_Citavi_xlsx</a></span><span class='op'>(</span><span class='va'>path</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
-   <span class='fu'><a href='find_obvious_dups.html'>find_obvious_dups</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
-   <span class='fu'>handle_obvious_dups</span><span class='op'>(</span>fieldsToHandle <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"Online address"</span>, <span class='st'>"PubMed ID"</span><span class='op'>)</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span style='color: #949494;'># A tibble: 5 x 23</span><span>
-#&gt;   ID     clean_title  clean_title_id has_obv_dup obv_dup_id `Short title`  Title
-#&gt;   </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>  </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>        </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>          </span><span style='color: #949494;font-style: italic;'>&lt;lgl&gt;</span><span>       </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>      </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>          </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>
-#&gt; </span><span style='color: #BCBCBC;'>1</span><span> 7e04d~ estimating_~ ct_01          FALSE       dup_01     Schmidt, Hart~ Esti~
-#&gt; </span><span style='color: #BCBCBC;'>2</span><span> 2481c~ heritabilit~ ct_02          TRUE        dup_01     Schmidt, Hart~ Heri~
-#&gt; </span><span style='color: #BCBCBC;'>3</span><span> db3ab~ heritabilit~ ct_02          TRUE        dup_02     Schmidt, Hart~ Heri~
-#&gt; </span><span style='color: #BCBCBC;'>4</span><span> ba575~ hritability~ ct_03          FALSE       dup_01     Schmidt, Hart~ Hrit~
-#&gt; </span><span style='color: #BCBCBC;'>5</span><span> fa402~ more_larger~ ct_04          FALSE       dup_01     Schmidt, Möhr~ More~
-#&gt; </span><span style='color: #949494;'># ... with 16 more variables: Year &lt;chr&gt;, Author &lt;chr&gt;, Categories &lt;chr&gt;,</span><span>
-#&gt; </span><span style='color: #949494;'>#   Groups &lt;chr&gt;, Abstract &lt;chr&gt;, DOI name &lt;chr&gt;, PubMed ID &lt;chr&gt;,</span><span>
-#&gt; </span><span style='color: #949494;'>#   Online address &lt;chr&gt;, Periodical &lt;chr&gt;, Volume &lt;chr&gt;, Number &lt;chr&gt;,</span><span>
-#&gt; </span><span style='color: #949494;'>#   Page range &lt;chr&gt;, Locations &lt;chr&gt;, has_attachment &lt;lgl&gt;, red_flag &lt;lgl&gt;,</span><span>
-#&gt; </span><span style='color: #949494;'>#   blue_circle &lt;lgl&gt;</span><span></div><div class='input'>
+<span class='va'>CitDat</span> <span class='op'>&lt;-</span> <span class='fu'><a href='read_Citavi_xlsx.html'>read_Citavi_xlsx</a></span><span class='op'>(</span><span class='va'>path</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+   <span class='fu'><a href='find_obvious_dups.html'>find_obvious_dups</a></span><span class='op'>(</span><span class='op'>)</span>
+
+<span class='co'># before</span>
+<span class='va'>CitDat</span> <span class='op'>%&gt;%</span>
+   <span class='fu'>dplyr</span><span class='fu'>::</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/select.html'>select</a></span><span class='op'>(</span><span class='va'>clean_title</span>, <span class='va'>clean_title_id</span>, <span class='va'>obv_dup_id</span>, <span class='st'>"DOI name"</span>, <span class='st'>"PubMed ID"</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; <span style='color: #949494;'># A tibble: 5 x 5</span><span>
+#&gt;   clean_title                clean_title_id obv_dup_id `DOI name`    `PubMed ID`
+#&gt;   </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>                      </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>          </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>      </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>         </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>      
+#&gt; </span><span style='color: #BCBCBC;'>1</span><span> estimating_broad_sense_he~ ct_01          dup_01     10.2135/crop~ </span><span style='color: #BB0000;'>NA</span><span>         
+#&gt; </span><span style='color: #BCBCBC;'>2</span><span> heritability_in_plant_bre~ ct_02          dup_01     10.1534/gene~ </span><span style='color: #BB0000;'>NA</span><span>         
+#&gt; </span><span style='color: #BCBCBC;'>3</span><span> heritability_in_plant_bre~ ct_02          dup_02     </span><span style='color: #BB0000;'>NA</span><span>            31248886   
+#&gt; </span><span style='color: #BCBCBC;'>4</span><span> hritability_in_plant_bree~ ct_03          dup_01     10.1534/gene~ </span><span style='color: #BB0000;'>NA</span><span>         
+#&gt; </span><span style='color: #BCBCBC;'>5</span><span> more_larger_simpler_how_c~ ct_04          dup_01     10.2135/crop~ </span><span style='color: #BB0000;'>NA</span><span>         </div><div class='input'>
+<span class='co'># after</span>
+<span class='va'>CitDat</span> <span class='op'>%&gt;%</span>
+   <span class='fu'>handle_obvious_dups</span><span class='op'>(</span>fieldsToHandle <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"DOI name"</span>, <span class='st'>"PubMed ID"</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+   <span class='fu'>dplyr</span><span class='fu'>::</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/select.html'>select</a></span><span class='op'>(</span><span class='va'>clean_title</span>, <span class='va'>clean_title_id</span>, <span class='va'>obv_dup_id</span>, <span class='st'>"DOI name"</span>, <span class='st'>"PubMed ID"</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; </span><span style='color: #949494;'># A tibble: 5 x 5</span><span>
+#&gt;   clean_title                clean_title_id obv_dup_id `DOI name`    `PubMed ID`
+#&gt;   </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>                      </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>          </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>      </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>         </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>      
+#&gt; </span><span style='color: #BCBCBC;'>1</span><span> estimating_broad_sense_he~ ct_01          dup_01     10.2135/crop~ </span><span style='color: #BB0000;'>NA</span><span>         
+#&gt; </span><span style='color: #BCBCBC;'>2</span><span> heritability_in_plant_bre~ ct_02          dup_01     10.1534/gene~ 31248886   
+#&gt; </span><span style='color: #BCBCBC;'>3</span><span> heritability_in_plant_bre~ ct_02          dup_02     </span><span style='color: #BB0000;'>NA</span><span>            31248886   
+#&gt; </span><span style='color: #BCBCBC;'>4</span><span> hritability_in_plant_bree~ ct_03          dup_01     10.1534/gene~ </span><span style='color: #BB0000;'>NA</span><span>         
+#&gt; </span><span style='color: #BCBCBC;'>5</span><span> more_larger_simpler_how_c~ ct_04          dup_01     10.2135/crop~ </span><span style='color: #BB0000;'>NA</span><span>         </div><div class='input'>
 </div></span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
@@ -209,7 +219,7 @@ to the provided character string.</p>
 
       <footer>
       <div class="copyright">
-  <p>Developed by <a href='https://github.com/SchmidtPaul'>Paul Schmidt</a>, <a href='https://www.biomath.de/'><img src='https://media-exp1.licdn.com/dms/image/C4E1BAQEjQ12-0ixQWg/company-background_10000/0/1519799083680?e=1614186000&v=beta&t=iGJnm3T9AwNju_nKP5DVVaM2DsymcIJFh-8PatLF0Sc' height=24></a>.</p>
+  <p>Developed by <a href='https://github.com/SchmidtPaul'>Paul Schmidt</a>, <a href='https://www.biomath.de/'><img src='https://raw.githubusercontent.com/SchmidtPaul/CitaviR/master/man/figures/BioMathLogo.svg' height=24></a>.</p>
 </div>
 
 <div class="pkgdown">

@@ -82,7 +82,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">CitaviR</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.0</span>
       </span>
     </div>
 
@@ -156,11 +156,11 @@
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='kw'>if</span> <span class='op'>(</span><span class='cn'>FALSE</span><span class='op'>)</span> <span class='op'>{</span>
-<span class='va'>your_path</span> <span class='op'>&lt;-</span> <span class='st'>"data/yourCitaviExport.xlsx"</span>
+<span class='va'>your_read_path</span> <span class='op'>&lt;-</span> <span class='st'>"data/yourCitaviExport.xlsx"</span>
 
 <span class='fu'><a href='read_Citavi_xlsx.html'>read_Citavi_xlsx</a></span><span class='op'>(</span>path <span class='op'>=</span> <span class='va'>your_path</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
    <span class='fu'>find_obvious_duplicates</span><span class='op'>(</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
-   <span class='fu'>write_Citavi_xlsx</span><span class='op'>(</span>read_path <span class='op'>=</span> <span class='va'>your_path</span><span class='op'>)</span>
+   <span class='fu'>write_Citavi_xlsx</span><span class='op'>(</span>read_path <span class='op'>=</span> <span class='va'>your_read_path</span><span class='op'>)</span>
 
 <span class='fu'><a href='read_Citavi_xlsx.html'>read_Citavi_xlsx</a></span><span class='op'>(</span>path <span class='op'>=</span> <span class='va'>your_path</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
    <span class='fu'>find_obvious_duplicates</span><span class='op'>(</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
@@ -179,7 +179,7 @@
 
       <footer>
       <div class="copyright">
-  <p>Developed by <a href='https://github.com/SchmidtPaul'>Paul Schmidt</a>, <a href='https://www.biomath.de/'><img src='https://media-exp1.licdn.com/dms/image/C4E1BAQEjQ12-0ixQWg/company-background_10000/0/1519799083680?e=1614186000&v=beta&t=iGJnm3T9AwNju_nKP5DVVaM2DsymcIJFh-8PatLF0Sc' height=24></a>.</p>
+  <p>Developed by <a href='https://github.com/SchmidtPaul'>Paul Schmidt</a>, <a href='https://www.biomath.de/'><img src='https://raw.githubusercontent.com/SchmidtPaul/CitaviR/master/man/figures/BioMathLogo.svg' height=24></a>.</p>
 </div>
 
 <div class="pkgdown">
