@@ -49,9 +49,7 @@
   
 
 <meta property="og:title" content="Identify obvious duplicates based on title and year — find_obvious_dups" />
-<meta property="og:description" content="
-Currently this only works for files that were generated while Citavi
-was set to &quot;English&quot; so that column names are &quot;Short Title&quot; etc." />
+<meta property="og:description" content="Identify obvious duplicates based on title and year" />
 <meta property="og:image" content="https://schmidtpaul.github.io/CitaviR/logo.png" />
 
 
@@ -129,9 +127,7 @@ was set to &quot;English&quot; so that column names are &quot;Short Title&quot; 
     </div>
 
     <div class="ref-description">
-    <p><a href='https://lifecycle.r-lib.org/articles/stages.html#maturing'><img src='figures/lifecycle-maturing.svg' alt='[Maturing]' /></a>
-Currently this only works for files that were generated while Citavi
-was set to "English" so that column names are "Short Title" etc.</p>
+    <p>Identify obvious duplicates based on title and year</p>
     </div>
 
     <pre class="usage"><span class='fu'>find_obvious_dups</span><span class='op'>(</span><span class='va'>CitDat</span>, dupInfoAfterID <span class='op'>=</span> <span class='cn'>TRUE</span>, preferDupsWithPDF <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span></pre>
@@ -161,8 +157,13 @@ After sorting, duplicates with the most occurences of <code>".pdf"</code> in <co
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>A tibble containing three additional columns:
-<code>clean_title_id</code>, <code>has_obv_dup</code> and <code>obv_dup_id</code>.</p>
+    <p>A tibble containing four additional columns:
+<code>clean_title</code>, <code>clean_title_id</code>, <code>has_obv_dup</code> and <code>obv_dup_id</code>.</p>
+    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
+
+    <p><a href='https://lifecycle.r-lib.org/articles/stages.html#maturing'><img src='figures/lifecycle-maturing.svg' alt='[Maturing]' /></a> <br />
+Currently this only works for files that were generated while Citavi
+was set to "English" so that column names are "Short Title" etc.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='va'>path</span> <span class='op'>&lt;-</span> <span class='fu'><a href='example_xlsx.html'>example_xlsx</a></span><span class='op'>(</span><span class='st'>"3dupsin5refs.xlsx"</span><span class='op'>)</span>

@@ -1,7 +1,7 @@
 #' @title Get path to example xlsx exported from Citavi
 #'
 #' @description
-#' `r lifecycle::badge("stable")`
+#' `r lifecycle::badge("stable")` \cr
 #' CitaviR comes bundled with some example files in its `inst/extdata`
 #' directory. This function makes them easy to access.
 #'

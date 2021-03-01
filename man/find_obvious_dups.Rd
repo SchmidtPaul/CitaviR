@@ -20,11 +20,14 @@ After sorting, duplicates with the most occurences of \code{".pdf"} in \code{Loc
 \code{TRUE} in \code{has_attachment} are first and will thus be chosen as \code{dup_01}.}
 }
 \value{
-A tibble containing three additional columns:
-\code{clean_title_id}, \code{has_obv_dup} and \code{obv_dup_id}.
+A tibble containing four additional columns:
+\code{clean_title}, \code{clean_title_id}, \code{has_obv_dup} and \code{obv_dup_id}.
 }
 \description{
-\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#maturing}{\figure{lifecycle-maturing.svg}{options: alt='[Maturing]'}}}{\strong{[Maturing]}}
+Identify obvious duplicates based on title and year
+}
+\details{
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#maturing}{\figure{lifecycle-maturing.svg}{options: alt='[Maturing]'}}}{\strong{[Maturing]}} \cr
 Currently this only works for files that were generated while Citavi
 was set to "English" so that column names are "Short Title" etc.
 }

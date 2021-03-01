@@ -28,11 +28,12 @@ Note that this does not include "Categories", "Groups" and "Keywords".}
 A tibble where information from obvious duplicates was brought together for \code{dup_01}, respectively.
 }
 \description{
-\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#maturing}{\figure{lifecycle-maturing.svg}{options: alt='[Maturing]'}}}{\strong{[Maturing]}}
-Currently this only works for files that were generated while Citavi
-was set to "English" so that column names are "Short Title" etc.
+Handle obvious duplicates
 }
 \details{
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#maturing}{\figure{lifecycle-maturing.svg}{options: alt='[Maturing]'}}}{\strong{[Maturing]}} \cr
+Currently this only works for files that were generated while Citavi
+was set to "English" so that column names are "Short Title" etc. \cr
 \code{nameDupCategories}, \code{nameDupGroups} and \code{nameDupKeywords} are all \code{NA_character_}
 by default. If a character string is provided for one of them, the respective column
 (i.e. Categories, Groups or Keywords) is handled. This means that whenever obvious duplicates are present,
@@ -46,11 +47,11 @@ CitDat <- read_Citavi_xlsx(path) \%>\%
 
 # before
 CitDat \%>\%
-   dplyr::select(clean_title, clean_title_id, obv_dup_id, "DOI name", "PubMed ID")
+   dplyr::select("clean_title", "clean_title_id", "obv_dup_id", "DOI name", "PubMed ID")
 
 # after
 CitDat \%>\%
    handle_obvious_dups(fieldsToHandle = c("DOI name", "PubMed ID")) \%>\%
-   dplyr::select(clean_title, clean_title_id, obv_dup_id, "DOI name", "PubMed ID")
+   dplyr::select("clean_title", "clean_title_id", "obv_dup_id", "DOI name", "PubMed ID")
 
 }

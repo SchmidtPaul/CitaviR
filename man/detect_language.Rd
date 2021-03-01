@@ -27,7 +27,10 @@ language.}
 A tibble containing at least one additional column: \code{det_lang}.
 }
 \description{
-\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
+Detect the language that the abstract or other fields are written in
+}
+\details{
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}} \cr
 Currently this only works for files that were generated while Citavi
 was set to "English" so that column names are "Short Title" etc.
 }

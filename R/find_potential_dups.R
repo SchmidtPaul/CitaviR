@@ -1,11 +1,5 @@
 #' @title Identify potential duplicates based on title and year
 #'
-#' @description
-#' `r lifecycle::badge("maturing")`
-#'
-#' Currently this only works for files that were generated while Citavi
-#' was set to "English" so that column names are "Short Title" etc.
-#'
 #' @param CitDat A dataframe/tibble returned by \code{\link[CitaviR]{find_obvious_dups}}
 #' or \code{\link[CitaviR]{handle_obvious_dups}}.
 #' @param minSimilarity Minimum similarity (between 0 and 1). Default is 0.6. (TO DO)
@@ -13,6 +7,11 @@
 #' \code{pot_dup_id} is moved right next to the \code{obv_dup_id} column.
 #' @param maxNumberOfComp Maximum number of clean_title similarity calculations to be made.
 #' It is set to 1,000,000 by default (which corresponds to ~ 1414 clean_titles). TO DO: Document while-loop.
+#'
+#' @details
+#' `r lifecycle::badge("maturing")` \cr
+#' Currently this only works for files that were generated while Citavi
+#' was set to "English" so that column names are "Short Title" etc.
 #'
 #' @examples
 #' path <- example_xlsx("3dupsin5refs.xlsx")
@@ -41,7 +40,7 @@
 
 find_potential_dups <- function(CitDat, minSimilarity = 0.6, potDupAfterObvDup = TRUE, maxNumberOfComp = 1000000) {
 
-  myf <- function(x){format(x, digits = 0, big.mark = ",")}
+  bignum <- function(x){format(x, digits = 0, big.mark = ",", scientific = FALSE)}
 
 
   # combinations of clean_title ---------------------------------------------
@@ -60,7 +59,7 @@ find_potential_dups <- function(CitDat, minSimilarity = 0.6, potDupAfterObvDup =
 
   if (NumberOfComp > maxNumberOfComp) {
 
-    cat("clean_title comparisons =", myf(NumberOfComp), ">", myf(maxNumberOfComp), "= maxNumberOfComp",
+    cat("clean_title comparisons =", bignum(NumberOfComp), ">", bignum(maxNumberOfComp), "= maxNumberOfComp",
         "\n  Trying to ignore comparisons with large differences in character length:\n   ")
 
     while (NumberOfComp > maxNumberOfComp) {
@@ -79,7 +78,7 @@ find_potential_dups <- function(CitDat, minSimilarity = 0.6, potDupAfterObvDup =
         ncharDiffCutoff, "are ignored.\n")
   }
 
-  cat("clean_title comparisons =", myf(NumberOfComp), "<", myf(maxNumberOfComp), "= maxNumberOfComp\n",
+  cat("clean_title comparisons =", bignum(NumberOfComp), "<", bignum(maxNumberOfComp), "= maxNumberOfComp\n",
       "  calculating similarity...\n")
 
   tictoc::tic("   calculating similarity complete") # TO DO: Progress bar without losing efficiency?

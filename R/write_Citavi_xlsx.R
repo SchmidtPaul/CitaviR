@@ -1,12 +1,12 @@
 #' @title Export
 #'
-#' @description
-#' `r lifecycle::badge("maturing")`
-#'
 #' @param CitDat A tibble.
 #' @param read_path The path/xlsx file name that was used for \code{\link[CitaviR]{read_Citavi_xlsx}}.
 #' @param write_path path/xlsx file name
 #' @param ... Other arguments passed to the [openxlsx::write.xlsx()] function.
+#'
+#' @details
+#' `r lifecycle::badge("maturing")`
 #'
 #' @examples
 #' \dontrun{

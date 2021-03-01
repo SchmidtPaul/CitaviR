@@ -1,11 +1,5 @@
 #' @title Detect the language that the abstract or other fields are written in
 #'
-#' @description
-#' `r lifecycle::badge("experimental")`
-#'
-#' Currently this only works for files that were generated while Citavi
-#' was set to "English" so that column names are "Short Title" etc.
-#'
 #' @param CitDat A dataframe/tibble possibly returned by \code{\link[CitaviR]{read_Citavi_xlsx}}.
 #' @param fieldsToDetectIn Character vector with names of fields whose text
 #' language should be detected. Default is \code{c("Abstract")}. When multiple fields are given
@@ -15,6 +9,11 @@
 #' \code{c("english")}. If not set to \code{NULL}, a new column \code{det_lang_wanted}
 #' is created, which is \code{TRUE} if the detected language in \code{det_lang} is a wanted
 #' language.
+#'
+#' @details
+#' `r lifecycle::badge("experimental")` \cr
+#' Currently this only works for files that were generated while Citavi
+#' was set to "English" so that column names are "Short Title" etc.
 #'
 #' @examples
 #' path <- example_xlsx("3dupsin5refs.xlsx")

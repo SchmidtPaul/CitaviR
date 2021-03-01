@@ -1,11 +1,5 @@
 #' @title Handle obvious duplicates
 #'
-#' @description
-#' `r lifecycle::badge("maturing")`
-#'
-#' Currently this only works for files that were generated while Citavi
-#' was set to "English" so that column names are "Short Title" etc.
-#'
 #' @param CitDat A tibble returned by \code{\link[CitaviR]{find_obvious_dups}}.
 #' @param fieldsToHandle A character vector with all column/field names that should be handled.
 #' Note that this does not include "Categories", "Groups" and "Keywords".
@@ -14,11 +8,15 @@
 #' @param nameDupKeywords Name that "Keywords" of obvious duplicates should be set to. See details below.
 #'
 #' @details
+#' `r lifecycle::badge("maturing")` \cr
+#' Currently this only works for files that were generated while Citavi
+#' was set to "English" so that column names are "Short Title" etc. \cr
 #' \code{nameDupCategories}, \code{nameDupGroups} and \code{nameDupKeywords} are all \code{NA_character_}
 #' by default. If a character string is provided for one of them, the respective column
 #' (i.e. Categories, Groups or Keywords) is handled. This means that whenever obvious duplicates are present,
 #' all unique entries are collapsed into \code{dup_01}, while \code{dup_02}, \code{dup_03} etc. are set
 #' to the provided character string.
+#'
 #'
 #' @examples
 #' path <- example_xlsx("3dupsin5refs.xlsx")
@@ -27,12 +25,12 @@
 #'
 #' # before
 #' CitDat %>%
-#'    dplyr::select(clean_title, clean_title_id, obv_dup_id, "DOI name", "PubMed ID")
+#'    dplyr::select("clean_title", "clean_title_id", "obv_dup_id", "DOI name", "PubMed ID")
 #'
 #' # after
 #' CitDat %>%
 #'    handle_obvious_dups(fieldsToHandle = c("DOI name", "PubMed ID")) %>%
-#'    dplyr::select(clean_title, clean_title_id, obv_dup_id, "DOI name", "PubMed ID")
+#'    dplyr::select("clean_title", "clean_title_id", "obv_dup_id", "DOI name", "PubMed ID")
 #'
 #' @return A tibble where information from obvious duplicates was brought together for \code{dup_01}, respectively.
 #' @importFrom purrr map

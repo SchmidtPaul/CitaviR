@@ -19,7 +19,6 @@ knitr::opts_chunk$set(
   comment = "#>",
   dpi = 450
 )
-options(digits = 2)
 set.seed(42)
 ```
 
@@ -57,10 +56,11 @@ knitr::include_graphics("https://github.com/SchmidtPaul/CitaviR/blob/master/vign
 
 The Excel file exported above is available in `CitaviR` as the example dataset `3dupsin5refs.xlsx`. Furthermore, `read_Citavi_xlsx()` offers an import function based on `readxl::read_xlsx()` with some functionality specifically for xls/xlsx files created with Citavi via export to Excel.
 
-```{r example}
+```{r example, message = FALSE, warning = FALSE}
+library(tidyverse)
 library(CitaviR)
 
-my_path <- example_xlsx('3dupsin5refs.xlsx') # in real life: replace with path to your xlsx file
+my_path <- example_xlsx("3dupsin5refs.xlsx") # in real life: replace with path to your xlsx file
 CitDat  <- read_Citavi_xlsx(path = my_path)
 
 CitDat
@@ -80,25 +80,39 @@ CitDat <- CitDat %>%
 One way of identifying *obvious duplicates* is via `CitaviR::find_obvious_dups()`. In short, it first creates a `clean_title` by combining each reference's `Title` and `Year` into a simplified string. This simplification is based on `janitor::make_clean_names()` and *e.g.* converts to all-lowercase, and removes special characters and unnecessary spaces. If two references have the same `clean_title`, they are identified as *obvious duplicates*. In this example, two references were indeed identified as *obvious duplicates*:
  
 ```{r}
-CitDat[, c("Title", "Year", "clean_title", "clean_title_id", "has_obv_dup", "obv_dup_id")]
+CitDat %>%
+ select(Title, clean_title:obv_dup_id)
 ```
  
-## Handle obvious duplicates 
+Note how a single typo ("Hritability") prevents `ct_03` from being detected as an *obvious duplicate* for `ct_02`. For cases like this, one may use `CitaviR::find_potential_dups()`, but we will not go so far in this introduction.
+
+## Handle obvious duplicates
  
-At this point we have already gained information and could continue with steps 4 and 5. However, sometimes duplicates hold different information as it is the case here for `ct_02` and the columns `PubMed ID` and `DOI name`:
+At this point we have already gained information and could continue with steps 4 and 5. However, sometimes duplicates hold different information as it is the case here for `ct_02` and the columns `PubMed ID`, `DOI name` and `Categories`:
 
 ```{r}
-CitDat[2:3, c("clean_title_id", "obv_dup_id", "Title", "PubMed ID", "DOI name")]
+CitDat %>% 
+  filter(clean_title_id == "ct_02") %>% 
+  select(clean_title_id, obv_dup_id, `DOI name`, `PubMed ID`, Categories)
 ```
 
-In such a scenario it would be nice to gather all information into the one *non-duplicate* (=`dup_01`) that will be kept and evaluated later on. Here, `CitaviR::handle_obvious_dups()` comes in handy:
+In such a scenario it would be best to gather all information into the one *non-duplicate* (=`dup_01`) that will be kept and of interest later on. Here, `CitaviR::handle_obvious_dups()` comes in handy:
 
 ```{r}
 CitDat <- CitDat %>% 
-  handle_obvious_dups(fieldsToHandle = c("PubMed ID", "DOI name"))
-
-CitDat[2:3, c("clean_title_id", "obv_dup_id", "Title", "PubMed ID", "DOI name")]
+  handle_obvious_dups(fieldsToHandle = c("DOI name", "PubMed ID"), 
+                      nameDupCategories = "3 duplicate")
 ```
+
+As can be seen, the columns listed in `fieldsToHandle =` are *filled up* (*i.e.* `tidyr::fill(all_of(fieldsToHandle), .direction = "up")`). By providing a string for `nameDupCategories =`, unique entries in the `Categories` column are collapsed into the respective entry for `dup_01`, while entries for all other obvious duplicates are replaced by the provided string. 
+
+```{r}
+CitDat %>% 
+  filter(clean_title_id == "ct_02") %>% 
+  select(clean_title_id, obv_dup_id, `DOI name`, `PubMed ID`, Categories)
+```
+
+Therefore, we could now get rid of all obvious duplicates (`obv_dup_id =! dup_01`) without losing any information.
 
 # Step 4: R to xlsx
 
@@ -114,7 +128,10 @@ knitr::include_graphics("https://github.com/SchmidtPaul/CitaviR/blob/master/vign
 
 # Step 5: xlsx to Citavi
 
-In this case, we make use of the custom macro [CIMR 002](https://github.com/SchmidtPaul/CitaviRMacros/tree/main/CIMR%20Import/CIMR%20002%20-%20Import%20handle_obvious_dup%20info), which is one of the macro templates provided in the repository [CitaviRMacros](https://github.com/SchmidtPaul/CitaviRMacros). As can be seen in [this gif](https://github.com/SchmidtPaul/CitaviRMacros/tree/main/CIMR%20Import/CIMR%20002%20-%20Import%20handle_obvious_dup%20info#cimr-002-import-handle_obvious_dups), we here store the information which titles are obvious duplicates into *Custom field 1*, while it is made sure to keep the *PubMed ID* information present only for the obvious duplicate (=`dup_02`) and save it for the non-duplicate (=`dup_01`). Afterwards, we could delete all titles that are not `dup_01` and get rid of all obvious duplicates simultaneously without losing information.
+We now make use of the custom Citavi macros to import the information from excel to Citavi.
+In this case, we can make use of [CIMR 002](https://github.com/SchmidtPaul/CitaviRMacros/tree/main/CIMR%20Import/CIMR%20002%20-%20Import%20handle_obvious_dup%20info), which is one of the macro templates provided in the repository [CitaviRMacros](https://github.com/SchmidtPaul/CitaviRMacros). As can be seen in [this gif](https://github.com/SchmidtPaul/CitaviRMacros/tree/main/CIMR%20Import/CIMR%20002%20-%20Import%20handle_obvious_dup%20info#cimr-002-import-handle_obvious_dups), we here store the `obv_dup_id`s into *Custom field 1*, while it is made sure to import the *PubMed ID* information handled in [step 3](#handle-obvious-duplicates). In order to also import the handled categories, one would additionaly use [CIMR 010](https://github.com/SchmidtPaul/CitaviRMacros/tree/main/CIMR%20Import/CIMR%20010%20-%20Import%20categories) **[TO DO]**.
+
+Afterwards, we could delete all titles in the Citavi project that are not `dup_01` and get rid of all obvious duplicates without losing information.
 
 > **1st time setup**
 >

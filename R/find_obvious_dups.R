@@ -1,11 +1,5 @@
 #' @title Identify obvious duplicates based on title and year
 #'
-#' @description
-#' `r lifecycle::badge("maturing")`
-#'
-#' Currently this only works for files that were generated while Citavi
-#' was set to "English" so that column names are "Short Title" etc.
-#'
 #' @param CitDat A dataframe/tibble returned by \code{\link[CitaviR]{read_Citavi_xlsx}}.
 #' The following columns \bold{must be present}: \code{ID}, \code{Title}, \code{Year}.
 #' @param dupInfoAfterID If TRUE (default), the newly created columns
@@ -16,14 +10,19 @@
 #' After sorting, duplicates with the most occurences of \code{".pdf"} in \code{Locations} and a
 #' \code{TRUE} in \code{has_attachment} are first and will thus be chosen as \code{dup_01}.
 #'
+#' @details
+#' `r lifecycle::badge("maturing")` \cr
+#' Currently this only works for files that were generated while Citavi
+#' was set to "English" so that column names are "Short Title" etc.
+#'
 #' @examples
 #' path <- example_xlsx("3dupsin5refs.xlsx")
 #' read_Citavi_xlsx(path) %>%
 #'    find_obvious_dups() %>%
 #'    dplyr::select(clean_title:obv_dup_id)
 #'
-#' @return A tibble containing three additional columns:
-#' \code{clean_title_id}, \code{has_obv_dup} and \code{obv_dup_id}.
+#' @return A tibble containing four additional columns:
+#' \code{clean_title}, \code{clean_title_id}, \code{has_obv_dup} and \code{obv_dup_id}.
 #' @importFrom janitor make_clean_names
 #' @importFrom stringr str_count
 #' @importFrom stringr str_pad str_remove_all

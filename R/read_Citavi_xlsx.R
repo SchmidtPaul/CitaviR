@@ -1,11 +1,5 @@
 #' @title Import Excel files created via Citavi Export
 #'
-#' @description
-#' `r lifecycle::badge("maturing")`
-#'
-#' Currently this only works for files that were generated while Citavi
-#' was set to "English" or "German" so that column names are "Short title" or "Kurztitel" etc.
-#'
 #' @param path Path to the xls/xlsx file [created with Citavi via export to Excel](https://www1.citavi.com/sub/manual6/en/index.html?exporting_to_excel.html).
 #' @param keepMarksCols If TRUE (default) it will keep and rename the first three
 #' nameless columns of the imported excel file. These columns are automatically
@@ -20,6 +14,11 @@
 #' via the Citavi export.
 #' @param setSuggestedColOrder If TRUE (default) columns a reordered in a suggested order.
 #' @param ... Other arguments passed to the [readxl::read_xlsx()] function.
+#'
+#' @details
+#' `r lifecycle::badge("maturing")` \cr
+#' Currently this only works for files that were generated while Citavi
+#' was set to "English" or "German" so that column names are "Short title" or "Kurztitel" etc.
 #'
 #' @examples
 #' path <- example_xlsx("3dupsin5refs.xlsx") # use this package's example xlsx file

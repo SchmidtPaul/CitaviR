@@ -7,10 +7,7 @@
 state and is being actively
 developed.](https://www.repostatus.org/badges/latest/active.svg)](https://www.repostatus.org/#active)
 [![Lifecycle:
-experimental](https://lifecycle.r-lib.org/articles/figures/lifecycle-experimental.svg)](https://www.tidyverse.org/lifecycle/#experimental)
-<!-- [![Travis build status](https://travis-ci.com/SchmidtPaul/CitaviR.svg?branch=master)](https://travis-ci.com/SchmidtPaul/CitaviR) -->
-<!-- [![AppVeyor build status](https://ci.appveyor.com/api/projects/status/github/SchmidtPaul/CitaviR?branch=master&svg=true)](https://ci.appveyor.com/project/SchmidtPaul/CitaviR) -->
-<!-- badges: end -->
+maturing](https://lifecycle.r-lib.org/articles/figures/lifecycle-maturing.svg)](https://www.tidyverse.org/lifecycle/#maturing)
 
 > This is an unofficial helper package for dealing with Citavi. </br> I
 > am not affiliated with Citavi, just a fan.

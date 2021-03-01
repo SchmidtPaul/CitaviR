@@ -145,9 +145,10 @@
 <a href="#step-2-xlsx-to-r" class="anchor"></a>Step 2: xlsx to R</h1>
 <p>The Excel file exported above is available in <code>CitaviR</code> as the example dataset <code>3dupsin5refs.xlsx</code>. Furthermore, <code><a href="../reference/read_Citavi_xlsx.html">read_Citavi_xlsx()</a></code> offers an import function based on <code><a href="https://readxl.tidyverse.org/reference/read_excel.html">readxl::read_xlsx()</a></code> with some functionality specifically for xls/xlsx files created with Citavi via export to Excel.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/SchmidtPaul/CitaviR">CitaviR</a></span><span class="op">)</span>
+<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="http://tidyverse.tidyverse.org">tidyverse</a></span><span class="op">)</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/SchmidtPaul/CitaviR">CitaviR</a></span><span class="op">)</span>
 
-<span class="va">my_path</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/example_xlsx.html">example_xlsx</a></span><span class="op">(</span><span class="st">'3dupsin5refs.xlsx'</span><span class="op">)</span> <span class="co"># in real life: replace with path to your xlsx file</span>
+<span class="va">my_path</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/example_xlsx.html">example_xlsx</a></span><span class="op">(</span><span class="st">"3dupsin5refs.xlsx"</span><span class="op">)</span> <span class="co"># in real life: replace with path to your xlsx file</span>
 <span class="va">CitDat</span>  <span class="op">&lt;-</span> <span class="fu"><a href="../reference/read_Citavi_xlsx.html">read_Citavi_xlsx</a></span><span class="op">(</span>path <span class="op">=</span> <span class="va">my_path</span><span class="op">)</span>
 
 <span class="va">CitDat</span>
@@ -175,52 +176,62 @@
   <span class="fu"><a href="../reference/find_obvious_dups.html">find_obvious_dups</a></span><span class="op">(</span><span class="op">)</span></code></pre></div>
 <p>One way of identifying <em>obvious duplicates</em> is via <code><a href="../reference/find_obvious_dups.html">CitaviR::find_obvious_dups()</a></code>. In short, it first creates a <code>clean_title</code> by combining each reference’s <code>Title</code> and <code>Year</code> into a simplified string. This simplification is based on <code><a href="https://rdrr.io/pkg/janitor/man/make_clean_names.html">janitor::make_clean_names()</a></code> and <em>e.g.</em> converts to all-lowercase, and removes special characters and unnecessary spaces. If two references have the same <code>clean_title</code>, they are identified as <em>obvious duplicates</em>. In this example, two references were indeed identified as <em>obvious duplicates</em>:</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">CitDat</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"Title"</span>, <span class="st">"Year"</span>, <span class="st">"clean_title"</span>, <span class="st">"clean_title_id"</span>, <span class="st">"has_obv_dup"</span>, <span class="st">"obv_dup_id"</span><span class="op">)</span><span class="op">]</span>
-<span class="co">#&gt; # A tibble: 5 x 6</span>
-<span class="co">#&gt;   Title          Year  clean_title         clean_title_id has_obv_dup obv_dup_id</span>
-<span class="co">#&gt;   &lt;chr&gt;          &lt;chr&gt; &lt;chr&gt;               &lt;chr&gt;          &lt;lgl&gt;       &lt;chr&gt;     </span>
-<span class="co">#&gt; 1 Estimating br~ 2019  estimating_broad_s~ ct_01          FALSE       dup_01    </span>
-<span class="co">#&gt; 2 Heritability ~ 2019  heritability_in_pl~ ct_02          TRUE        dup_01    </span>
-<span class="co">#&gt; 3 Heritability ~ 2019  heritability_in_pl~ ct_02          TRUE        dup_02    </span>
-<span class="co">#&gt; 4 Hritability i~ 2019  hritability_in_pla~ ct_03          FALSE       dup_01    </span>
-<span class="co">#&gt; 5 More, Larger,~ 2018  more_larger_simple~ ct_04          FALSE       dup_01</span></code></pre></div>
+<code class="sourceCode R"><span class="va">CitDat</span> <span class="op">%&gt;%</span>
+ <span class="fu">select</span><span class="op">(</span><span class="va">Title</span>, <span class="va">clean_title</span><span class="op">:</span><span class="va">obv_dup_id</span><span class="op">)</span>
+<span class="co">#&gt; # A tibble: 5 x 5</span>
+<span class="co">#&gt;   Title             clean_title            clean_title_id has_obv_dup obv_dup_id</span>
+<span class="co">#&gt;   &lt;chr&gt;             &lt;chr&gt;                  &lt;chr&gt;          &lt;lgl&gt;       &lt;chr&gt;     </span>
+<span class="co">#&gt; 1 Estimating broad~ estimating_broad_sens~ ct_01          FALSE       dup_01    </span>
+<span class="co">#&gt; 2 Heritability in ~ heritability_in_plant~ ct_02          TRUE        dup_01    </span>
+<span class="co">#&gt; 3 Heritability in ~ heritability_in_plant~ ct_02          TRUE        dup_02    </span>
+<span class="co">#&gt; 4 Hritability in P~ hritability_in_plant_~ ct_03          FALSE       dup_01    </span>
+<span class="co">#&gt; 5 More, Larger, Si~ more_larger_simpler_h~ ct_04          FALSE       dup_01</span></code></pre></div>
+<p>Note how a single typo (“Hritability”) prevents <code>ct_03</code> from being detected as an <em>obvious duplicate</em> for <code>ct_02</code>. For cases like this, one may use <code><a href="../reference/find_potential_dups.html">CitaviR::find_potential_dups()</a></code>, but we will not go so far in this introduction.</p>
 </div>
 <div id="handle-obvious-duplicates" class="section level2">
 <h2 class="hasAnchor">
 <a href="#handle-obvious-duplicates" class="anchor"></a>Handle obvious duplicates</h2>
-<p>At this point we have already gained information and could continue with steps 4 and 5. However, sometimes duplicates hold different information as it is the case here for <code>ct_02</code> and the columns <code>PubMed ID</code> and <code>DOI name</code>:</p>
+<p>At this point we have already gained information and could continue with steps 4 and 5. However, sometimes duplicates hold different information as it is the case here for <code>ct_02</code> and the columns <code>PubMed ID</code>, <code>DOI name</code> and <code>Categories</code>:</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">CitDat</span><span class="op">[</span><span class="fl">2</span><span class="op">:</span><span class="fl">3</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"clean_title_id"</span>, <span class="st">"obv_dup_id"</span>, <span class="st">"Title"</span>, <span class="st">"PubMed ID"</span>, <span class="st">"DOI name"</span><span class="op">)</span><span class="op">]</span>
+<code class="sourceCode R"><span class="va">CitDat</span> <span class="op">%&gt;%</span> 
+  <span class="fu"><a href="https://rdrr.io/r/stats/filter.html">filter</a></span><span class="op">(</span><span class="va">clean_title_id</span> <span class="op">==</span> <span class="st">"ct_02"</span><span class="op">)</span> <span class="op">%&gt;%</span> 
+  <span class="fu">select</span><span class="op">(</span><span class="va">clean_title_id</span>, <span class="va">obv_dup_id</span>, <span class="va">`DOI name`</span>, <span class="va">`PubMed ID`</span>, <span class="va">Categories</span><span class="op">)</span>
 <span class="co">#&gt; # A tibble: 2 x 5</span>
-<span class="co">#&gt;   clean_title_id obv_dup_id Title                    `PubMed ID` `DOI name`     </span>
-<span class="co">#&gt;   &lt;chr&gt;          &lt;chr&gt;      &lt;chr&gt;                    &lt;chr&gt;       &lt;chr&gt;          </span>
-<span class="co">#&gt; 1 ct_02          dup_01     Heritability in plant b~ &lt;NA&gt;        10.1534/geneti~</span>
-<span class="co">#&gt; 2 ct_02          dup_02     Heritability in Plant B~ 31248886    &lt;NA&gt;</span></code></pre></div>
-<p>In such a scenario it would be nice to gather all information into the one <em>non-duplicate</em> (=<code>dup_01</code>) that will be kept and evaluated later on. Here, <code><a href="../reference/handle_obvious_dups.html">CitaviR::handle_obvious_dups()</a></code> comes in handy:</p>
+<span class="co">#&gt;   clean_title_id obv_dup_id `DOI name`                  `PubMed ID` Categories</span>
+<span class="co">#&gt;   &lt;chr&gt;          &lt;chr&gt;      &lt;chr&gt;                       &lt;chr&gt;       &lt;chr&gt;     </span>
+<span class="co">#&gt; 1 ct_02          dup_01     10.1534/genetics.119.302134 &lt;NA&gt;        1 catA    </span>
+<span class="co">#&gt; 2 ct_02          dup_02     &lt;NA&gt;                        31248886    2 catB</span></code></pre></div>
+<p>In such a scenario it would be best to gather all information into the one <em>non-duplicate</em> (=<code>dup_01</code>) that will be kept and of interest later on. Here, <code><a href="../reference/handle_obvious_dups.html">CitaviR::handle_obvious_dups()</a></code> comes in handy:</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">CitDat</span> <span class="op">&lt;-</span> <span class="va">CitDat</span> <span class="op">%&gt;%</span> 
-  <span class="fu"><a href="../reference/handle_obvious_dups.html">handle_obvious_dups</a></span><span class="op">(</span>fieldsToHandle <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"PubMed ID"</span>, <span class="st">"DOI name"</span><span class="op">)</span><span class="op">)</span>
-
-<span class="va">CitDat</span><span class="op">[</span><span class="fl">2</span><span class="op">:</span><span class="fl">3</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"clean_title_id"</span>, <span class="st">"obv_dup_id"</span>, <span class="st">"Title"</span>, <span class="st">"PubMed ID"</span>, <span class="st">"DOI name"</span><span class="op">)</span><span class="op">]</span>
+  <span class="fu"><a href="../reference/handle_obvious_dups.html">handle_obvious_dups</a></span><span class="op">(</span>fieldsToHandle <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"DOI name"</span>, <span class="st">"PubMed ID"</span><span class="op">)</span>, 
+                      nameDupCategories <span class="op">=</span> <span class="st">"3 duplicate"</span><span class="op">)</span></code></pre></div>
+<p>As can be seen, the columns listed in <code>fieldsToHandle =</code> are <em>filled up</em> (<em>i.e.</em> <code><a href="https://tidyr.tidyverse.org/reference/fill.html">tidyr::fill(all_of(fieldsToHandle), .direction = "up")</a></code>). By providing a string for <code>nameDupCategories =</code>, unique entries in the <code>Categories</code> column are collapsed into the respective entry for <code>dup_01</code>, while entries for all other obvious duplicates are replaced by the provided string.</p>
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">CitDat</span> <span class="op">%&gt;%</span> 
+  <span class="fu"><a href="https://rdrr.io/r/stats/filter.html">filter</a></span><span class="op">(</span><span class="va">clean_title_id</span> <span class="op">==</span> <span class="st">"ct_02"</span><span class="op">)</span> <span class="op">%&gt;%</span> 
+  <span class="fu">select</span><span class="op">(</span><span class="va">clean_title_id</span>, <span class="va">obv_dup_id</span>, <span class="va">`DOI name`</span>, <span class="va">`PubMed ID`</span>, <span class="va">Categories</span><span class="op">)</span>
 <span class="co">#&gt; # A tibble: 2 x 5</span>
-<span class="co">#&gt;   clean_title_id obv_dup_id Title                    `PubMed ID` `DOI name`     </span>
-<span class="co">#&gt;   &lt;chr&gt;          &lt;chr&gt;      &lt;chr&gt;                    &lt;chr&gt;       &lt;chr&gt;          </span>
-<span class="co">#&gt; 1 ct_02          dup_01     Heritability in plant b~ 31248886    10.1534/geneti~</span>
-<span class="co">#&gt; 2 ct_02          dup_02     Heritability in Plant B~ 31248886    &lt;NA&gt;</span></code></pre></div>
+<span class="co">#&gt;   clean_title_id obv_dup_id `DOI name`                 `PubMed ID` Categories   </span>
+<span class="co">#&gt;   &lt;chr&gt;          &lt;chr&gt;      &lt;chr&gt;                      &lt;chr&gt;       &lt;chr&gt;        </span>
+<span class="co">#&gt; 1 ct_02          dup_01     10.1534/genetics.119.3021~ 31248886    1 catA; 2 ca~</span>
+<span class="co">#&gt; 2 ct_02          dup_02     &lt;NA&gt;                       31248886    3 duplicate</span></code></pre></div>
+<p>Therefore, we could now get rid of all obvious duplicates (<code>obv_dup_id =! dup_01</code>) without losing any information.</p>
 </div>
 </div>
 <div id="step-4-r-to-xlsx" class="section level1">
 <h1 class="hasAnchor">
 <a href="#step-4-r-to-xlsx" class="anchor"></a>Step 4: R to xlsx</h1>
 <p>To export this table to Excel, <code><a href="../reference/write_Citavi_xlsx.html">write_Citavi_xlsx()</a></code> offers an export function based on <code><a href="https://rdrr.io/pkg/openxlsx/man/write.xlsx.html">openxlsx::write.xlsx()</a></code> with some extra functionality. For example, when supplying the same path we used for <code><a href="../reference/read_Citavi_xlsx.html">read_Citavi_xlsx(path = ...)</a></code> in <a href="#step-2-xlsx-to-r">Step 2</a>, the xlsx file will be created in the same folder it was imported from with a slightly altered name:</p>
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="../reference/write_Citavi_xlsx.html">write_Citavi_xlsx</a></span><span class="op">(</span><span class="va">CitDat</span>, read_path <span class="op">=</span> <span class="va">my_path</span><span class="op">)</span> <span class="co"># works in real life, but not for example data</span></code></pre></div>
 <p><img src="https://github.com/SchmidtPaul/CitaviR/blob/master/vignettes/Excel_files_out.png?raw=true" width="25%"></p>
 </div>
 <div id="step-5-xlsx-to-citavi" class="section level1">
 <h1 class="hasAnchor">
 <a href="#step-5-xlsx-to-citavi" class="anchor"></a>Step 5: xlsx to Citavi</h1>
-<p>In this case, we make use of the custom macro <a href="https://github.com/SchmidtPaul/CitaviRMacros/tree/main/CIMR%20Import/CIMR%20002%20-%20Import%20handle_obvious_dup%20info">CIMR 002</a>, which is one of the macro templates provided in the repository <a href="https://github.com/SchmidtPaul/CitaviRMacros">CitaviRMacros</a>. As can be seen in <a href="https://github.com/SchmidtPaul/CitaviRMacros/tree/main/CIMR%20Import/CIMR%20002%20-%20Import%20handle_obvious_dup%20info#cimr-002-import-handle_obvious_dups">this gif</a>, we here store the information which titles are obvious duplicates into <em>Custom field 1</em>, while it is made sure to keep the <em>PubMed ID</em> information present only for the obvious duplicate (=<code>dup_02</code>) and save it for the non-duplicate (=<code>dup_01</code>). Afterwards, we could delete all titles that are not <code>dup_01</code> and get rid of all obvious duplicates simultaneously without losing information.</p>
+<p>We now make use of the custom Citavi macros to import the information from excel to Citavi. In this case, we can make use of <a href="https://github.com/SchmidtPaul/CitaviRMacros/tree/main/CIMR%20Import/CIMR%20002%20-%20Import%20handle_obvious_dup%20info">CIMR 002</a>, which is one of the macro templates provided in the repository <a href="https://github.com/SchmidtPaul/CitaviRMacros">CitaviRMacros</a>. As can be seen in <a href="https://github.com/SchmidtPaul/CitaviRMacros/tree/main/CIMR%20Import/CIMR%20002%20-%20Import%20handle_obvious_dup%20info#cimr-002-import-handle_obvious_dups">this gif</a>, we here store the <code>obv_dup_id</code>s into <em>Custom field 1</em>, while it is made sure to import the <em>PubMed ID</em> information handled in <a href="#handle-obvious-duplicates">step 3</a>. In order to also import the handled categories, one would additionaly use <a href="https://github.com/SchmidtPaul/CitaviRMacros/tree/main/CIMR%20Import/CIMR%20010%20-%20Import%20categories">CIMR 010</a> <strong>[TO DO]</strong>.</p>
+<p>Afterwards, we could delete all titles in the Citavi project that are not <code>dup_01</code> and get rid of all obvious duplicates without losing information.</p>
 <blockquote>
 <p><strong>1st time setup</strong></p>
 <p><br></p>
