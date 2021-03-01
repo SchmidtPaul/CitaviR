@@ -16,10 +16,7 @@ set.seed(42)
 
 <!-- badges: start -->
 [![Project Status: Active – The project has reached a stable, usable state and is being actively developed.](https://www.repostatus.org/badges/latest/active.svg)](https://www.repostatus.org/#active)
-[![Lifecycle: experimental](https://lifecycle.r-lib.org/articles/figures/lifecycle-experimental.svg)](https://www.tidyverse.org/lifecycle/#experimental)
-<!-- [![Travis build status](https://travis-ci.com/SchmidtPaul/CitaviR.svg?branch=master)](https://travis-ci.com/SchmidtPaul/CitaviR) -->
-<!-- [![AppVeyor build status](https://ci.appveyor.com/api/projects/status/github/SchmidtPaul/CitaviR?branch=master&svg=true)](https://ci.appveyor.com/project/SchmidtPaul/CitaviR) -->
-<!-- badges: end -->
+[![Lifecycle: maturing](https://lifecycle.r-lib.org/articles/figures/lifecycle-maturing.svg)](https://www.tidyverse.org/lifecycle/#maturing)
 
 > This is an unofficial helper package for dealing with Citavi. 
 > </br>
@@ -55,4 +52,4 @@ Step 5: xlsx to Citavi    |                    | `r emo::ji("explode")`    | `r 
 
 ### Example
 
-You can find an example of such a workflow on the [Get Started page](https://schmidtpaul.github.io/CitaviR/articles/CitaviR.html).
+You can find an example workflow on the [**Get Started page**](https://schmidtpaul.github.io/CitaviR/articles/CitaviR.html).

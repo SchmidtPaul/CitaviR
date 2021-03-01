@@ -52,5 +52,5 @@ The work flow from start to finish is structured in five steps.
 
 ### Example
 
-You can find an example of such a workflow on the [Get Started
-page](https://schmidtpaul.github.io/CitaviR/articles/CitaviR.html).
+You can find an example workflow on the [**Get Started
+page**](https://schmidtpaul.github.io/CitaviR/articles/CitaviR.html).

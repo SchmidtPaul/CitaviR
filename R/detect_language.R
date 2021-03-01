@@ -19,7 +19,7 @@
 #' path <- example_xlsx("3dupsin5refs.xlsx")
 #' read_Citavi_xlsx(path) %>%
 #'    detect_language() %>%
-#'    dplyr::select(Title, Year, det_lang, det_lang_wanted)
+#'    dplyr::select(Title, Abstract, det_lang, det_lang_wanted)
 #'
 #' @return A tibble containing at least one additional column: \code{det_lang}.
 #' @importFrom textcat textcat
@@ -27,7 +27,6 @@
 #' @import dplyr
 #' @export
 #'
-#' @examples
 detect_language <- function (CitDat, fieldsToDetectIn = c("Abstract"), wantedLanguage = c("english")) {
 
 
