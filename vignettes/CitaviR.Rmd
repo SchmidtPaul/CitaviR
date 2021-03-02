@@ -30,13 +30,13 @@ knitr::include_graphics("https://github.com/SchmidtPaul/CitaviR/blob/master/man/
 
 Step | CitaviR | Effort: 1st time setup | Effort: regular use
 -|-|-|-
-Step 1: Citavi to xlsx    |                    | `r emo::ji("slightly_smiling_face")` | `r emo::ji("sunglasses")`
-Step 2: xlsx to R         | `r emo::ji("check")` | `r emo::ji("sunglasses")`  | `r emo::ji("sunglasses")`
-Step 3: Process data in R | `r emo::ji("check")` | `r emo::ji("slightly_smiling_face")` | `r emo::ji("sunglasses")`
-Step 4: R to xlsx         | `r emo::ji("check")` | `r emo::ji("sunglasses")`  | `r emo::ji("sunglasses")`
-Step 5: xlsx to Citavi    |                    | `r emo::ji("explode")`    | `r emo::ji("slightly_smiling_face")`
+Step 1: Citavi to xlsx    |         | &#128527; | &#128526;
+Step 2: xlsx to R         | &#9989; | &#128526; | &#128526;
+Step 3: Process data in R | &#9989; | &#128527; | &#128526;
+Step 4: R to xlsx         | &#9989; | &#128526; | &#128526;
+Step 5: xlsx to Citavi    |         | &#128165; | &#128527;
 
-**Effort levels:** low effort `r emo::ji("sunglasses")`; acceptable effort `r emo::ji("slightly_smiling_face")`; can be cumbersome `r emo::ji("explode")` 
+**Effort levels:** low effort &#128526;; acceptable effort &#128527;; can be cumbersome &#128165; 
 
 # Step 1: Citavi to xlsx
 
@@ -54,7 +54,7 @@ knitr::include_graphics("https://github.com/SchmidtPaul/CitaviR/blob/master/vign
 
 # Step 2: xlsx to R
 
-The Excel file exported above is available in `CitaviR` as the example dataset `3dupsin5refs.xlsx`. Furthermore, `read_Citavi_xlsx()` offers an import function based on `readxl::read_xlsx()` with some functionality specifically for xls/xlsx files created with Citavi via export to Excel.
+The Excel file exported above is available in `CitaviR` as the example dataset `3dupsin5refs.xlsx`. Furthermore, `read_Citavi_xlsx()` offers an import function based on `readxl::read_excel()` with some functionality specifically for xls/xlsx files created with Citavi via export to Excel.
 
 ```{r example, message = FALSE, warning = FALSE}
 library(tidyverse)
@@ -129,7 +129,7 @@ knitr::include_graphics("https://github.com/SchmidtPaul/CitaviR/blob/master/vign
 # Step 5: xlsx to Citavi
 
 We now make use of the custom Citavi macros to import the information from excel to Citavi.
-In this case, we can make use of [CIMR 002](https://github.com/SchmidtPaul/CitaviRMacros/tree/main/CIMR%20Import/CIMR%20002%20-%20Import%20handle_obvious_dup%20info), which is one of the macro templates provided in the repository [CitaviRMacros](https://github.com/SchmidtPaul/CitaviRMacros). As can be seen in [this gif](https://github.com/SchmidtPaul/CitaviRMacros/tree/main/CIMR%20Import/CIMR%20002%20-%20Import%20handle_obvious_dup%20info#cimr-002-import-handle_obvious_dups), we here store the `obv_dup_id`s into *Custom field 1*, while it is made sure to import the *PubMed ID* information handled in [step 3](#handle-obvious-duplicates). In order to also import the handled categories, one would additionaly use [CIMR 010](https://github.com/SchmidtPaul/CitaviRMacros/tree/main/CIMR%20Import/CIMR%20010%20-%20Import%20categories) **[TO DO]**.
+In this case, we can make use of [CIMR 002](https://github.com/SchmidtPaul/CitaviRMacros/tree/main/CIMR%20Import/CIMR%20002%20-%20Import%20handle_obvious_dup%20info), which is one of the macro templates provided in the repository [CitaviRMacros](https://github.com/SchmidtPaul/CitaviRMacros). As can be seen in [**this gif** &#9199;](https://github.com/SchmidtPaul/CitaviRMacros/tree/main/CIMR%20Import/CIMR%20002%20-%20Import%20handle_obvious_dup%20info#cimr-002-import-handle_obvious_dups){:target="_blank"}, we here store the `obv_dup_id`s into *Custom field 1*, while it is made sure to import the *PubMed ID* information handled in [step 3](#handle-obvious-duplicates). In order to also import the handled categories, one would additionaly use [CIMR 010](https://github.com/SchmidtPaul/CitaviRMacros/tree/main/CIMR%20Import/CIMR%20010%20-%20Import%20categories) **[TO DO]**.
 
 Afterwards, we could delete all titles in the Citavi project that are not `dup_01` and get rid of all obvious duplicates without losing information.
 

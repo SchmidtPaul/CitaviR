@@ -41,13 +41,13 @@ The work flow from start to finish is structured in five steps.
 
 | Step                      | CitaviR | Effort: 1st time setup | Effort: regular use |
 | ------------------------- | ------- | ---------------------- | ------------------- |
-| Step 1: Citavi to xlsx    |         | 🙂                      | 😎                   |
+| Step 1: Citavi to xlsx    |         | 😏                      | 😎                   |
 | Step 2: xlsx to R         | ✅       | 😎                      | 😎                   |
-| Step 3: Process data in R | ✅       | 🙂                      | 😎                   |
+| Step 3: Process data in R | ✅       | 😏                      | 😎                   |
 | Step 4: R to xlsx         | ✅       | 😎                      | 😎                   |
-| Step 5: xlsx to Citavi    |         | 💥                      | 🙂                   |
+| Step 5: xlsx to Citavi    |         | 💥                      | 😏                   |
 
-**Effort levels:** low effort 😎; acceptable effort 🙂; can be cumbersome
+**Effort levels:** low effort 😎; acceptable effort 😏; can be cumbersome
 💥
 
 ### Example

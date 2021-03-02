@@ -9,6 +9,7 @@ read_Citavi_xlsx(
   keepMarksCols = TRUE,
   useYearDerived = TRUE,
   setSuggestedColOrder = TRUE,
+  setSuggestedColTypes = TRUE,
   ...
 )
 }
@@ -24,13 +25,19 @@ If FALSE, these three columns are deleted.}
 
 \item{useYearDerived}{If TRUE (default) the
 \href{https://www1.citavi.com/sub/manual6/en/index.html?cse_using_special_components.html}{special column "Year derived"}
-(DE: \href{https://www1.citavi.com/sub/manual6/de/index.html?cse_using_special_components.html}{"Jahr ermittelt"}) is renamed to "Year" (DE:"Jahr") and thus replaces
-the original basic column "Year" (DE: "Jahr") which may have also been created
+(DE: \href{https://www1.citavi.com/sub/manual6/de/index.html?cse_using_special_components.html}{"Jahr ermittelt"}) is renamed to "Year" and thus replaces
+the original basic column "Year" which may have also been created
 via the Citavi export.}
 
 \item{setSuggestedColOrder}{If TRUE (default) columns a reordered in a suggested order.}
 
-\item{...}{Other arguments passed to the \code{\link[readxl:read_excel]{readxl::read_xlsx()}} function.}
+\item{setSuggestedColTypes}{If TRUE (default) the \code{col_types =} argument of
+\code{\link[readxl:read_excel]{readxl::read_excel()}} is used. Each column's col_types is automatically determined by matching
+its name via an internal dataset (\code{data-raw/field_translations.xlsx}).
+Especially when the first entries of any column are empty,
+this can prevent the issue that occurs \href{https://readxl.tidyverse.org/articles/cell-and-column-types.html#when-column-guessing-goes-wrong}{when column guessing goes wrong}.}
+
+\item{...}{Other arguments passed to the \code{\link[readxl:read_excel]{readxl::read_excel()}} function.}
 }
 \value{
 A tibble containing the information of the xls/xlsx file \href{https://www1.citavi.com/sub/manual6/en/index.html?exporting_to_excel.html}{created with Citavi via export to Excel}.
@@ -41,7 +48,7 @@ Import Excel files created via Citavi Export
 \details{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#maturing}{\figure{lifecycle-maturing.svg}{options: alt='[Maturing]'}}}{\strong{[Maturing]}} \cr
 Currently this only works for files that were generated while Citavi
-was set to "English" or "German" so that column names are "Short title" or "Kurztitel" etc.
+was set to "English" so that column names are "Short title" etc.
 }
 \examples{
 path <- example_xlsx("3dupsin5refs.xlsx") # use this package's example xlsx file
