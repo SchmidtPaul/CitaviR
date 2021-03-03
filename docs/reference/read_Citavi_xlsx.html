@@ -135,6 +135,7 @@
   keepMarksCols <span class='op'>=</span> <span class='cn'>TRUE</span>,
   useYearDerived <span class='op'>=</span> <span class='cn'>TRUE</span>,
   setSuggestedColOrder <span class='op'>=</span> <span class='cn'>TRUE</span>,
+  setSuggestedColTypes <span class='op'>=</span> <span class='cn'>TRUE</span>,
   <span class='va'>...</span>
 <span class='op'>)</span></pre>
 
@@ -158,8 +159,8 @@ If FALSE, these three columns are deleted.</p></td>
       <th>useYearDerived</th>
       <td><p>If TRUE (default) the
 <a href='https://www1.citavi.com/sub/manual6/en/index.html?cse_using_special_components.html'>special column "Year derived"</a>
-(DE: <a href='https://www1.citavi.com/sub/manual6/de/index.html?cse_using_special_components.html'>"Jahr ermittelt"</a>) is renamed to "Year" (DE:"Jahr") and thus replaces
-the original basic column "Year" (DE: "Jahr") which may have also been created
+(DE: <a href='https://www1.citavi.com/sub/manual6/de/index.html?cse_using_special_components.html'>"Jahr ermittelt"</a>) is renamed to "Year" and thus replaces
+the original basic column "Year" which may have also been created
 via the Citavi export.</p></td>
     </tr>
     <tr>
@@ -167,8 +168,16 @@ via the Citavi export.</p></td>
       <td><p>If TRUE (default) columns a reordered in a suggested order.</p></td>
     </tr>
     <tr>
+      <th>setSuggestedColTypes</th>
+      <td><p>If TRUE (default) the <code>col_types =</code> argument of
+<code><a href='https://readxl.tidyverse.org/reference/read_excel.html'>readxl::read_excel()</a></code> is used. Each column's col_types is automatically determined by matching
+its name via an internal dataset (<code>data-raw/field_translations.xlsx</code>).
+Especially when the first entries of any column are empty,
+this can prevent the issue that occurs <a href='https://readxl.tidyverse.org/articles/cell-and-column-types.html#when-column-guessing-goes-wrong'>when column guessing goes wrong</a>.</p></td>
+    </tr>
+    <tr>
       <th>...</th>
-      <td><p>Other arguments passed to the <code><a href='https://readxl.tidyverse.org/reference/read_excel.html'>readxl::read_xlsx()</a></code> function.</p></td>
+      <td><p>Other arguments passed to the <code><a href='https://readxl.tidyverse.org/reference/read_excel.html'>readxl::read_excel()</a></code> function.</p></td>
     </tr>
     </table>
 
@@ -179,19 +188,19 @@ via the Citavi export.</p></td>
 
     <p><a href='https://lifecycle.r-lib.org/articles/stages.html#maturing'><img src='figures/lifecycle-maturing.svg' alt='[Maturing]' /></a> <br />
 Currently this only works for files that were generated while Citavi
-was set to "English" or "German" so that column names are "Short title" or "Kurztitel" etc.</p>
+was set to "English" so that column names are "Short title" etc.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='va'>path</span> <span class='op'>&lt;-</span> <span class='fu'><a href='example_xlsx.html'>example_xlsx</a></span><span class='op'>(</span><span class='st'>"3dupsin5refs.xlsx"</span><span class='op'>)</span> <span class='co'># use this package's example xlsx file</span>
 <span class='fu'>read_Citavi_xlsx</span><span class='op'>(</span><span class='va'>path</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; <span style='color: #949494;'># A tibble: 5 x 19</span><span>
-#&gt;   ID     `Short title`  Title Year  Author Categories Groups Abstract `DOI name`
-#&gt;   </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>  </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>          </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>  </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>      </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>  </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>    </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>     
-#&gt; </span><span style='color: #BCBCBC;'>1</span><span> 7e04d~ Schmidt, Hart~ Esti~ 2019  Schmi~ 1 catA     Googl~ Broad-s~ 10.2135/c~
-#&gt; </span><span style='color: #BCBCBC;'>2</span><span> 2481c~ Schmidt, Hart~ Heri~ 2019  Schmi~ 1 catA     Googl~ In plan~ 10.1534/g~
-#&gt; </span><span style='color: #BCBCBC;'>3</span><span> db3ab~ Schmidt, Hart~ Heri~ 2019  Schmi~ 2 catB     PubMed In plan~ </span><span style='color: #BB0000;'>NA</span><span>        
-#&gt; </span><span style='color: #BCBCBC;'>4</span><span> ba575~ Schmidt, Hart~ Hrit~ 2019  Schmi~ 1 catA     TypoDB In plan~ 10.1534/g~
-#&gt; </span><span style='color: #BCBCBC;'>5</span><span> fa402~ Schmidt, Möhr~ More~ 2018  Schmi~ 2 catB     Googl~ Traditi~ 10.2135/c~
+#&gt;   ID     Title  Year  `Short title` Author Categories Groups Abstract `DOI name`
+#&gt;   </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>  </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>  </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>         </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>  </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>      </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>  </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>    </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>     
+#&gt; </span><span style='color: #BCBCBC;'>1</span><span> 7e04d~ Estim~ 2019  Schmidt, Har~ Schmi~ 1 catA     Googl~ Broad-s~ 10.2135/c~
+#&gt; </span><span style='color: #BCBCBC;'>2</span><span> 2481c~ Herit~ 2019  Schmidt, Har~ Schmi~ 1 catA     Googl~ In plan~ 10.1534/g~
+#&gt; </span><span style='color: #BCBCBC;'>3</span><span> db3ab~ Herit~ 2019  Schmidt, Har~ Schmi~ 2 catB     PubMed In plan~ </span><span style='color: #BB0000;'>NA</span><span>        
+#&gt; </span><span style='color: #BCBCBC;'>4</span><span> ba575~ Hrita~ 2019  Schmidt, Har~ Schmi~ 1 catA     TypoDB In plan~ 10.1534/g~
+#&gt; </span><span style='color: #BCBCBC;'>5</span><span> fa402~ More,~ 2018  Schmidt, Möh~ Schmi~ 2 catB     Googl~ Traditi~ 10.2135/c~
 #&gt; </span><span style='color: #949494;'># ... with 10 more variables: PubMed ID &lt;chr&gt;, Online address &lt;chr&gt;,</span><span>
 #&gt; </span><span style='color: #949494;'>#   Periodical &lt;chr&gt;, Volume &lt;chr&gt;, Number &lt;chr&gt;, Page range &lt;chr&gt;,</span><span>
 #&gt; </span><span style='color: #949494;'>#   Locations &lt;chr&gt;, has_attachment &lt;lgl&gt;, red_flag &lt;lgl&gt;, blue_circle &lt;lgl&gt;</span><span></div><div class='input'>

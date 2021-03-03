@@ -40,7 +40,7 @@ this can prevent the issue that occurs \href{https://readxl.tidyverse.org/articl
 \item{...}{Other arguments passed to the \code{\link[readxl:read_excel]{readxl::read_excel()}} function.}
 }
 \value{
-A tibble containing the information of the xls/xlsx file \href{https://www1.citavi.com/sub/manual6/en/index.html?exporting_to_excel.html}{created with Citavi via export to Excel}.
+A tibble containing the information of the xls/xlsx file that was \href{https://www1.citavi.com/sub/manual6/en/index.html?exporting_to_excel.html}{created with Citavi via export to Excel}.
 }
 \description{
 Import Excel files created via Citavi Export

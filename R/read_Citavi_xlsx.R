@@ -33,7 +33,7 @@
 #' CitDat <- read_Citavi_xlsx("data/yourCitaviExport.xlsx")
 #' }
 #'
-#' @return A tibble containing the information of the xls/xlsx file [created with Citavi via export to Excel](https://www1.citavi.com/sub/manual6/en/index.html?exporting_to_excel.html).
+#' @return A tibble containing the information of the xls/xlsx file that was [created with Citavi via export to Excel](https://www1.citavi.com/sub/manual6/en/index.html?exporting_to_excel.html).
 #' @importFrom readxl read_excel
 #' @import dplyr
 #' @export

@@ -143,7 +143,7 @@
 <div id="step-2-xlsx-to-r" class="section level1">
 <h1 class="hasAnchor">
 <a href="#step-2-xlsx-to-r" class="anchor"></a>Step 2: xlsx to R</h1>
-<p>The Excel file exported above is available in <code>CitaviR</code> as the example dataset <code>3dupsin5refs.xlsx</code>. Furthermore, <code><a href="../reference/read_Citavi_xlsx.html">read_Citavi_xlsx()</a></code> offers an import function based on <code><a href="https://readxl.tidyverse.org/reference/read_excel.html">readxl::read_xlsx()</a></code> with some functionality specifically for xls/xlsx files created with Citavi via export to Excel.</p>
+<p>The Excel file exported above is available in <code>CitaviR</code> as the example dataset <code>3dupsin5refs.xlsx</code>. Furthermore, <code><a href="../reference/read_Citavi_xlsx.html">read_Citavi_xlsx()</a></code> offers an import function based on <code><a href="https://readxl.tidyverse.org/reference/read_excel.html">readxl::read_excel()</a></code> with some functionality specifically for xls/xlsx files created with Citavi via export to Excel.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="http://tidyverse.tidyverse.org">tidyverse</a></span><span class="op">)</span>
 <span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/SchmidtPaul/CitaviR">CitaviR</a></span><span class="op">)</span>
@@ -153,13 +153,13 @@
 
 <span class="va">CitDat</span>
 <span class="co">#&gt; # A tibble: 5 x 19</span>
-<span class="co">#&gt;   ID     `Short title`  Title Year  Author Categories Groups Abstract `DOI name`</span>
-<span class="co">#&gt;   &lt;chr&gt;  &lt;chr&gt;          &lt;chr&gt; &lt;chr&gt; &lt;chr&gt;  &lt;chr&gt;      &lt;chr&gt;  &lt;chr&gt;    &lt;chr&gt;     </span>
-<span class="co">#&gt; 1 7e04d~ Schmidt, Hart~ Esti~ 2019  Schmi~ 1 catA     Googl~ Broad-s~ 10.2135/c~</span>
-<span class="co">#&gt; 2 2481c~ Schmidt, Hart~ Heri~ 2019  Schmi~ 1 catA     Googl~ In plan~ 10.1534/g~</span>
-<span class="co">#&gt; 3 db3ab~ Schmidt, Hart~ Heri~ 2019  Schmi~ 2 catB     PubMed In plan~ &lt;NA&gt;      </span>
-<span class="co">#&gt; 4 ba575~ Schmidt, Hart~ Hrit~ 2019  Schmi~ 1 catA     TypoDB In plan~ 10.1534/g~</span>
-<span class="co">#&gt; 5 fa402~ Schmidt, Möhr~ More~ 2018  Schmi~ 2 catB     Googl~ Traditi~ 10.2135/c~</span>
+<span class="co">#&gt;   ID     Title  Year  `Short title` Author Categories Groups Abstract `DOI name`</span>
+<span class="co">#&gt;   &lt;chr&gt;  &lt;chr&gt;  &lt;chr&gt; &lt;chr&gt;         &lt;chr&gt;  &lt;chr&gt;      &lt;chr&gt;  &lt;chr&gt;    &lt;chr&gt;     </span>
+<span class="co">#&gt; 1 7e04d~ Estim~ 2019  Schmidt, Har~ Schmi~ 1 catA     Googl~ Broad-s~ 10.2135/c~</span>
+<span class="co">#&gt; 2 2481c~ Herit~ 2019  Schmidt, Har~ Schmi~ 1 catA     Googl~ In plan~ 10.1534/g~</span>
+<span class="co">#&gt; 3 db3ab~ Herit~ 2019  Schmidt, Har~ Schmi~ 2 catB     PubMed In plan~ &lt;NA&gt;      </span>
+<span class="co">#&gt; 4 ba575~ Hrita~ 2019  Schmidt, Har~ Schmi~ 1 catA     TypoDB In plan~ 10.1534/g~</span>
+<span class="co">#&gt; 5 fa402~ More,~ 2018  Schmidt, Möh~ Schmi~ 2 catB     Googl~ Traditi~ 10.2135/c~</span>
 <span class="co">#&gt; # ... with 10 more variables: PubMed ID &lt;chr&gt;, Online address &lt;chr&gt;,</span>
 <span class="co">#&gt; #   Periodical &lt;chr&gt;, Volume &lt;chr&gt;, Number &lt;chr&gt;, Page range &lt;chr&gt;,</span>
 <span class="co">#&gt; #   Locations &lt;chr&gt;, has_attachment &lt;lgl&gt;, red_flag &lt;lgl&gt;, blue_circle &lt;lgl&gt;</span></code></pre></div>
@@ -230,7 +230,7 @@
 <div id="step-5-xlsx-to-citavi" class="section level1">
 <h1 class="hasAnchor">
 <a href="#step-5-xlsx-to-citavi" class="anchor"></a>Step 5: xlsx to Citavi</h1>
-<p>We now make use of the custom Citavi macros to import the information from excel to Citavi. In this case, we can make use of <a href="https://github.com/SchmidtPaul/CitaviRMacros/tree/main/CIMR%20Import/CIMR%20002%20-%20Import%20handle_obvious_dup%20info">CIMR 002</a>, which is one of the macro templates provided in the repository <a href="https://github.com/SchmidtPaul/CitaviRMacros">CitaviRMacros</a>. As can be seen in <a href="https://github.com/SchmidtPaul/CitaviRMacros/tree/main/CIMR%20Import/CIMR%20002%20-%20Import%20handle_obvious_dup%20info#cimr-002-import-handle_obvious_dups"><strong>this gif</strong> ⏯</a>, we here store the <code>obv_dup_id</code>s into <em>Custom field 1</em>, while it is made sure to import the <em>PubMed ID</em> information handled in <a href="#handle-obvious-duplicates">step 3</a>. In order to also import the handled categories, one would additionaly use <a href="https://github.com/SchmidtPaul/CitaviRMacros/tree/main/CIMR%20Import/CIMR%20010%20-%20Import%20categories">CIMR 010</a> <strong>[TO DO]</strong>.</p>
+<p>We now make use of the custom Citavi macros to import the information from excel to Citavi. In this case, we can make use of <a href="https://github.com/SchmidtPaul/CitaviRMacros/tree/main/CIMR%20Import/CIMR%20002%20-%20Import%20handle_obvious_dup%20info">CIMR 002</a>, which is one of the macro templates provided in the repository <a href="https://github.com/SchmidtPaul/CitaviRMacros">CitaviRMacros</a>. As can be seen in <a href="https://github.com/SchmidtPaul/CitaviRMacros/tree/main/CIMR%20Import/CIMR%20002%20-%20Import%20handle_obvious_dup%20info#cimr-002-import-handle_obvious_dups"><strong>this gif</strong> ⏯</a>{:target="_blank"}, we here store the <code>obv_dup_id</code>s into <em>Custom field 1</em>, while it is made sure to import the <em>PubMed ID</em> information handled in <a href="#handle-obvious-duplicates">step 3</a>. In order to also import the handled categories, one would additionaly use <a href="https://github.com/SchmidtPaul/CitaviRMacros/tree/main/CIMR%20Import/CIMR%20010%20-%20Import%20categories">CIMR 010</a> <strong>[TO DO]</strong>.</p>
 <p>Afterwards, we could delete all titles in the Citavi project that are not <code>dup_01</code> and get rid of all obvious duplicates without losing information.</p>
 <blockquote>
 <p><strong>1st time setup</strong></p>

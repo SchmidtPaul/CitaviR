@@ -3,14 +3,13 @@ test_that("missing path gives error", {
 
 })
 
+path3d5r <- example_xlsx('3dupsin5refs.xlsx')
 
-# Tests based on 3dupsin5refs ---------------------------------------------
-path <- example_xlsx('3dupsin5refs.xlsx')
-
+# basic read_xlsx ---------------------------------------------------------
 test_that("basic read_xlsx [for 3dupsin5refs]", {
-  raw  <- suppressMessages(readxl::read_xlsx(path))
+  raw  <- suppressMessages(readxl::read_xlsx(path3d5r))
   dat  <- read_Citavi_xlsx(
-    path,
+    path3d5r,
     keepMarksCols = FALSE,
     useYearDerived = FALSE,
     setSuggestedColOrder = FALSE
@@ -18,15 +17,17 @@ test_that("basic read_xlsx [for 3dupsin5refs]", {
 
   expect_equal(dat, raw[,-c(1:3)])
   expect_true(is.data.frame(dat))
-  expect_true(nrow(dat) > 0)
+  expect_true(nrow(dat) == 5)
   expect_true(ncol(dat) > 0)
 
 })
 
+
+# keepMarksCols -----------------------------------------------------------
 test_that("keepMarksCols [for 3dupsin5refs]", {
-  raw  <- suppressMessages(readxl::read_xlsx(path))
-  dat_FALSE <- read_Citavi_xlsx(path, keepMarksCols = FALSE)
-  dat_TRUE  <- read_Citavi_xlsx(path, keepMarksCols = TRUE)
+  raw  <- suppressMessages(readxl::read_xlsx(path3d5r))
+  dat_FALSE <- read_Citavi_xlsx(path3d5r, keepMarksCols = FALSE)
+  dat_TRUE  <- read_Citavi_xlsx(path3d5r, keepMarksCols = TRUE)
 
   raw_names <- c("...1", "...2", "...3")
   new_names <- c("has_attachment", "red_flag", "blue_circle")
@@ -46,10 +47,12 @@ test_that("keepMarksCols [for 3dupsin5refs]", {
 
 })
 
+
+# useYearDerived ----------------------------------------------------------
 test_that("useYearDerived [for 3dupsin5refs]", {
-  raw  <- suppressMessages(readxl::read_xlsx(path))
-  dat_FALSE <- read_Citavi_xlsx(path, useYearDerived = FALSE)
-  dat_TRUE  <- read_Citavi_xlsx(path, useYearDerived = TRUE)
+  raw  <- suppressMessages(readxl::read_xlsx(path3d5r))
+  dat_FALSE <- read_Citavi_xlsx(path3d5r, useYearDerived = FALSE)
+  dat_TRUE  <- read_Citavi_xlsx(path3d5r, useYearDerived = TRUE)
 
   expect_true("Year" %in% names(raw))
   expect_true("Year derived" %in% names(raw))
@@ -66,10 +69,12 @@ test_that("useYearDerived [for 3dupsin5refs]", {
 
 })
 
+
+# setSuggestedColOrder ----------------------------------------------------
 test_that("setSuggestedColOrder [for 3dupsin5refs]", {
-  raw  <- suppressMessages(readxl::read_xlsx(path))
-  dat_FALSE <- read_Citavi_xlsx(path, setSuggestedColOrder = FALSE)
-  dat_TRUE  <- read_Citavi_xlsx(path, setSuggestedColOrder = TRUE)
+  raw  <- suppressMessages(readxl::read_xlsx(path3d5r))
+  dat_FALSE <- read_Citavi_xlsx(path3d5r, setSuggestedColOrder = FALSE)
+  dat_TRUE  <- read_Citavi_xlsx(path3d5r, setSuggestedColOrder = TRUE)
 
   expect_true(ncol(dat_TRUE) == ncol(dat_FALSE))
   expect_true(all(names(dat_TRUE) %in% names(dat_FALSE)))
@@ -78,3 +83,16 @@ test_that("setSuggestedColOrder [for 3dupsin5refs]", {
   expect_false(all(names(dat_TRUE) == names(dat_FALSE)))
 
 })
+
+
+# setSuggestedColTypes ----------------------------------------------------
+test_that("setSuggestedColTypes [for 3dupsin5refs]", {
+
+  expect_true(is.data.frame(CitaviR:::field_translations))
+
+  raw  <- suppressMessages(readxl::read_xlsx(path3d5r))
+  dat_FALSE <- read_Citavi_xlsx(path3d5r, setSuggestedColTypes = FALSE)
+  dat_TRUE  <- read_Citavi_xlsx(path3d5r, setSuggestedColTypes = TRUE)
+
+})
+
