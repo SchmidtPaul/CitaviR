@@ -7,6 +7,7 @@
 #' \code{pot_dup_id} is moved right next to the \code{obv_dup_id} column.
 #' @param maxNumberOfComp Maximum number of clean_title similarity calculations to be made.
 #' It is set to 1,000,000 by default (which corresponds to ~ 1414 clean_titles). TO DO: Document while-loop.
+#' @param quiet If \code{TRUE}, all output will be suppressed.
 #'
 #' @details
 #' `r lifecycle::badge("maturing")` \cr
@@ -27,6 +28,7 @@
 #'    dplyr::select(clean_title)
 #'
 #' @return A tibble containing one new column: \code{pot_dup_id}.
+#'
 #' @importFrom RcppAlgos comboGeneral
 #' @importFrom scales percent
 #' @importFrom stats na.omit
@@ -34,11 +36,12 @@
 #' @importFrom stringr str_length
 #' @importFrom stringr str_pad
 #' @importFrom tidyr pivot_longer
+#' @import crayon
 #' @import dplyr
-#' @import tictoc
+#'
 #' @export
 
-find_potential_dups <- function(CitDat, minSimilarity = 0.6, potDupAfterObvDup = TRUE, maxNumberOfComp = 1000000) {
+find_potential_dups <- function(CitDat, minSimilarity = 0.6, potDupAfterObvDup = TRUE, maxNumberOfComp = 1000000, quiet = FALSE) {
 
   bignum <- function(x){format(x, digits = 0, big.mark = ",", scientific = FALSE)}
 
@@ -59,11 +62,26 @@ find_potential_dups <- function(CitDat, minSimilarity = 0.6, potDupAfterObvDup =
 
   if (NumberOfComp > maxNumberOfComp) {
 
-    cat("clean_title comparisons =", bignum(NumberOfComp), ">", bignum(maxNumberOfComp), "= maxNumberOfComp",
-        "\n  Trying to ignore comparisons with large differences in character length:\n   ")
+    # Msg: Too many comparisons
+    if (!quiet) {
+      cat(
+        blue("clean_title comparisons ="),
+        bignum(NumberOfComp),
+        red(">"),
+        bignum(maxNumberOfComp),
+        blue(
+          "= maxNumberOfComp\n",
+          "  Trying to ignore comparisons with large differences in character length:"
+        ),
+        "\n   "
+      )
+    }
 
+    # Reduce until not too many comparisons
     while (NumberOfComp > maxNumberOfComp) {
-      cat(ncharDiffCutoff, "")
+      if (!quiet) {
+        cat(blue(ncharDiffCutoff, ""))
+      }
       ncharDiffCutoff <- ncharDiffCutoff - 1
       ct_similar <-
         ct_similar %>% filter(abs(.data$ct1nchar - .data$ct2nchar) <= ncharDiffCutoff)
@@ -74,14 +92,39 @@ find_potential_dups <- function(CitDat, minSimilarity = 0.6, potDupAfterObvDup =
       }
     }
 
-    cat("\n   clean_title comparisons with a character length difference >",
-        ncharDiffCutoff, "are ignored.\n")
+    # Msg: Suitable reduction
+    if (!quiet) {
+      cat(
+        "\n",
+        blue(
+          "   clean_title comparisons with a character length difference >",
+          ncharDiffCutoff,
+          "are ignored."
+        ),
+        "\n"
+      )
+    }
   }
 
-  cat("clean_title comparisons =", bignum(NumberOfComp), "<", bignum(maxNumberOfComp), "= maxNumberOfComp\n",
-      "  calculating similarity...\n")
+  # Msg: Not too many comparisons
+  if (!quiet) {
+    cat(
+      blue("clean_title comparisons ="),
+      bignum(NumberOfComp),
+      green("<"),
+      bignum(maxNumberOfComp),
+      blue("= maxNumberOfComp"),
+      "\n"
+    )
+  }
 
-  tictoc::tic("   calculating similarity complete") # TO DO: Progress bar without losing efficiency?
+
+  # calculate similarity ----------------------------------------------------
+  if (!quiet) {
+    cat(blue("   calculating similarity now..."), "\n")
+  }
+
+  sta <- Sys.time() # TO DO: Progress bar without losing efficiency?
   ct_similar <- ct_similar %>%
     mutate(
       similarity = 1 -
@@ -89,8 +132,17 @@ find_potential_dups <- function(CitDat, minSimilarity = 0.6, potDupAfterObvDup =
         pmax(.data$ct1nchar, .data$ct2nchar)
       # RecordLinkage::levenshteinSim(str1 = .data$ct1, str2 = .data$ct2), # slower alternative
     )
-  tictoc::toc()
+  end <- Sys.time()
 
+  # Msg: Similarity calculation took this long
+  if (!quiet) {
+    cat(blue(
+      "   calculating similarity done:",
+      round(end - sta, 1),
+      "sec elapsed"
+    ),
+    "\n")
+  }
 
   # create clean_title_similarity -------------------------------------------
   ct_similar <- ct_similar %>%                    # similarity per pair

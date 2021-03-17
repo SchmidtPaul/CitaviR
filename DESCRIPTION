@@ -33,7 +33,6 @@ Imports:
     purrr,
     stringdist,
     RcppAlgos,
-    tictoc,
     textcat
 Suggests: 
     testthat (>= 3.0.0),

@@ -13,7 +13,7 @@ pre {background-color: #222222;
 .ch,.st  {color: #4E83C7;}  /* string */
 .co      {color: #B0BEC5;}  /* comment */
 
-.kw {color: #FF9800;}         /* functions */
+.kw         {color: #FF9800;} /* functions */
 .sourceLine {color: #FCE4EC;} /* functions */
 
 
