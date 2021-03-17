@@ -165,22 +165,26 @@ language.</p></td>
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
     <p><a href='https://lifecycle.r-lib.org/articles/stages.html#experimental'><img src='figures/lifecycle-experimental.svg' alt='[Experimental]' /></a> <br />
-Currently this only works for files that were generated while Citavi
-was set to "English" so that column names are "Short Title" etc.</p>
+The underyling core function determining the language is <code><a href='https://rdrr.io/pkg/textcat/man/textcat.html'>textcat::textcat()</a></code>.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='va'>path</span> <span class='op'>&lt;-</span> <span class='fu'><a href='example_xlsx.html'>example_xlsx</a></span><span class='op'>(</span><span class='st'>"3dupsin5refs.xlsx"</span><span class='op'>)</span>
-<span class='fu'><a href='read_Citavi_xlsx.html'>read_Citavi_xlsx</a></span><span class='op'>(</span><span class='va'>path</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
-   <span class='fu'>detect_language</span><span class='op'>(</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
-   <span class='fu'>dplyr</span><span class='fu'>::</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/select.html'>select</a></span><span class='op'>(</span><span class='va'>Title</span>, <span class='va'>Abstract</span>, <span class='va'>det_lang</span>, <span class='va'>det_lang_wanted</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span style='color: #949494;'># A tibble: 5 x 4</span><span>
-#&gt;   Title                     Abstract                    det_lang det_lang_wanted
-#&gt;   </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>                     </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>                       </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>    </span><span style='color: #949494;font-style: italic;'>&lt;lgl&gt;</span><span>          
-#&gt; </span><span style='color: #BCBCBC;'>1</span><span> Estimating broad-sense h~ Broad-sense heritability i~ english  TRUE           
-#&gt; </span><span style='color: #BCBCBC;'>2</span><span> Heritability in plant br~ In plant breeding, heritab~ english  TRUE           
-#&gt; </span><span style='color: #BCBCBC;'>3</span><span> Heritability in Plant Br~ In plant breeding, heritab~ english  TRUE           
-#&gt; </span><span style='color: #BCBCBC;'>4</span><span> Hritability in Plant Bre~ In plant breeding, heritab~ english  TRUE           
-#&gt; </span><span style='color: #BCBCBC;'>5</span><span> More, Larger, Simpler: H~ Traditionally, cultivar ev~ english  TRUE           </div><div class='input'>
+    <pre class="examples"><div class='input'><span class='va'>CitDat</span> <span class='op'>&lt;-</span> <span class='fu'>CitaviR</span><span class='fu'>::</span><span class='va'><a href='diabetesprevalence.html'>diabetesprevalence</a></span> <span class='op'>%&gt;%</span>
+  <span class='fu'>dplyr</span><span class='fu'>::</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/slice.html'>slice</a></span><span class='op'>(</span><span class='fl'>1952</span><span class='op'>:</span><span class='fl'>1955</span>, <span class='fl'>4390</span><span class='op'>:</span><span class='fl'>4393</span><span class='op'>)</span>
+
+<span class='va'>CitDat</span> <span class='op'>%&gt;%</span>
+  <span class='fu'>detect_language</span><span class='op'>(</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+  <span class='fu'>dplyr</span><span class='fu'>::</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/select.html'>select</a></span><span class='op'>(</span><span class='va'>Abstract</span>, <span class='va'>det_lang</span>, <span class='va'>det_lang_wanted</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; <span style='color: #949494;'># A tibble: 8 x 3</span><span>
+#&gt;   Abstract                                              det_lang det_lang_wanted
+#&gt;   </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>                                                 </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>    </span><span style='color: #949494;font-style: italic;'>&lt;lgl&gt;</span><span>          
+#&gt; </span><span style='color: #BCBCBC;'>1</span><span> Diabetes mellitus is an important chronic disease ca~ english  TRUE           
+#&gt; </span><span style='color: #BCBCBC;'>2</span><span> BACKGROUND: Cardiovascular diseases are among the mo~ english  TRUE           
+#&gt; </span><span style='color: #BCBCBC;'>3</span><span> BAKGRUNN: Diabetes er assosiert med koronarsykdom, o~ danish   FALSE          
+#&gt; </span><span style='color: #BCBCBC;'>4</span><span> Background: Diabetes is a risk factor for infection ~ english  TRUE           
+#&gt; </span><span style='color: #BCBCBC;'>5</span><span> INTRODUCCIÓN: Las enfermedades que motivan hospitali~ spanish  FALSE          
+#&gt; </span><span style='color: #BCBCBC;'>6</span><span> Type 2 diabetes mellitus prevalence has increased wo~ english  TRUE           
+#&gt; </span><span style='color: #BCBCBC;'>7</span><span> INTRODUCTION: Agenesis of the dorsal pancreas (ADP) ~ english  TRUE           
+#&gt; </span><span style='color: #BCBCBC;'>8</span><span> INTRODUCTION: Diabetic retinopathy (DR) is the leadi~ english  TRUE           </div><div class='input'>
 </div></span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

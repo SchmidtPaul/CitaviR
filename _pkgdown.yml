@@ -51,7 +51,8 @@ reference:
   - read_Citavi_xlsx
   - write_Citavi_xlsx
 
-- title: Utility
+- title: Utility & Data
   contents:
   - '`%not_in%`'
   - example_xlsx
+  - diabetesprevalence

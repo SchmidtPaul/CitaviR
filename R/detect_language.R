@@ -12,14 +12,15 @@
 #'
 #' @details
 #' `r lifecycle::badge("experimental")` \cr
-#' Currently this only works for files that were generated while Citavi
-#' was set to "English" so that column names are "Short Title" etc.
+#' The underyling core function determining the language is \code{textcat::textcat()}.
 #'
 #' @examples
-#' path <- example_xlsx("3dupsin5refs.xlsx")
-#' read_Citavi_xlsx(path) %>%
-#'    detect_language() %>%
-#'    dplyr::select(Title, Abstract, det_lang, det_lang_wanted)
+#' CitDat <- CitaviR::diabetesprevalence %>%
+#'   dplyr::slice(1952:1955, 4390:4393)
+#'
+#' CitDat %>%
+#'   detect_language() %>%
+#'   dplyr::select(Abstract, det_lang, det_lang_wanted)
 #'
 #' @return A tibble containing at least one additional column: \code{det_lang}.
 #' @importFrom textcat textcat
@@ -28,6 +29,18 @@
 #' @export
 #'
 detect_language <- function (CitDat, fieldsToDetectIn = c("Abstract"), wantedLanguage = c("english")) {
+
+  # stop if empty arguments -------------------------------------------
+  if (is.null(all_of(fieldsToDetectIn))) {
+    stop("'fieldsToDetectIn' must not be NULL/NA.")
+  }
+
+
+  # check if fieldsToDetectIn are present -----------------------------------
+  if (!all_of(fieldsToDetectIn %in% names(CitDat))) {
+    stop(paste("Could not be found in dataset column names:\n",
+               fieldsToDetectIn[fieldsToDetectIn %not_in% names(CitDat)]))
+  }
 
 
   # collapse fieldsToDetectIn -----------------------------------------------
