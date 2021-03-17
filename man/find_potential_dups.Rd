@@ -8,7 +8,8 @@ find_potential_dups(
   CitDat,
   minSimilarity = 0.6,
   potDupAfterObvDup = TRUE,
-  maxNumberOfComp = 1e+06
+  maxNumberOfComp = 1e+06,
+  quiet = FALSE
 )
 }
 \arguments{
@@ -22,6 +23,8 @@ or \code{\link[CitaviR]{handle_obvious_dups}}.}
 
 \item{maxNumberOfComp}{Maximum number of clean_title similarity calculations to be made.
 It is set to 1,000,000 by default (which corresponds to ~ 1414 clean_titles). TO DO: Document while-loop.}
+
+\item{quiet}{If \code{TRUE}, all output will be suppressed.}
 }
 \value{
 A tibble containing one new column: \code{pot_dup_id}.

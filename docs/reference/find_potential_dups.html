@@ -134,7 +134,8 @@
   <span class='va'>CitDat</span>,
   minSimilarity <span class='op'>=</span> <span class='fl'>0.6</span>,
   potDupAfterObvDup <span class='op'>=</span> <span class='cn'>TRUE</span>,
-  maxNumberOfComp <span class='op'>=</span> <span class='fl'>1e+06</span>
+  maxNumberOfComp <span class='op'>=</span> <span class='fl'>1e+06</span>,
+  quiet <span class='op'>=</span> <span class='cn'>FALSE</span>
 <span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
@@ -159,6 +160,10 @@ or <code><a href='handle_obvious_dups.html'>handle_obvious_dups</a></code>.</p><
       <td><p>Maximum number of clean_title similarity calculations to be made.
 It is set to 1,000,000 by default (which corresponds to ~ 1414 clean_titles). TO DO: Document while-loop.</p></td>
     </tr>
+    <tr>
+      <th>quiet</th>
+      <td><p>If <code>TRUE</code>, all output will be suppressed.</p></td>
+    </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
@@ -175,12 +180,12 @@ was set to "English" so that column names are "Short Title" etc.</p>
 <span class='va'>CitDat</span> <span class='op'>&lt;-</span> <span class='fu'><a href='read_Citavi_xlsx.html'>read_Citavi_xlsx</a></span><span class='op'>(</span><span class='va'>path</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
    <span class='fu'><a href='find_obvious_dups.html'>find_obvious_dups</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
    <span class='fu'>find_potential_dups</span><span class='op'>(</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; clean_title comparisons = 6 &lt; 1,000,000 = maxNumberOfComp
-#&gt;    calculating similarity...
-#&gt;    calculating similarity complete: 0 sec elapsed</div><div class='input'>
+</div><div class='output co'>#&gt; <span style='color: #0000BB;'>clean_title comparisons =</span><span> 6 </span><span style='color: #00BB00;'>&lt;</span><span> 1,000,000 </span><span style='color: #0000BB;'>= maxNumberOfComp</span><span> 
+#&gt; </span><span style='color: #0000BB;'>   calculating similarity now...</span><span> 
+#&gt; </span><span style='color: #0000BB;'>   calculating similarity done: 0 sec elapsed</span><span> </div><div class='input'>
 <span class='va'>CitDat</span> <span class='op'>%&gt;%</span>
    <span class='fu'>dplyr</span><span class='fu'>::</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/select.html'>select</a></span><span class='op'>(</span><span class='va'>clean_title_id</span>, <span class='va'>obv_dup_id</span>, <span class='va'>pot_dup_id</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span style='color: #949494;'># A tibble: 5 x 3</span><span>
+</div><div class='output co'>#&gt; </span><span style='color: #949494;'># A tibble: 5 x 3</span><span>
 #&gt;   clean_title_id obv_dup_id pot_dup_id                  
 #&gt;   </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>          </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>      </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>                       
 #&gt; </span><span style='color: #BCBCBC;'>1</span><span> ct_01          dup_01     </span><span style='color: #BB0000;'>NA</span><span>                          

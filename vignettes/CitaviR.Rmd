@@ -129,7 +129,9 @@ knitr::include_graphics("https://github.com/SchmidtPaul/CitaviR/blob/master/vign
 # Step 5: xlsx to Citavi
 
 We now make use of the custom Citavi macros to import the information from excel to Citavi.
-In this case, we can make use of [CIMR 002](https://github.com/SchmidtPaul/CitaviRMacros/tree/main/CIMR%20Import/CIMR%20002%20-%20Import%20handle_obvious_dup%20info), which is one of the macro templates provided in the repository [CitaviRMacros](https://github.com/SchmidtPaul/CitaviRMacros). As can be seen in [**this gif** &#9199;](https://github.com/SchmidtPaul/CitaviRMacros/tree/main/CIMR%20Import/CIMR%20002%20-%20Import%20handle_obvious_dup%20info#cimr-002-import-handle_obvious_dups){:target="_blank"}, we here store the `obv_dup_id`s into *Custom field 1*, while it is made sure to import the *PubMed ID* information handled in [step 3](#handle-obvious-duplicates). In order to also import the handled categories, one would additionaly use [CIMR 010](https://github.com/SchmidtPaul/CitaviRMacros/tree/main/CIMR%20Import/CIMR%20010%20-%20Import%20categories) **[TO DO]**.
+In this case, we can make use of [CIMR 002](https://github.com/SchmidtPaul/CitaviRMacros/tree/main/CIMR%20Import/CIMR%20002%20-%20Import%20handle_obvious_dup%20info), which is one of the macro templates provided in the repository [CitaviRMacros](https://github.com/SchmidtPaul/CitaviRMacros). As can be seen in [**this gif** &#9199;](https://github.com/SchmidtPaul/CitaviRMacros/tree/main/CIMR%20Import/CIMR%20002%20-%20Import%20handle_obvious_dup%20info#cimr-002-import-handle_obvious_dups), we here store the `obv_dup_id`s into *Custom field 1*, while it is made sure to import the *PubMed ID* information handled in [step 3](#handle-obvious-duplicates). In order to also import the handled categories, one would additionaly use [CIMR 010](https://github.com/SchmidtPaul/CitaviRMacros/tree/main/CIMR%20Import/CIMR%20010%20-%20Import%20categories) **[TO DO]**.
+
+**[TO DO Screenshot with "Click for gif"]**
 
 Afterwards, we could delete all titles in the Citavi project that are not `dup_01` and get rid of all obvious duplicates without losing information.
 
