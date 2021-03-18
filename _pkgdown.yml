@@ -11,9 +11,6 @@ template:
   params:
     bootswatch: cosmo
 
-
-
-
 navbar:
   structure:
     left:
@@ -28,15 +25,28 @@ navbar:
     home:
       icon: fas fa-home fa-lg
       href: index.html
-    reference:
-      text: Reference
-      href: reference/index.html
     intro:
       text: Get started
       href: articles/CitaviR.html
+    articles:
+      text: Articles
+      menu:
+        - text: 'Obvious & potential dups'
+          href: articles/obv_pot_dups.html
+    reference:
+      text: Reference
+      href: reference/index.html
     github:
       icon: fab fa-github fa-lg
       href: https://github.com/SchmidtPaul/CitaviR/
+
+
+articles:
+- title: Articles
+  contents:
+  - CitaviR
+  - obv_pot_dups
+
 
 reference:
 - title: Core functions

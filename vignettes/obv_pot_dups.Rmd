@@ -1,0 +1,172 @@
+---
+title: "Obvious & potential duplicates"
+output: 
+  rmarkdown::html_document:
+    toc: true
+    fig_width: 10.08
+    fig_height: 6
+description: >
+  Learn about finding and handling obvious & potential duplicates.
+vignette: >
+  %\VignetteIndexEntry{Obvious & potential duplicates}
+  \usepackage[utf8]{inputenc}
+  %\VignetteEngine{knitr::rmarkdown}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  dpi = 450
+)
+set.seed(42)
+```
+
+# Duplicates in Citavi
+
+Chances are that whenever multiple references are gathered, some of them are duplicates. Citavi knows "it is almost inevitable that a reference may appear two or more times in your Citavi project" and [suggests to eliminate duplicates](https://www1.citavi.com/sub/manual6/en/index.html?eliminating_duplicates.html) since they "waste time and space and distract you from your work". More specifically, Citavi has a `Show duplicates only` button you may use to "compare the references and delete the duplicates you don't need".
+
+This approach is fine. However, especially when working with large Citavi projects (>1,000 references) *e.g.* when conducting a systematic review, the number of duplicates may become so large that a few issues arise:
+
+  1. Still a lot of manual work
+     - Showing the duplicates (in Table View) means that the user needs to screen and manually click every duplicate to deal with it.
+  2. Choosing instead of combining
+     - Instead of choosing the *better* duplicate it may sometimes be advantageous to combine/gather the information of all duplicates into the one *non-duplicate*. This can be done manually, but would lead to even more manual work.
+  3. Citavi's way of identifying duplicates can be too sensitive
+     - Spoiler: The duplicate identification methods of Citavi and CitaviR are actually quite similar (see below). Nevertheless, CitaviR tries a slightly different approach and leaves some decisions to the user.
+     
+> One may point out that in their Citavi projects the number of duplicates was never really large, since they checked the `[ ] Don't add project duplicates` box during the import process. While this is indeed true for many, some groups like to keep all references including duplicates in their project at all times and simply move them to *e.g.* a duplicate category or group. This can be beneficial *e.g.* in a systematic review because one can always verify and compare to the total number of found references.
+
+# Duplicates in CitaviR
+
+CitaviR distinguishes between two types of duplicates:
+
+  * **Obvious duplicates** are undoubtedly duplicates and handled automatically without any further user interaction.
+  * **Potential duplicates** are likely duplicates but the ultimate decision should be left to the user.
+  
+Shortly put, the suggested way of dealing with duplicates in CitaviR is therefore:
+
+```{r, eval=FALSE}
+CitDat %>% 
+  find_obvious_dups() %>%   # 1. identify obvious   duplicates
+  handle_obvious_dups() %>% # 2. handle   obvious   duplicates
+  find_potential_dups()     # 3. identify potential duplicates
+```
+
+In this vignette we revisit [Step 3 of the example in the Get started vigniette](CitaviR.html#step-3-process-data-in-r) and go into more detail.
+
+```{r example, message = FALSE, warning = FALSE}
+library(tidyverse)
+library(CitaviR)
+
+my_path <- example_xlsx("3dupsin5refs.xlsx") # in real life: replace with path to your xlsx file
+CitDat  <- read_Citavi_xlsx(path = my_path)
+```
+
+## 1. Find obvious duplicates
+
+### Tl;dr
+
+CitaviR identifies obvious duplicates by first creating a `clean_title` for each reference (*i.e* a simplified string consisting of Title and Year) and then comparing those between all references. Obvious duplicates have identical `clean_title`. 
+
+```{r}
+CitDat <- CitDat %>% 
+  find_obvious_dups()
+```
+
+### Details
+
+CitaviR identifies obvious duplicates by first creating a `clean_title` which is basically `Title` and `Year` pasted together and processed by `janitor::make_clean_names()`. The latter *e.g.* converts the pasted string to all-lowercase and removes special characters and unnecessary spaces.
+
+```{r}
+CitDat %>% 
+  select(Title, clean_title)
+```
+
+All references that have identical `clean_title` are taken as obvious duplicates. Three additional columns are created that allow for better handling in upcoming steps.
+
+```{r}
+CitDat %>% 
+  select(clean_title:obv_dup_id)
+```
+
+If multiple references were found to have identical `clean_title`, their `has_obv_dup` is set to `TRUE`. Obvious duplicates share the same `clean_title_id` but have unique `obv_dup_id`. The "first" duplicate (*i.e.* `obv_dup_id == dup_01`) can be seen as the *non-duplicate* and thus the only version of a reference that will be investigated further after duplicate-handling.
+
+Note that a pair of obvious duplicates was identified (`clean_title_id == ct_02`). However, due to a single typo `ct_03` was not (yet) identified as a duplicate. 
+
+Further note that by default `preferDupsWithPDF` is set to `TRUE`. While the handling of varying information between duplicates is mostly done in the next step via `handle_obvious_dups()`, this is the only exception. When `TRUE`, the exported fields `has_attachment` and `Locations` are used to sort the references. They are sorted in a way that in case of obvious duplicates being identified, `dup_01` is always the one reference that has the most PDF attachments in the Citavi project. Thus, *PDF-attachment* is the only attribute where CitaviR chooses the "better" duplicate while all other attributes are merged (not chosen) in the next step.
+
+## 2. Handle obvious duplicates
+
+### Tl;dr
+
+CitaviR merges varying information between obvious duplicates so that the loss of information is reduced when ultimately getting rid of all except `dup_01`. 
+
+```{r, eval=FALSE}
+CitDat %>% 
+  find_obvious_dups() %>% 
+  handle_obvious_dups(fieldsToHandle = ...) # must be added
+```
+
+### Details
+
+Sometimes duplicates hold different information as it is the case here for `ct_02` and the columns `PubMed ID`, `DOI name` and `Categories`:
+
+```{r}
+CitDat %>% 
+  filter(clean_title_id == "ct_02") %>% 
+  select(clean_title_id, obv_dup_id, `DOI name`, `PubMed ID`, Categories)
+```
+
+In such a scenario it would be best to gather all information into `dup_01`. Depending on the type of information, CitaviR does this in two different way:
+
+  * For simple fields (containing text/strings) such as `DOI name`, `PubMed ID`, `Abstract` etc., CitaviR currently simply *fills up* (`tidyr::fill(all_of(fieldsToHandle), .direction = "up")`) entries.
+  * For the knowledge items `Categories`, `Groups` and `Keywords`, CitaviR collapses unique entries into the respective entry for `dup_01`, while entries for all other obvious duplicates are replaced by a provided string:
+  
+```{r}
+CitDat <- CitDat %>% 
+  handle_obvious_dups(fieldsToHandle = c("DOI name", "PubMed ID"), 
+                      nameDupCategories = "3 duplicate") 
+
+CitDat %>% 
+  filter(clean_title_id == "ct_02") %>% 
+  select(clean_title_id, obv_dup_id, `DOI name`, `PubMed ID`, Categories)
+```
+  
+Note that there is one exception: If `Online address` is included in the `fieldsToHandle`, it is not just *filled up* like the others. Instead, per `clean_title_id` all URLs from `Online address` and `Location` are combined and ranked. As an example: [CitaviR currently ranks](https://github.com/SchmidtPaul/CitaviR/blob/ea4329067f9c602573b3bd2229658faca478ca09/R/handle_obvious_dups.R#L85) URLs including "doi.org" as the best possible entry for `Online address`. Finally, the URL with the highest rank is set as the `Online address` for `dup_01`.
+  
+> While having nothing to do with CitaviR, there is a [custom Citavi macro](https://github.com/istvank/Citavi-Macros/blob/master/merge-duplicates.cs) created by [István](https://github.com/istvank) that has a comparable approach to merging varying duplicate information (from duplicates identified in Citavi).
+
+## 3. Find potential duplicates
+
+### Tl;dr
+
+After obvious duplicates have been dealt with, potential duplicates can be identified among the remaining references as those that don't have identical, but similar `clean_title`. 
+
+```{r, eval=FALSE}
+CitDat %>% 
+  find_obvious_dups() %>% 
+  handle_obvious_dups(fieldsToHandle = ...) %>% # must be added
+  find_potential_dups()
+```
+
+### Details
+
+For all remaining references (*i.e.* all `dup_01`) CitaviR identifies potential duplicates as those references that have `clean_title` that are similar. Similarity is calculated as the [Levenshtein distance](https://www.wikiwand.com/en/Levenshtein_distance) and by default a similarity > 60% is considered relevant.
+
+```{r}
+CitDat <- CitDat %>% 
+  find_potential_dups()
+
+CitDat %>% 
+  select(clean_title_id, obv_dup_id, pot_dup_id)
+
+CitDat %>% slice(2, 4) %>% select(clean_title) # compare clean_title yourself:
+```
+
+Note that while the typo in the Title prevented `ct_03` being identified as an obvious duplicate of `ct_02`, it is now identified as a potential duplicate.
+
+TO DO: MENTION COMPUTATIONAL BURDEN WITH LARGE NUMBER OF REFERENCES
+
+TO DO: HINT AT HOW TO DEAL WITH IT MACRO AND CITAVI
+
