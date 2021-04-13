@@ -2,7 +2,7 @@
 % Please edit documentation in R/write_Citavi_xlsx.R
 \name{write_Citavi_xlsx}
 \alias{write_Citavi_xlsx}
-\title{Export}
+\title{Export Excel file (to be imported via Citavi macros)}
 \usage{
 write_Citavi_xlsx(CitDat, read_path = NULL, write_path = NULL, ...)
 }
@@ -16,7 +16,7 @@ write_Citavi_xlsx(CitDat, read_path = NULL, write_path = NULL, ...)
 \item{...}{Other arguments passed to the \code{\link[openxlsx:write.xlsx]{openxlsx::write.xlsx()}} function.}
 }
 \description{
-Export
+Export Excel file (to be imported via Citavi macros)
 }
 \details{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#maturing}{\figure{lifecycle-maturing.svg}{options: alt='[Maturing]'}}}{\strong{[Maturing]}}

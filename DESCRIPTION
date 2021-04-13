@@ -1,7 +1,7 @@
 Package: CitaviR
 Type: Package
 Title: A set of tools for dealing with Citavi data
-Version: 0.3.0
+Version: 0.4.0
 Authors@R: 
     c(person(given = "Paul",
              family = "Schmidt",
@@ -33,7 +33,9 @@ Imports:
     purrr,
     stringdist,
     RcppAlgos,
-    textcat
+    textcat,
+    DBI,
+    RSQLite
 Suggests: 
     testthat (>= 3.0.0),
     knitr,

@@ -3,8 +3,9 @@ pkgdown: 1.6.1
 pkgdown_sha: ~
 articles:
   CitaviR: CitaviR.html
+  excel_instead_of_sql: excel_instead_of_sql.html
   obv_pot_dups: obv_pot_dups.html
-last_built: 2021-03-18T15:56Z
+last_built: 2021-04-11T12:35Z
 urls:
   reference: https://schmidtpaul.github.io/CitaviR/reference
   article: https://schmidtpaul.github.io/CitaviR/articles

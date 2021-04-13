@@ -4,7 +4,8 @@
 #' The following columns \bold{must be present}: \code{ID}, \code{Title}, \code{Year}.
 #' @param dupInfoAfterID If TRUE (default), the newly created columns
 #' \code{clean_title}, \code{clean_title_id}, \code{has_obv_dup} and \code{obv_dup_id}
-#' are moved right next to the \code{ID} column.
+#' are moved right next to the \code{ID} column. Additionally, the \code{ID} column is
+#' moved to the first position.
 #' @param preferDupsWithPDF If TRUE (default), obvious duplicates are sorted by their info
 #' in columns \code{has_attachment} and/or \code{Locations} (given they are present in the dataset).
 #' After sorting, duplicates with the most occurences of \code{".pdf"} in \code{Locations} and a
@@ -16,8 +17,8 @@
 #' was set to "English" so that column names are "Short Title" etc.
 #'
 #' @examples
-#' path <- example_xlsx("3dupsin5refs.xlsx")
-#' read_Citavi_xlsx(path) %>%
+#' example_path <- example_file("3dupsin5refs/3dupsin5refs.ctv6")
+#' read_Citavi_ctv6(example_path) %>%
 #'    find_obvious_dups() %>%
 #'    dplyr::select(clean_title:obv_dup_id)
 #'
@@ -32,9 +33,17 @@
 
 find_obvious_dups <- function(CitDat, dupInfoAfterID = TRUE, preferDupsWithPDF = TRUE) {
 
-  required_cols <- c("ID", "Title", "Year")
+  if ("StaticIDs" %in% names(CitDat)) {
+    CitDat <- CitDat %>% rename("RefID" = "StaticIDs")
+    OriginalRefIDLabel <- "StaticIDs"
+  } else {
+    CitDat <- CitDat %>% rename("RefID" = "ID")
+    OriginalRefIDLabel <- "ID"
+  }
 
-  # ID, Title & Year present? -----------------------------------------------
+  required_cols <- c("RefID", "Title", "Year")
+
+  # RefID, Title & Year present? --------------------------------------------
   for (col_name_i in required_cols) {
     if (col_name_i %not_in% names(CitDat)) {
       stop(paste(col_name_i, "column is missing!"))
@@ -96,14 +105,19 @@ find_obvious_dups <- function(CitDat, dupInfoAfterID = TRUE, preferDupsWithPDF =
   # dupInfoAfterID ----------------------------------------------------------
   if (dupInfoAfterID) {
     CitDat <- CitDat %>%
+      relocate("RefID", dplyr::everything()) %>%
       relocate(c(
         "clean_title",
         "clean_title_id",
         "has_obv_dup",
         "obv_dup_id"
       ),
-      .after = "ID")
+      .after = "RefID")
   }
+
+
+  # Original RefID label ----------------------------------------------------
+  names(CitDat)[names(CitDat) == "RefID"] <- OriginalRefIDLabel
 
 
   # return tibble -----------------------------------------------------------

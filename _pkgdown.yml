@@ -33,6 +33,8 @@ navbar:
       menu:
         - text: 'Obvious & potential dups'
           href: articles/obv_pot_dups.html
+        - text: 'Excel instead of SQL'
+          href: articles/excel_instead_of_sql.html
     reference:
       text: Reference
       href: reference/index.html
@@ -46,6 +48,7 @@ articles:
   contents:
   - CitaviR
   - obv_pot_dups
+  - excel_instead_of_sql
 
 
 reference:
@@ -56,13 +59,15 @@ reference:
   - find_potential_dups
   - detect_language
 
-- title: Dealing with Excel
+- title: Data import/Export
   contents:
+  - read_Citavi_ctv6
+  - update_Citavi_ctv6
   - read_Citavi_xlsx
   - write_Citavi_xlsx
 
 - title: Utility & Data
   contents:
+  - example_file
   - '`%not_in%`'
-  - example_xlsx
-  - diabetesprevalence
+

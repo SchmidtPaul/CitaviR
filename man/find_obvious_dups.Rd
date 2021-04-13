@@ -12,7 +12,8 @@ The following columns \bold{must be present}: \code{ID}, \code{Title}, \code{Yea
 
 \item{dupInfoAfterID}{If TRUE (default), the newly created columns
 \code{clean_title}, \code{clean_title_id}, \code{has_obv_dup} and \code{obv_dup_id}
-are moved right next to the \code{ID} column.}
+are moved right next to the \code{ID} column. Additionally, the \code{ID} column is
+moved to the first position.}
 
 \item{preferDupsWithPDF}{If TRUE (default), obvious duplicates are sorted by their info
 in columns \code{has_attachment} and/or \code{Locations} (given they are present in the dataset).
@@ -32,8 +33,8 @@ Currently this only works for files that were generated while Citavi
 was set to "English" so that column names are "Short Title" etc.
 }
 \examples{
-path <- example_xlsx("3dupsin5refs.xlsx")
-read_Citavi_xlsx(path) \%>\%
+example_path <- example_file("3dupsin5refs/3dupsin5refs.ctv6")
+read_Citavi_ctv6(example_path) \%>\%
    find_obvious_dups() \%>\%
    dplyr::select(clean_title:obv_dup_id)
 

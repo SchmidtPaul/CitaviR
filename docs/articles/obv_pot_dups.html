@@ -40,7 +40,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">CitaviR</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.0</span>
       </span>
     </div>
 
@@ -67,6 +67,9 @@
   <ul class="dropdown-menu" role="menu">
 <li>
       <a href="../articles/obv_pot_dups.html">Obvious &amp; potential dups</a>
+    </li>
+    <li>
+      <a href="../articles/excel_instead_of_sql.html">Excel instead of SQL</a>
     </li>
   </ul>
 </li>
@@ -148,7 +151,7 @@
 <code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="http://tidyverse.tidyverse.org">tidyverse</a></span><span class="op">)</span>
 <span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/SchmidtPaul/CitaviR">CitaviR</a></span><span class="op">)</span>
 
-<span class="va">my_path</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/example_xlsx.html">example_xlsx</a></span><span class="op">(</span><span class="st">"3dupsin5refs.xlsx"</span><span class="op">)</span> <span class="co"># in real life: replace with path to your xlsx file</span>
+<span class="va">my_path</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/example_file.html">example_file</a></span><span class="op">(</span><span class="st">"3dupsin5refs.xlsx"</span><span class="op">)</span> <span class="co"># in real life: replace with path to your xlsx file</span>
 <span class="va">CitDat</span>  <span class="op">&lt;-</span> <span class="fu"><a href="../reference/read_Citavi_xlsx.html">read_Citavi_xlsx</a></span><span class="op">(</span>path <span class="op">=</span> <span class="va">my_path</span><span class="op">)</span></code></pre></div>
 <div id="find-obvious-duplicates" class="section level2">
 <h2 class="hasAnchor">
@@ -167,7 +170,7 @@
 <p>CitaviR identifies obvious duplicates by first creating a <code>clean_title</code> which is basically <code>Title</code> and <code>Year</code> pasted together and processed by <code><a href="https://rdrr.io/pkg/janitor/man/make_clean_names.html">janitor::make_clean_names()</a></code>. The latter <em>e.g.</em> converts the pasted string to all-lowercase and removes special characters and unnecessary spaces.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">CitDat</span> <span class="op">%&gt;%</span> 
-  <span class="fu">select</span><span class="op">(</span><span class="va">Title</span>, <span class="va">clean_title</span><span class="op">)</span>
+  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span><span class="va">Title</span>, <span class="va">clean_title</span><span class="op">)</span>
 <span class="co">#&gt; # A tibble: 5 x 2</span>
 <span class="co">#&gt;   Title                                 clean_title                             </span>
 <span class="co">#&gt;   &lt;chr&gt;                                 &lt;chr&gt;                                   </span>
@@ -179,7 +182,7 @@
 <p>All references that have identical <code>clean_title</code> are taken as obvious duplicates. Three additional columns are created that allow for better handling in upcoming steps.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">CitDat</span> <span class="op">%&gt;%</span> 
-  <span class="fu">select</span><span class="op">(</span><span class="va">clean_title</span><span class="op">:</span><span class="va">obv_dup_id</span><span class="op">)</span>
+  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span><span class="va">clean_title</span><span class="op">:</span><span class="va">obv_dup_id</span><span class="op">)</span>
 <span class="co">#&gt; # A tibble: 5 x 4</span>
 <span class="co">#&gt;   clean_title                              clean_title_id has_obv_dup obv_dup_id</span>
 <span class="co">#&gt;   &lt;chr&gt;                                    &lt;chr&gt;          &lt;lgl&gt;       &lt;chr&gt;     </span>
@@ -211,8 +214,8 @@
 <p>Sometimes duplicates hold different information as it is the case here for <code>ct_02</code> and the columns <code>PubMed ID</code>, <code>DOI name</code> and <code>Categories</code>:</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">CitDat</span> <span class="op">%&gt;%</span> 
-  <span class="fu"><a href="https://rdrr.io/r/stats/filter.html">filter</a></span><span class="op">(</span><span class="va">clean_title_id</span> <span class="op">==</span> <span class="st">"ct_02"</span><span class="op">)</span> <span class="op">%&gt;%</span> 
-  <span class="fu">select</span><span class="op">(</span><span class="va">clean_title_id</span>, <span class="va">obv_dup_id</span>, <span class="va">`DOI name`</span>, <span class="va">`PubMed ID`</span>, <span class="va">Categories</span><span class="op">)</span>
+  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="va">clean_title_id</span> <span class="op">==</span> <span class="st">"ct_02"</span><span class="op">)</span> <span class="op">%&gt;%</span> 
+  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span><span class="va">clean_title_id</span>, <span class="va">obv_dup_id</span>, <span class="va">`DOI name`</span>, <span class="va">`PubMed ID`</span>, <span class="va">Categories</span><span class="op">)</span>
 <span class="co">#&gt; # A tibble: 2 x 5</span>
 <span class="co">#&gt;   clean_title_id obv_dup_id `DOI name`                  `PubMed ID` Categories</span>
 <span class="co">#&gt;   &lt;chr&gt;          &lt;chr&gt;      &lt;chr&gt;                       &lt;chr&gt;       &lt;chr&gt;     </span>
@@ -229,8 +232,8 @@
                       nameDupCategories <span class="op">=</span> <span class="st">"3 duplicate"</span><span class="op">)</span> 
 
 <span class="va">CitDat</span> <span class="op">%&gt;%</span> 
-  <span class="fu"><a href="https://rdrr.io/r/stats/filter.html">filter</a></span><span class="op">(</span><span class="va">clean_title_id</span> <span class="op">==</span> <span class="st">"ct_02"</span><span class="op">)</span> <span class="op">%&gt;%</span> 
-  <span class="fu">select</span><span class="op">(</span><span class="va">clean_title_id</span>, <span class="va">obv_dup_id</span>, <span class="va">`DOI name`</span>, <span class="va">`PubMed ID`</span>, <span class="va">Categories</span><span class="op">)</span>
+  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="va">clean_title_id</span> <span class="op">==</span> <span class="st">"ct_02"</span><span class="op">)</span> <span class="op">%&gt;%</span> 
+  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span><span class="va">clean_title_id</span>, <span class="va">obv_dup_id</span>, <span class="va">`DOI name`</span>, <span class="va">`PubMed ID`</span>, <span class="va">Categories</span><span class="op">)</span>
 <span class="co">#&gt; # A tibble: 2 x 5</span>
 <span class="co">#&gt;   clean_title_id obv_dup_id `DOI name`                 `PubMed ID` Categories   </span>
 <span class="co">#&gt;   &lt;chr&gt;          &lt;chr&gt;      &lt;chr&gt;                      &lt;chr&gt;       &lt;chr&gt;        </span>
@@ -267,7 +270,7 @@
 <span class="co">#&gt;    calculating similarity done: 0 sec elapsed</span>
 
 <span class="va">CitDat</span> <span class="op">%&gt;%</span> 
-  <span class="fu">select</span><span class="op">(</span><span class="va">clean_title_id</span>, <span class="va">obv_dup_id</span>, <span class="va">pot_dup_id</span><span class="op">)</span>
+  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span><span class="va">clean_title_id</span>, <span class="va">obv_dup_id</span>, <span class="va">pot_dup_id</span><span class="op">)</span>
 <span class="co">#&gt; # A tibble: 5 x 3</span>
 <span class="co">#&gt;   clean_title_id obv_dup_id pot_dup_id                  </span>
 <span class="co">#&gt;   &lt;chr&gt;          &lt;chr&gt;      &lt;chr&gt;                       </span>
@@ -277,7 +280,7 @@
 <span class="co">#&gt; 4 ct_03          dup_01     potdup_01 (98.6% similarity)</span>
 <span class="co">#&gt; 5 ct_04          dup_01     &lt;NA&gt;</span>
 
-<span class="va">CitDat</span> <span class="op">%&gt;%</span> <span class="fu">slice</span><span class="op">(</span><span class="fl">2</span>, <span class="fl">4</span><span class="op">)</span> <span class="op">%&gt;%</span> <span class="fu">select</span><span class="op">(</span><span class="va">clean_title</span><span class="op">)</span> <span class="co"># compare clean_title yourself:</span>
+<span class="va">CitDat</span> <span class="op">%&gt;%</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/slice.html">slice</a></span><span class="op">(</span><span class="fl">2</span>, <span class="fl">4</span><span class="op">)</span> <span class="op">%&gt;%</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span><span class="va">clean_title</span><span class="op">)</span> <span class="co"># compare clean_title yourself:</span>
 <span class="co">#&gt; # A tibble: 2 x 1</span>
 <span class="co">#&gt;   clean_title                                                           </span>
 <span class="co">#&gt;   &lt;chr&gt;                                                                 </span>
@@ -286,6 +289,7 @@
 <p>Note that while the typo in the Title prevented <code>ct_03</code> being identified as an obvious duplicate of <code>ct_02</code>, it is now identified as a potential duplicate.</p>
 <p>TO DO: MENTION COMPUTATIONAL BURDEN WITH LARGE NUMBER OF REFERENCES</p>
 <p>TO DO: HINT AT HOW TO DEAL WITH IT MACRO AND CITAVI</p>
+<p>TO DO: LINK TO THIS VIGNETTE FROM GET STARTED VIGNETTE</p>
 </div>
 </div>
 </div>

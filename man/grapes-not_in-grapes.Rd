@@ -12,8 +12,9 @@ a \%not_in\% b
 \item{b}{vector or NULL: the values to be matched against.}
 }
 \value{
-A logical vector, indicating if a match was not located for each element of \code{a}.
-The values are TRUE or FALSE and never NA.
+A logical vector, indicating if a match was
+not located for each element of \code{a}. The values
+are TRUE or FALSE and never NA.
 }
 \description{
 \code{ \%not_in\% <- function(a,b){ ! a \%in\% b } }

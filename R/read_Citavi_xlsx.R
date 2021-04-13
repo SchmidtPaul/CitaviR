@@ -26,8 +26,8 @@
 #' was set to "English" so that column names are "Short title" etc.
 #'
 #' @examples
-#' path <- example_xlsx("3dupsin5refs.xlsx") # use this package's example xlsx file
-#' read_Citavi_xlsx(path)
+#' example_path <- example_file("3dupsin5refs.xlsx") # use this package's example xlsx file
+#' read_Citavi_xlsx(example_path)
 #'
 #' \dontrun{
 #' CitDat <- read_Citavi_xlsx("data/yourCitaviExport.xlsx")
@@ -41,7 +41,7 @@
 read_Citavi_xlsx <- function(path = NULL, keepMarksCols = TRUE, useYearDerived = TRUE, setSuggestedColOrder = TRUE, setSuggestedColTypes = TRUE, ...) {
 
   if (is.null(path)) {
-    stop("You did not provide a path to the Excel file.\n  If you want to use an example file provided in this package instead, try\n  read_Citavi_xlsx(example_xlsx('3dupsin5refs.xlsx'))")
+    stop("You did not provide a path to the Excel file.\n  If you want to use an example file provided in this package instead, try\n  read_Citavi_xlsx(example_file('3dupsin5refs.xlsx'))")
   }
 
 

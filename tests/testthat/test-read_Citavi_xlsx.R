@@ -3,7 +3,7 @@ test_that("missing path gives error", {
 
 })
 
-path3d5r <- example_xlsx('3dupsin5refs.xlsx')
+path3d5r <- example_file('3dupsin5refs.xlsx')
 
 # basic read_xlsx ---------------------------------------------------------
 test_that("basic read_xlsx [for 3dupsin5refs]", {

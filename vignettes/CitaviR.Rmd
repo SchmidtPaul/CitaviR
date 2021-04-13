@@ -22,51 +22,45 @@ knitr::opts_chunk$set(
 set.seed(42)
 ```
 
-In general, the work flow from start to finish is structured in five steps.
+In general, the work flow from start to finish is structured in three steps.
 
-```{r, echo=FALSE, out.width = "60%"}
-knitr::include_graphics("https://github.com/SchmidtPaul/CitaviR/blob/master/man/figures/Workflow.png?raw=true")
+  1. reading the data from the `.ctv6` file
+  2. dealing with the data while it is *outside* Citavi to get the most out of it
+  3. writing/updating the data into the `.ctv6` file
+  
+```{r, echo=FALSE, out.width = "50%"}
+knitr::include_graphics("https://github.com/SchmidtPaul/CitaviR/blob/master/man/figures/WorkflowSQL.png?raw=true")
 ```
 
-Step | CitaviR | Effort: 1st time setup | Effort: regular use
--|-|-|-
-Step 1: Citavi to xlsx    |         | &#128527; | &#128526;
-Step 2: xlsx to R         | &#9989; | &#128526; | &#128526;
-Step 3: Process data in R | &#9989; | &#128527; | &#128526;
-Step 4: R to xlsx         | &#9989; | &#128526; | &#128526;
-Step 5: xlsx to Citavi    |         | &#128165; | &#128527;
+# Step 1: Citavi to R
 
-**Effort levels:** low effort &#128526;; acceptable effort &#128527;; can be cumbersome &#128165; 
+The following screenshot shows the Citavi project that is available in `CitaviR` as the `3dupsin5refs.ctv6`. 
 
-# Step 1: Citavi to xlsx
-
-In your Citavi project open the table view.
-
-```{r, echo=FALSE, out.width = "30%"}
-knitr::include_graphics("https://github.com/SchmidtPaul/CitaviR/blob/master/vignettes/Citavi_Table.png?raw=true")
+```{r, echo = FALSE, out.width = "100%"}
+knitr::include_graphics("https://github.com/SchmidtPaul/CitaviR/blob/master/vignettes/Citavi_Project.PNG?raw=true")
 ```
 
-Make sure all relevant columns are selected (e.g. via Citavi's [customizable selection presets](https://www1.citavi.com/sub/manual6/en/index.html?referencegridformworkspaceeditor.html)) and export to an Excel file.
-
-```{r, echo=FALSE, out.width = "100%"}
-knitr::include_graphics("https://github.com/SchmidtPaul/CitaviR/blob/master/vignettes/Citavi_TableToExcel.png?raw=true")
-```
-
-# Step 2: xlsx to R
-
-The Excel file exported above is available in `CitaviR` as the example dataset `3dupsin5refs.xlsx`. Furthermore, `read_Citavi_xlsx()` offers an import function based on `readxl::read_excel()` with some functionality specifically for xls/xlsx files created with Citavi via export to Excel.
+Here, we can read in the information of interest via `read_Citavi_ctv6()`.
 
 ```{r example, message = FALSE, warning = FALSE}
 library(tidyverse)
 library(CitaviR)
 
-my_path <- example_xlsx("3dupsin5refs.xlsx") # in real life: replace with path to your xlsx file
-CitDat  <- read_Citavi_xlsx(path = my_path)
+example_path <- example_file("3dupsin5refs/3dupsin5refs.ctv6") # in real life: replace with your path
+CitDat <- read_Citavi_ctv6(path = example_path,
+                           CitDBTableName = "Reference")
 
-CitDat
+CitDat %>% select(Title, Year, Abstract, DOI) 
 ```
 
-# Step 3: Process data in R
+> If, for whatever reason, you wish to do the import from Citavi not via SQL, but with Excel files (exported from Citavi), then `CitaviR` offers an alternative approach **TO DO LINK**
+
+```{r, echo = FALSE, message = FALSE, warning = FALSE}
+# quietly store the Citavi project for later
+OriginalCitDat <- CitDat
+```
+
+# Step 2: Process data in R
 
 At this point there are many things one may wish to do with the data. In this example we will make use of the `CitaviR` functions to identify and handle *obvious duplicates*.
 
@@ -84,24 +78,23 @@ CitDat %>%
  select(Title, clean_title:obv_dup_id)
 ```
  
-Note how a single typo ("Hritability") prevents `ct_03` from being detected as an *obvious duplicate* for `ct_02`. For cases like this, one may use `CitaviR::find_potential_dups()`, but we will not go so far in this introduction.
+Note how a single typo ("Hritability") prevents `ct_03` from being detected as an *obvious duplicate* for `ct_02`. For cases like this, one may use `CitaviR::find_potential_dups()`, but we will not go so far in this introduction (**TO DO LINK TO VIGNETTE**).
 
 ## Handle obvious duplicates
  
-At this point we have already gained information and could continue with steps 4 and 5. However, sometimes duplicates hold different information as it is the case here for `ct_02` and the columns `PubMed ID`, `DOI name` and `Categories`:
+At this point we have already gained information and could continue with steps 4 and 5. However, sometimes duplicates hold different information as it is the case here for `ct_02` and the columns `PubMedID`, `DOI` and `Categories`:
 
 ```{r}
 CitDat %>% 
   filter(clean_title_id == "ct_02") %>% 
-  select(clean_title_id, obv_dup_id, `DOI name`, `PubMed ID`, Categories)
+  select(clean_title_id, obv_dup_id, DOI, PubMedID)
 ```
 
 In such a scenario it would be best to gather all information into the one *non-duplicate* (=`dup_01`) that will be kept and of interest later on. Here, `CitaviR::handle_obvious_dups()` comes in handy:
 
 ```{r}
 CitDat <- CitDat %>% 
-  handle_obvious_dups(fieldsToHandle = c("DOI name", "PubMed ID"), 
-                      nameDupCategories = "3 duplicate")
+  handle_obvious_dups(fieldsToHandle = c("DOI", "PubMedID"))
 ```
 
 As can be seen, the columns listed in `fieldsToHandle =` are *filled up* (*i.e.* `tidyr::fill(all_of(fieldsToHandle), .direction = "up")`). By providing a string for `nameDupCategories =`, unique entries in the `Categories` column are collapsed into the respective entry for `dup_01`, while entries for all other obvious duplicates are replaced by the provided string. 
@@ -109,41 +102,50 @@ As can be seen, the columns listed in `fieldsToHandle =` are *filled up* (*i.e.*
 ```{r}
 CitDat %>% 
   filter(clean_title_id == "ct_02") %>% 
-  select(clean_title_id, obv_dup_id, `DOI name`, `PubMed ID`, Categories)
+  select(clean_title_id, obv_dup_id, DOI, PubMedID)
 ```
 
 Therefore, we could now get rid of all obvious duplicates (`obv_dup_id =! dup_01`) without losing any information.
 
-# Step 4: R to xlsx
+# Step 3: R to Citavi
 
-To export this table to Excel, `write_Citavi_xlsx()` offers an export function based on `openxlsx::write.xlsx()` with some extra functionality. For example, when supplying the same path we used for `read_Citavi_xlsx(path = ...)` in [Step 2](#step-2-xlsx-to-r), the xlsx file will be created in the same folder it was imported from with a slightly altered name:
+Finally, we want to implement the gained information into the Citavi project. For this, we can make use of `update_Citavi_ctv6()`. Say we would like to overwrite the old DOI and PubMed information and additionally store the `clean_title_id` and `obv_dup_id` in *Custom field 1* and *Custom field 2*, respectively. You should probably close your Citavi project before running this:
 
-```{r, eval=FALSE}
-write_Citavi_xlsx(CitDat, read_path = my_path) # works in real life, but not for example data
+```{r}
+CitDat %>%
+  update_Citavi_ctv6(
+    path = example_path,
+    CitDBTableName = "Reference",
+    CitDatVarToCitDBTableVar = c(
+        "DOI"            = "DOI",
+        "PubMedID"       = "PubMedID",
+        "clean_title_id" = "CustomField1",
+        "obv_dup_id"     = "CustomField2"),
+    quiet = FALSE
+  )
 ```
 
-```{r, echo=FALSE, out.width = "25%"}
-knitr::include_graphics("https://github.com/SchmidtPaul/CitaviR/blob/master/vignettes/Excel_files_out.png?raw=true")
+If you now open the Citavi project, it should have changed as expected.
+
+```{r, echo=FALSE, out.width = "100%"}
+knitr::include_graphics("https://github.com/SchmidtPaul/CitaviR/blob/master/man/figures/Citavi_BeforeAfter.png?raw=true")
 ```
 
-# Step 5: xlsx to Citavi
+> If, for whatever reason, you wish to do the export to Citavi not via SQL, but with Excel files, then `CitaviR` offers an alternative approach **TO DO LINK**
 
-We now make use of the custom Citavi macros to import the information from excel to Citavi.
-In this case, we can make use of [CIMR 002](https://github.com/SchmidtPaul/CitaviRMacros/tree/main/CIMR%20Import/CIMR%20002%20-%20Import%20handle_obvious_dup%20info), which is one of the macro templates provided in the repository [CitaviRMacros](https://github.com/SchmidtPaul/CitaviRMacros). As can be seen in [**this gif** &#9199;](https://github.com/SchmidtPaul/CitaviRMacros/tree/main/CIMR%20Import/CIMR%20002%20-%20Import%20handle_obvious_dup%20info#cimr-002-import-handle_obvious_dups), we here store the `obv_dup_id`s into *Custom field 1*, while it is made sure to import the *PubMed ID* information handled in [step 3](#handle-obvious-duplicates). In order to also import the handled categories, one would additionaly use [CIMR 010](https://github.com/SchmidtPaul/CitaviRMacros/tree/main/CIMR%20Import/CIMR%20010%20-%20Import%20categories) **[TO DO]**.
-
-**[TO DO Screenshot with "Click for gif"]**
-
-Afterwards, we could delete all titles in the Citavi project that are not `dup_01` and get rid of all obvious duplicates without losing information.
-
-> **1st time setup**
->
-> <br>
->
-> Unfortunately, importing xlsx into Citavi is not as trivial as exporting xlsx from it. In order to make this work and reproduce *e.g.* what can be seen in [the gif mentioned in step 5](https://github.com/SchmidtPaul/CitaviRMacros/tree/main/CIMR%20Import/CIMR%20002%20-%20Import%20handle_obvious_dup%20info#cimr-002-import-handle_obvious_dups) you must first
->
-> * [enable Citavi macros](https://www1.citavi.com/sub/manual6/en/index.html?add_on_display_macros.html)
-> * install an *OLE-DB-Provider*. Citavi suggests the *Microsoft Access Database Engine 2016 Redistributable Kit* as [described here in German](https://github.com/Citavi/Macros/blob/master/CIM%20Import/CIM007%20Import%20arbitrary%20data%20from%20Microsoft%20Excel%20into%20custom%20fields%20of%20existing%20references%20by%20short%20title/readme.de.md). 
->
-> Afterwards, you should be able to run the original Excel-import macro [**CIM007** Import arbitrary data from Microsoft Excel into custom fields of existing references by short title](https://github.com/Citavi/Macros/tree/master/CIM%20Import/CIM007%20Import%20arbitrary%20data%20from%20Microsoft%20Excel%20into%20custom%20fields%20of%20existing%20references%20by%20short%20title) provided by Citavi, as well as all Excel-import macros in the repository [CitaviRMacros](https://github.com/SchmidtPaul/CitaviRMacros).
->
-> Note that it is this very macro **CIM007** that makes all of this possible. Without it, `CitaviR` would not nearly be as useful since - according to my knowledge - there is currently no other way to import Excel data into Citavi. All Import-macros ("CIMR" prefix) in the repository [CitaviRMacros](https://github.com/SchmidtPaul/CitaviRMacros) are basically adpated versions of CIM007. 
+```{r, echo = FALSE, message = FALSE, warning = FALSE}
+# quietly restore the Citavi project to original state
+OriginalCitDat %>%
+  mutate(clean_title_id = NA_character_,
+         obv_dup_id = NA_character_) %>% 
+  update_Citavi_ctv6(
+    path = example_path,
+    CitDBTableName = "Reference",
+    CitDatVarToCitDBTableVar = c(
+        "DOI"            = "DOI",
+        "PubMedID"       = "PubMedID",
+        "clean_title_id" = "CustomField1",
+        "obv_dup_id"     = "CustomField2"),
+    quiet = TRUE
+  )
+```

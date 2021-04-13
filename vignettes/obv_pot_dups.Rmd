@@ -59,7 +59,7 @@ In this vignette we revisit [Step 3 of the example in the Get started vigniette]
 library(tidyverse)
 library(CitaviR)
 
-my_path <- example_xlsx("3dupsin5refs.xlsx") # in real life: replace with path to your xlsx file
+my_path <- example_file("3dupsin5refs.xlsx") # in real life: replace with path to your xlsx file
 CitDat  <- read_Citavi_xlsx(path = my_path)
 ```
 
@@ -169,4 +169,6 @@ Note that while the typo in the Title prevented `ct_03` being identified as an o
 TO DO: MENTION COMPUTATIONAL BURDEN WITH LARGE NUMBER OF REFERENCES
 
 TO DO: HINT AT HOW TO DEAL WITH IT MACRO AND CITAVI
+
+TO DO: LINK TO THIS VIGNETTE FROM GET STARTED VIGNETTE
 

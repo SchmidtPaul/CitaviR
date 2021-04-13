@@ -1,10 +1,10 @@
 # no warning or message ---------------------------------------------------
 test_that("no warning or message", {
-  expect_silent( temp <- example_xlsx('3dupsin5refs.xlsx') %>% read_Citavi_xlsx() %>% find_obvious_dups() )
+  expect_silent( temp <- example_file('3dupsin5refs.xlsx') %>% read_Citavi_xlsx() %>% find_obvious_dups() )
 })
 
 
-CitDat_before <- example_xlsx('3dupsin5refs.xlsx') %>% read_Citavi_xlsx()
+CitDat_before <- example_file('3dupsin5refs.xlsx') %>% read_Citavi_xlsx()
 CitDat_after  <- CitDat_before %>% find_obvious_dups()
 
 

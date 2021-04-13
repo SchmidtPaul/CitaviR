@@ -82,7 +82,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">CitaviR</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.0</span>
       </span>
     </div>
 
@@ -109,6 +109,9 @@
   <ul class="dropdown-menu" role="menu">
     <li>
       <a href="../articles/obv_pot_dups.html">Obvious &amp; potential dups</a>
+    </li>
+    <li>
+      <a href="../articles/excel_instead_of_sql.html">Excel instead of SQL</a>
     </li>
   </ul>
 </li>
@@ -188,8 +191,8 @@ Currently this only works for files that were generated while Citavi
 was set to "English" so that column names are "Short Title" etc.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='va'>path</span> <span class='op'>&lt;-</span> <span class='fu'><a href='example_xlsx.html'>example_xlsx</a></span><span class='op'>(</span><span class='st'>"3dupsin5refs.xlsx"</span><span class='op'>)</span>
-<span class='va'>CitDat</span> <span class='op'>&lt;-</span> <span class='fu'><a href='read_Citavi_xlsx.html'>read_Citavi_xlsx</a></span><span class='op'>(</span><span class='va'>path</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+    <pre class="examples"><div class='input'><span class='va'>example_path</span> <span class='op'>&lt;-</span> <span class='fu'><a href='example_file.html'>example_file</a></span><span class='op'>(</span><span class='st'>"3dupsin5refs/3dupsin5refs.ctv6"</span><span class='op'>)</span>
+<span class='va'>CitDat</span> <span class='op'>&lt;-</span> <span class='fu'><a href='read_Citavi_ctv6.html'>read_Citavi_ctv6</a></span><span class='op'>(</span><span class='va'>example_path</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
    <span class='fu'><a href='find_obvious_dups.html'>find_obvious_dups</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
    <span class='fu'>find_potential_dups</span><span class='op'>(</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; <span style='color: #0000BB;'>clean_title comparisons =</span><span> 6 </span><span style='color: #00BB00;'>&lt;</span><span> 1,000,000 </span><span style='color: #0000BB;'>= maxNumberOfComp</span><span> 
@@ -200,22 +203,22 @@ was set to "English" so that column names are "Short Title" etc.</p>
 </div><div class='output co'>#&gt; </span><span style='color: #949494;'># A tibble: 5 x 3</span><span>
 #&gt;   clean_title_id obv_dup_id pot_dup_id                  
 #&gt;   </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>          </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>      </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>                       
-#&gt; </span><span style='color: #BCBCBC;'>1</span><span> ct_01          dup_01     </span><span style='color: #BB0000;'>NA</span><span>                          
+#&gt; </span><span style='color: #BCBCBC;'>1</span><span> ct_04          dup_01     </span><span style='color: #BB0000;'>NA</span><span>                          
 #&gt; </span><span style='color: #BCBCBC;'>2</span><span> ct_02          dup_01     potdup_01 (98.6% similarity)
-#&gt; </span><span style='color: #BCBCBC;'>3</span><span> ct_02          dup_02     </span><span style='color: #BB0000;'>NA</span><span>                          
-#&gt; </span><span style='color: #BCBCBC;'>4</span><span> ct_03          dup_01     potdup_01 (98.6% similarity)
-#&gt; </span><span style='color: #BCBCBC;'>5</span><span> ct_04          dup_01     </span><span style='color: #BB0000;'>NA</span><span>                          </div><div class='input'>
+#&gt; </span><span style='color: #BCBCBC;'>3</span><span> ct_03          dup_01     potdup_01 (98.6% similarity)
+#&gt; </span><span style='color: #BCBCBC;'>4</span><span> ct_02          dup_02     </span><span style='color: #BB0000;'>NA</span><span>                          
+#&gt; </span><span style='color: #BCBCBC;'>5</span><span> ct_01          dup_01     </span><span style='color: #BB0000;'>NA</span><span>                          </div><div class='input'>
 <span class='co'># check similarity yourself - it's a single typo:</span>
 <span class='va'>CitDat</span> <span class='op'>%&gt;%</span>
    <span class='fu'>dplyr</span><span class='fu'>::</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/select.html'>select</a></span><span class='op'>(</span><span class='va'>clean_title</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; </span><span style='color: #949494;'># A tibble: 5 x 1</span><span>
 #&gt;   clean_title                                                                   
 #&gt;   </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>                                                                         
-#&gt; </span><span style='color: #BCBCBC;'>1</span><span> estimating_broad_sense_heritability_with_unbalanced_data_from_agricultural_cu~
+#&gt; </span><span style='color: #BCBCBC;'>1</span><span> more_larger_simpler_how_comparable_are_on_farm_and_on_station_trials_for_cult~
 #&gt; </span><span style='color: #BCBCBC;'>2</span><span> heritability_in_plant_breeding_on_a_genotype_difference_basis_2019_end        
-#&gt; </span><span style='color: #BCBCBC;'>3</span><span> heritability_in_plant_breeding_on_a_genotype_difference_basis_2019_end        
-#&gt; </span><span style='color: #BCBCBC;'>4</span><span> hritability_in_plant_breeding_on_a_genotype_difference_basis_2019_end         
-#&gt; </span><span style='color: #BCBCBC;'>5</span><span> more_larger_simpler_how_comparable_are_on_farm_and_on_station_trials_for_cult~</div><div class='input'>
+#&gt; </span><span style='color: #BCBCBC;'>3</span><span> hritability_in_plant_breeding_on_a_genotype_difference_basis_2019_end         
+#&gt; </span><span style='color: #BCBCBC;'>4</span><span> heritability_in_plant_breeding_on_a_genotype_difference_basis_2019_end        
+#&gt; </span><span style='color: #BCBCBC;'>5</span><span> estimating_broad_sense_heritability_with_unbalanced_data_from_agricultural_cu~</div><div class='input'>
 </div></span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

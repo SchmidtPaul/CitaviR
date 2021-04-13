@@ -1,4 +1,4 @@
-path_3dupsin5refs <- example_xlsx("3dupsin5refs.xlsx")
+path_3dupsin5refs <- example_file("3dupsin5refs.xlsx")
 
 test_that("error if no path provided", {
   expect_error(write_Citavi_xlsx())

@@ -31,14 +31,15 @@ Detect the language that the abstract or other fields are written in
 }
 \details{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}} \cr
-The underyling core function determining the language is \code{textcat::textcat()}.
+The underlying core function determining the language is \code{textcat::textcat()}.
 }
 \examples{
+\dontrun{
 CitDat <- CitaviR::diabetesprevalence \%>\%
   dplyr::slice(1952:1955, 4390:4393)
 
 CitDat \%>\%
   detect_language() \%>\%
   dplyr::select(Abstract, det_lang, det_lang_wanted)
-
+}
 }

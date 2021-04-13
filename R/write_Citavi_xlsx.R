@@ -1,4 +1,4 @@
-#' @title Export
+#' @title Export Excel file (to be imported via Citavi macros)
 #'
 #' @param CitDat A tibble.
 #' @param read_path The path/xlsx file name that was used for \code{\link[CitaviR]{read_Citavi_xlsx}}.

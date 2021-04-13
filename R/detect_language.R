@@ -12,16 +12,17 @@
 #'
 #' @details
 #' `r lifecycle::badge("experimental")` \cr
-#' The underyling core function determining the language is \code{textcat::textcat()}.
+#' The underlying core function determining the language is \code{textcat::textcat()}.
 #'
 #' @examples
+#' \dontrun{
 #' CitDat <- CitaviR::diabetesprevalence %>%
 #'   dplyr::slice(1952:1955, 4390:4393)
 #'
 #' CitDat %>%
 #'   detect_language() %>%
 #'   dplyr::select(Abstract, det_lang, det_lang_wanted)
-#'
+#' }
 #' @return A tibble containing at least one additional column: \code{det_lang}.
 #' @importFrom textcat textcat
 #' @importFrom tidyr unite

@@ -19,18 +19,18 @@
 #'
 #'
 #' @examples
-#' path <- example_xlsx("3dupsin5refs.xlsx")
-#' CitDat <- read_Citavi_xlsx(path) %>%
+#' example_path <- example_file("3dupsin5refs/3dupsin5refs.ctv6")
+#' CitDat <- read_Citavi_ctv6(example_path) %>%
 #'    find_obvious_dups()
 #'
 #' # before
 #' CitDat %>%
-#'    dplyr::select("clean_title", "clean_title_id", "obv_dup_id", "DOI name", "PubMed ID")
+#'    dplyr::select("clean_title", "clean_title_id", "obv_dup_id", "DOI", "PubMedID")
 #'
 #' # after
 #' CitDat %>%
-#'    handle_obvious_dups(fieldsToHandle = c("DOI name", "PubMed ID")) %>%
-#'    dplyr::select("clean_title", "clean_title_id", "obv_dup_id", "DOI name", "PubMed ID")
+#'    handle_obvious_dups(fieldsToHandle = c("DOI", "PubMedID")) %>%
+#'    dplyr::select("clean_title", "clean_title_id", "obv_dup_id", "DOI", "PubMedID")
 #'
 #' @return A tibble where information from obvious duplicates was brought together for \code{dup_01}, respectively.
 #' @importFrom purrr map

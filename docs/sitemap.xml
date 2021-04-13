@@ -7,10 +7,7 @@
     <loc>https://schmidtpaul.github.io/CitaviR/reference/detect_language.html</loc>
   </url>
   <url>
-    <loc>https://schmidtpaul.github.io/CitaviR/reference/diabetesprevalence.html</loc>
-  </url>
-  <url>
-    <loc>https://schmidtpaul.github.io/CitaviR/reference/example_xlsx.html</loc>
+    <loc>https://schmidtpaul.github.io/CitaviR/reference/example_file.html</loc>
   </url>
   <url>
     <loc>https://schmidtpaul.github.io/CitaviR/reference/find_obvious_dups.html</loc>
@@ -28,13 +25,22 @@
     <loc>https://schmidtpaul.github.io/CitaviR/reference/pipe.html</loc>
   </url>
   <url>
+    <loc>https://schmidtpaul.github.io/CitaviR/reference/read_Citavi_ctv6.html</loc>
+  </url>
+  <url>
     <loc>https://schmidtpaul.github.io/CitaviR/reference/read_Citavi_xlsx.html</loc>
+  </url>
+  <url>
+    <loc>https://schmidtpaul.github.io/CitaviR/reference/update_Citavi_ctv6.html</loc>
   </url>
   <url>
     <loc>https://schmidtpaul.github.io/CitaviR/reference/write_Citavi_xlsx.html</loc>
   </url>
   <url>
     <loc>https://schmidtpaul.github.io/CitaviR/articles/CitaviR.html</loc>
+  </url>
+  <url>
+    <loc>https://schmidtpaul.github.io/CitaviR/articles/excel_instead_of_sql.html</loc>
   </url>
   <url>
     <loc>https://schmidtpaul.github.io/CitaviR/articles/obv_pot_dups.html</loc>

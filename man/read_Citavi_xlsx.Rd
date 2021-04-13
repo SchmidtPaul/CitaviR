@@ -51,8 +51,8 @@ Currently this only works for files that were generated while Citavi
 was set to "English" so that column names are "Short title" etc.
 }
 \examples{
-path <- example_xlsx("3dupsin5refs.xlsx") # use this package's example xlsx file
-read_Citavi_xlsx(path)
+example_path <- example_file("3dupsin5refs.xlsx") # use this package's example xlsx file
+read_Citavi_xlsx(example_path)
 
 \dontrun{
 CitDat <- read_Citavi_xlsx("data/yourCitaviExport.xlsx")

@@ -15,8 +15,8 @@
 #' was set to "English" so that column names are "Short Title" etc.
 #'
 #' @examples
-#' path <- example_xlsx("3dupsin5refs.xlsx")
-#' CitDat <- read_Citavi_xlsx(path) %>%
+#' example_path <- example_file("3dupsin5refs/3dupsin5refs.ctv6")
+#' CitDat <- read_Citavi_ctv6(example_path) %>%
 #'    find_obvious_dups() %>%
 #'    find_potential_dups()
 #'
