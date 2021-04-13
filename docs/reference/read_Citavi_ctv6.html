@@ -177,13 +177,13 @@ The underlying core functions are <code><a href='https://dbi.r-dbi.org/reference
 <span class='va'>CitDat</span> <span class='op'>&lt;-</span> <span class='fu'>read_Citavi_ctv6</span><span class='op'>(</span><span class='va'>example_path</span><span class='op'>)</span>
 <span class='va'>CitDat</span> <span class='op'>%&gt;%</span> <span class='fu'>dplyr</span><span class='fu'>::</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/select.html'>select</a></span><span class='op'>(</span><span class='va'>Title</span>, <span class='va'>Year</span>, <span class='va'>Abstract</span>, <span class='va'>DOI</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; <span style='color: #949494;'># A tibble: 5 x 4</span><span>
-#&gt;   Title                         Year  Abstract                       DOI        
-#&gt;   </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>                         </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>                          </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>      
-#&gt; </span><span style='color: #BCBCBC;'>1</span><span> More, Larger, Simpler: How C~ 2018  Traditionally, cultivar evalu~ 10.2135/cr~
-#&gt; </span><span style='color: #BCBCBC;'>2</span><span> Heritability in Plant Breedi~ 2019  In plant breeding, heritabili~ </span><span style='color: #BB0000;'>NA</span><span>         
-#&gt; </span><span style='color: #BCBCBC;'>3</span><span> Hritability in Plant Breedin~ 2019  In plant breeding, heritabili~ </span><span style='color: #BB0000;'>NA</span><span>         
-#&gt; </span><span style='color: #BCBCBC;'>4</span><span> Heritability in plant breedi~ 2019  In plant breeding, heritabili~ 10.1534/ge~
-#&gt; </span><span style='color: #BCBCBC;'>5</span><span> Estimating broad-sense herit~ 2019  Broad-sense heritability is d~ 10.2135/cr~</div><div class='input'>
+#&gt;   Title                        Year  Abstract                       DOI         
+#&gt;   </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>                        </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>                          </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>       
+#&gt; </span><span style='color: #BCBCBC;'>1</span><span> More, Larger, Simpler: How ~ 2018  Traditionally, cultivar evalu~ </span><span style='color: #949494;'>"</span><span>10.2135/cr~
+#&gt; </span><span style='color: #BCBCBC;'>2</span><span> Heritability in Plant Breed~ 2019  In plant breeding, heritabili~ </span><span style='color: #949494;'>""</span><span>          
+#&gt; </span><span style='color: #BCBCBC;'>3</span><span> Hritability in Plant Breedi~ 2019  In plant breeding, heritabili~ </span><span style='color: #949494;'>""</span><span>          
+#&gt; </span><span style='color: #BCBCBC;'>4</span><span> Heritability in plant breed~ 2019  In plant breeding, heritabili~ </span><span style='color: #949494;'>"</span><span>10.1534/ge~
+#&gt; </span><span style='color: #BCBCBC;'>5</span><span> Estimating broad-sense heri~ 2019  Broad-sense heritability is d~ </span><span style='color: #949494;'>"</span><span>10.2135/cr~</div><div class='input'>
 <span class='co'># show table names</span>
 <span class='fu'>read_Citavi_ctv6</span><span class='op'>(</span><span class='va'>example_path</span>, CitDBTableName <span class='op'>=</span> <span class='cn'>NULL</span><span class='op'>)</span>
 </div><div class='output co'>#&gt;  [1] "Annotation"              "Category"               
