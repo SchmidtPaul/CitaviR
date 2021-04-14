@@ -59,8 +59,8 @@ In this vignette we revisit [Step 3 of the example in the Get started vigniette]
 library(tidyverse)
 library(CitaviR)
 
-my_path <- example_file("3dupsin5refs.xlsx") # in real life: replace with path to your xlsx file
-CitDat  <- read_Citavi_xlsx(path = my_path)
+example_path <- example_file("3dupsin5refs/3dupsin5refs.ctv6") # in real life: replace with your path
+CitDat  <- read_Citavi_ctv6(example_path)
 ```
 
 ## 1. Find obvious duplicates
@@ -110,27 +110,26 @@ CitDat %>%
 
 ### Details
 
-Sometimes duplicates hold different information as it is the case here for `ct_02` and the columns `PubMed ID`, `DOI name` and `Categories`:
+Sometimes duplicates hold different information as it is the case here for `ct_02` and the columns `PubMedID` and `DOI`:
 
 ```{r}
 CitDat %>% 
   filter(clean_title_id == "ct_02") %>% 
-  select(clean_title_id, obv_dup_id, `DOI name`, `PubMed ID`, Categories)
+  select(clean_title_id, obv_dup_id, DOI, PubMedID)
 ```
 
 In such a scenario it would be best to gather all information into `dup_01`. Depending on the type of information, CitaviR does this in two different way:
 
-  * For simple fields (containing text/strings) such as `DOI name`, `PubMed ID`, `Abstract` etc., CitaviR currently simply *fills up* (`tidyr::fill(all_of(fieldsToHandle), .direction = "up")`) entries.
-  * For the knowledge items `Categories`, `Groups` and `Keywords`, CitaviR collapses unique entries into the respective entry for `dup_01`, while entries for all other obvious duplicates are replaced by a provided string:
+  * For simple fields (containing text/strings) such as `DOI`, `PubMedID`, `Abstract` etc., CitaviR currently simply *fills up* (`tidyr::fill(all_of(fieldsToHandle), .direction = "up")`) entries.
+  * **TO DO:** For the knowledge items `Categories`, `Groups` and `Keywords`, CitaviR collapses unique entries into the respective entry for `dup_01`, while entries for all other obvious duplicates are replaced by a provided string:
   
 ```{r}
 CitDat <- CitDat %>% 
-  handle_obvious_dups(fieldsToHandle = c("DOI name", "PubMed ID"), 
-                      nameDupCategories = "3 duplicate") 
+  handle_obvious_dups(fieldsToHandle = c("DOI", "PubMedID")) 
 
 CitDat %>% 
   filter(clean_title_id == "ct_02") %>% 
-  select(clean_title_id, obv_dup_id, `DOI name`, `PubMed ID`, Categories)
+  select(clean_title_id, obv_dup_id, DOI, PubMedID)
 ```
   
 Note that there is one exception: If `Online address` is included in the `fieldsToHandle`, it is not just *filled up* like the others. Instead, per `clean_title_id` all URLs from `Online address` and `Location` are combined and ranked. As an example: [CitaviR currently ranks](https://github.com/SchmidtPaul/CitaviR/blob/ea4329067f9c602573b3bd2229658faca478ca09/R/handle_obvious_dups.R#L85) URLs including "doi.org" as the best possible entry for `Online address`. Finally, the URL with the highest rank is set as the `Online address` for `dup_01`.
@@ -161,14 +160,10 @@ CitDat <- CitDat %>%
 CitDat %>% 
   select(clean_title_id, obv_dup_id, pot_dup_id)
 
-CitDat %>% slice(2, 4) %>% select(clean_title) # compare clean_title yourself:
+CitDat %>% slice(2, 3) %>% select(clean_title) # compare clean_title yourself:
 ```
 
 Note that while the typo in the Title prevented `ct_03` being identified as an obvious duplicate of `ct_02`, it is now identified as a potential duplicate.
 
-TO DO: MENTION COMPUTATIONAL BURDEN WITH LARGE NUMBER OF REFERENCES
-
-TO DO: HINT AT HOW TO DEAL WITH IT MACRO AND CITAVI
-
-TO DO: LINK TO THIS VIGNETTE FROM GET STARTED VIGNETTE
+**TO DO:** MENTION COMPUTATIONAL BURDEN WITH LARGE NUMBER OF REFERENCES
 

@@ -15,14 +15,11 @@
 #' The underlying core function determining the language is \code{textcat::textcat()}.
 #'
 #' @examples
-#' \dontrun{
-#' CitDat <- CitaviR::diabetesprevalence %>%
-#'   dplyr::slice(1952:1955, 4390:4393)
-#'
-#' CitDat %>%
+#' example_path <- example_file("3dupsin5refs/3dupsin5refs.ctv6")
+#' read_Citavi_ctv6(example_path) %>%
 #'   detect_language() %>%
 #'   dplyr::select(Abstract, det_lang, det_lang_wanted)
-#' }
+#'
 #' @return A tibble containing at least one additional column: \code{det_lang}.
 #' @importFrom textcat textcat
 #' @importFrom tidyr unite
@@ -66,7 +63,7 @@ detect_language <- function (CitDat, fieldsToDetectIn = c("Abstract"), wantedLan
   if (!is.null(wantedLanguage)) {
     CitDat <- CitDat %>%
       mutate(det_lang_wanted = if_else(is.na(.data$det_lang),
-                                       NA,
+                                       NA_character_,
                                        .data$det_lang %in% wantedLanguage))
   }
 

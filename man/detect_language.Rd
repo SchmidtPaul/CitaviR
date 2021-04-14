@@ -34,12 +34,9 @@ Detect the language that the abstract or other fields are written in
 The underlying core function determining the language is \code{textcat::textcat()}.
 }
 \examples{
-\dontrun{
-CitDat <- CitaviR::diabetesprevalence \%>\%
-  dplyr::slice(1952:1955, 4390:4393)
-
-CitDat \%>\%
+example_path <- example_file("3dupsin5refs/3dupsin5refs.ctv6")
+read_Citavi_ctv6(example_path) \%>\%
   detect_language() \%>\%
   dplyr::select(Abstract, det_lang, det_lang_wanted)
-}
+
 }

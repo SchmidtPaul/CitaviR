@@ -53,7 +53,7 @@ CitDat <- read_Citavi_ctv6(path = example_path,
 CitDat %>% select(Title, Year, Abstract, DOI) 
 ```
 
-> If, for whatever reason, you wish to do the import from Citavi not via SQL, but with Excel files (exported from Citavi), then `CitaviR` offers an alternative approach **TO DO LINK**
+> If, for whatever reason, you wish to do the import from Citavi not via SQL, but with Excel files (exported from Citavi), then `CitaviR` offers an alternative approach via `read_Citavi_xlsx()` and `write_Citavi_xlsx()` described [here](https://schmidtpaul.github.io/CitaviR/articles/excel_instead_of_sql.html).
 
 ```{r, echo = FALSE, message = FALSE, warning = FALSE}
 # quietly store the Citavi project for later
@@ -62,7 +62,7 @@ OriginalCitDat <- CitDat
 
 # Step 2: Process data in R
 
-At this point there are many things one may wish to do with the data. In this example we will make use of the `CitaviR` functions to identify and handle *obvious duplicates*.
+At this point there are many things one may wish to do with the data. In this example we will make use of the `CitaviR` functions to identify and handle *obvious duplicates*. (Check out the [article on obvious and potential duplicates](https://schmidtpaul.github.io/CitaviR/articles/obv_pot_dups.html) for more.)
 
 ## Find obvious duplicates
 
@@ -78,11 +78,11 @@ CitDat %>%
  select(Title, clean_title:obv_dup_id)
 ```
  
-Note how a single typo ("Hritability") prevents `ct_03` from being detected as an *obvious duplicate* for `ct_02`. For cases like this, one may use `CitaviR::find_potential_dups()`, but we will not go so far in this introduction (**TO DO LINK TO VIGNETTE**).
+Note how a single typo ("Hritability") prevents `ct_03` from being detected as an *obvious duplicate* for `ct_02`. For cases like this, one may use `CitaviR::find_potential_dups()`, which is explained in the [article on obvious and potential duplicates](https://schmidtpaul.github.io/CitaviR/articles/obv_pot_dups.html) but not done here.
 
 ## Handle obvious duplicates
  
-At this point we have already gained information and could continue with steps 4 and 5. However, sometimes duplicates hold different information as it is the case here for `ct_02` and the columns `PubMedID`, `DOI` and `Categories`:
+At this point we have already gained information and could continue with steps 4 and 5. However, sometimes duplicates hold different information as it is the case here for `ct_02` and the columns `PubMedID` and `DOI`:
 
 ```{r}
 CitDat %>% 
@@ -97,7 +97,7 @@ CitDat <- CitDat %>%
   handle_obvious_dups(fieldsToHandle = c("DOI", "PubMedID"))
 ```
 
-As can be seen, the columns listed in `fieldsToHandle =` are *filled up* (*i.e.* `tidyr::fill(all_of(fieldsToHandle), .direction = "up")`). By providing a string for `nameDupCategories =`, unique entries in the `Categories` column are collapsed into the respective entry for `dup_01`, while entries for all other obvious duplicates are replaced by the provided string. 
+As can be seen, the columns listed in `fieldsToHandle =` are *filled up* (*i.e.* `tidyr::fill(all_of(fieldsToHandle), .direction = "up")`). 
 
 ```{r}
 CitDat %>% 
@@ -109,7 +109,7 @@ Therefore, we could now get rid of all obvious duplicates (`obv_dup_id =! dup_01
 
 # Step 3: R to Citavi
 
-Finally, we want to implement the gained information into the Citavi project. For this, we can make use of `update_Citavi_ctv6()`. Say we would like to overwrite the old DOI and PubMed information and additionally store the `clean_title_id` and `obv_dup_id` in *Custom field 1* and *Custom field 2*, respectively. You should probably close your Citavi project before running this:
+Finally, we want to implement the gained information into the Citavi project. To do so, we can make use of `update_Citavi_ctv6()`. Say we would like to overwrite the old DOI and PubMed information and additionally store the `clean_title_id` and `obv_dup_id` in *Custom field 1* and *Custom field 2*, respectively. You should probably close your Citavi project before running this:
 
 ```{r}
 CitDat %>%
@@ -131,7 +131,7 @@ If you now open the Citavi project, it should have changed as expected.
 knitr::include_graphics("https://github.com/SchmidtPaul/CitaviR/blob/master/man/figures/Citavi_BeforeAfter.png?raw=true")
 ```
 
-> If, for whatever reason, you wish to do the export to Citavi not via SQL, but with Excel files, then `CitaviR` offers an alternative approach **TO DO LINK**
+> If, for whatever reason, you wish to do the import from Citavi not via SQL, but with Excel files (exported from Citavi), then `CitaviR` offers an alternative approach via `read_Citavi_xlsx()` and `write_Citavi_xlsx()` described [here](https://schmidtpaul.github.io/CitaviR/articles/excel_instead_of_sql.html).
 
 ```{r, echo = FALSE, message = FALSE, warning = FALSE}
 # quietly restore the Citavi project to original state
