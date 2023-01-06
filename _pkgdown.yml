@@ -5,7 +5,7 @@ authors:
     href: "https://github.com/SchmidtPaul"
   BioMath:
     href: "https://www.biomath.de/"
-    html: "<img src='https://raw.githubusercontent.com/SchmidtPaul/CitaviR/master/man/figures/BioMathLogo.svg' height=24>"
+    html: "<img src='man/figures/BioMathLogo.svg' height=24>"
 
 template:
   params:
