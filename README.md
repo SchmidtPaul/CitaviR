@@ -1,16 +1,17 @@
-
 # CitaviR <img src='man/figures/logo.png' align="right" height="138" />
 
 <!-- badges: start -->
 
-[![Project Status: Active – The project has reached a stable, usable
-state and is being actively
-developed.](https://www.repostatus.org/badges/latest/active.svg)](https://www.repostatus.org/#active)
-[![Lifecycle:
-maturing](https://lifecycle.r-lib.org/articles/figures/lifecycle-maturing.svg)](https://www.tidyverse.org/lifecycle/#maturing)
+[![Project Status: Unsupported](https://www.repostatus.org/badges/latest/unsupported.svg)](https://www.repostatus.org/#unsupported)
+[![Lifecycle: deprecated](https://lifecycle.r-lib.org/articles/figures/lifecycle-deprecated.svg)](https://www.tidyverse.org/lifecycle/#deprecated)
 
-> This is an unofficial helper package for dealing with Citavi. </br> I
-> am not affiliated with Citavi, just a fan.
+> **⚠️ This package is no longer maintained.**
+>
+> CitaviR was built for **Citavi 6 local projects** (.ctv6 files accessed via SQL). Citavi has since transitioned to a cloud-based model, and — critically — **still does not offer any API access nor has announced plans to do so**. This makes it impossible to build or maintain reliable programmatic integrations with current versions of Citavi.
+>
+> The package remains available on GitHub for reference, but no further development or bug fixes are planned.
+
+---
 
 **Citavi** ([Official Website](https://www.citavi.com/de), [Official
 GitHub](https://github.com/Citavi)) is a software program for reference
